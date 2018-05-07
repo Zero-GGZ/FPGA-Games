@@ -64,6 +64,7 @@ output		[10:0]		VGA_ypos,
 input		[11:0]		VGA_data
 );
 
+
 //----------------------------------------
 //Hsync counter and generator
 reg [10:0]	hcnt;

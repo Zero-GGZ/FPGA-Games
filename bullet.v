@@ -21,15 +21,18 @@ module bullet
 	input				bul_state,	//the state of bullet
 		
 	//input and output the positon of bullet
-	inout	[4:0]		x_bul_pos,	
-	inout	[4:0]		y_bul_pos,
+	input		[4:0]	x_bul_pos_in,	
+	input		[4:0]	y_bul_pos_in,
+	output	reg	[4:0]	x_bul_pos_out,
+	output	reg	[4:0]	y_bul_pos_out,
 	
 	//input VGA scan coordinate
-	input	[4:0]		VGA_xpos,
-	input	[4:0]		VGA_ypos,
+	input	[10:0]		VGA_xpos,
+	input	[10:0]		VGA_ypos,
 	
 	//output the VGA data
-	output	reg	[11:0]		VGA_data
+	output	reg	[11:0]	VGA_data,
+	output	reg			VGA_en
 );
 
 

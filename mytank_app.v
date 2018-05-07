@@ -38,23 +38,27 @@ module mytank_app
 	input	[4:0]	bul4_y,
 	
 	//relative position input and output
-	inout	[4:0] 	x_rel_pos,
-	inout	[4:0]	y_rel_pos,
+	input	[4:0] 	x_rel_pos_in,
+	input	[4:0]	y_rel_pos_in,
+	output	reg 	[4:0]	x_rel_pos_out,
+	output	reg 	[4:0]	y_rel_pos_out,
 	
-	output	reg		   tank_state,
+	output	reg		  		 tank_state,
 	
-	output	reg	[1:0]	tank_dir_out,
-	output  reg			bul_sht
+	output	reg	[1:0]		tank_dir_out,
+	output  reg				bul_sht
 		
 );
 
+endmodule
+/*
 //check whether it was hit
 always@(posedge clk)
 begin
-	if	( ( bul1_x == x_rel_pos && bul1_y == y_rel_pos) ||
-			(bul2_x == x_rel_pos && bul2_y == y_rel_pos) ||
-			(bul3_x == x_rel_pos && bul3_y == y_rel_pos) ||
-			(bul4_x == x_rel_pos && bul4_y == y_rel_pos) )
+	if	( ( bul1_x == x_rel_pos_in && bul1_y == y_rel_pos_in) ||
+			(bul2_x == x_rel_pos_in && bul2_y == y_rel_pos_in) ||
+			(bul3_x == x_rel_pos_in && bul3_y == y_rel_pos_in) ||
+			(bul4_x == x_rel_pos_in && bul4_y == y_rel_pos_in) )
 			tank_state <= 1'b0;
 	else	tank_state <= 1'b1;
 end 
@@ -62,9 +66,9 @@ end
 //move upward and direction = 00
 always@(posedge bt_w)
 begin
-	if (y_rel_pos > 0 && y_rel_pos < 20 && tank_en == 1'b1)
+	if (y_rel_pos_in > 0 && y_rel_pos_in < 20 && tank_en == 1'b1)
 	begin
-		y_rel_pos <= y_rel_pos + 1'b1;
+		y_rel_pos_out <= y_rel_pos_out + 1'b1;
 		tank_dir_out <= 2'b00;
 	end
 end
@@ -72,9 +76,9 @@ end
 //move downward and direction = 01
 always@(posedge bt_s)
 begin
-	if (y_rel_pos > 0 && y_rel_pos < 20 && tank_en == 1'b1)
+	if (y_rel_pos_in > 0 && y_rel_pos_in < 20 && tank_en == 1'b1)
 	begin
-		y_rel_pos <= y_rel_pos - 1'b1;
+		y_rel_pos_out <= y_rel_pos_out - 1'b1;
 		tank_dir_out <= 2'b01;
 	end
 end
@@ -82,9 +86,9 @@ end
 //move left and direction = 10
 always@(posedge bt_a)
 begin
-	if (x_rel_pos > 0 && x_rel_pos < 16 && tank_en == 1'b1)
+	if (x_rel_pos_in > 0 && x_rel_pos_in < 16 && tank_en == 1'b1)
 	begin
-		x_rel_pos <= x_rel_pos +	1'b1;
+		x_rel_pos_out <= x_rel_pos_out +	1'b1;
 		tank_dir_out <= 2'b10;
 	end
 end
@@ -92,9 +96,9 @@ end
 //move right and direction = 11
 always@(posedge bt_d)
 begin
-	if (x_rel_pos > 0 && x_rel_pos < 16 && tank_en == 1'b1)
+	if (x_rel_pos_in > 0 && x_rel_pos_in < 16 && tank_en == 1'b1)
 	begin
-		x_rel_pos <= x_rel_pos - 1'b1;
+		x_rel_pos_out <= x_rel_pos_out - 1'b1;
 		tank_dir_out <= 2'b11;
 	end
 end
@@ -113,3 +117,4 @@ begin
 end
 
 endmodule
+*/

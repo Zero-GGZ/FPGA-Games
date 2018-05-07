@@ -9,6 +9,7 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180505		QiiNn		0.5			Module interface definition
+180507		QiiNn		0.6			Add enybul_dir interface
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -31,6 +32,8 @@ module enytank_app
 	output	reg	[4:0]	enytank_ypos,
 	output	reg	[1:0]	tank_dir_out	
 );
+
+
 
 
 endmodule

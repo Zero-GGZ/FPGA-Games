@@ -9,6 +9,7 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180505		QiiNn		0.5			Module interface definition
+180507		QiiNn		0.6			Add tank_state interfaces
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -17,6 +18,11 @@ module tank_generate
 (	
 	input	clk,
 	input	clk_4Hz,
+	input	tank1_state,
+	input	tank2_state,
+	input	tank3_state,
+	input	tank4_state,
+	
 	
 	output	reg 	tank1_en,
 	output	reg 	tank2_en,

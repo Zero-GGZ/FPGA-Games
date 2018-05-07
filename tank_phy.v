@@ -11,8 +11,18 @@ Date		By			Version		Description
 180505		QiiNn		0.5			Module interface definition
 180507		QiiNn		1.0			Initial coding completed (without add to object)
 ========================================================*/
-
 `timescale 1ns/1ns
+
+//----------------------------------------------------------
+//Define the colour parameter RGB 4|4|4
+`define	RED			12'hF00
+`define	GREEN		12'h0F0
+`define	BLUE		12'h00F
+`define	WHITE		12'hFFF
+`define	BLACK		12'h000
+`define	YELLOW		12'hFF0
+`define	CYAN		12'hF0F
+`define	ROYAL		12'h0FF
 
 module tank_phy
 (
@@ -21,16 +31,20 @@ module tank_phy
 	//input the relative position of tank
 	input	[4:0]	x_rel_pos,
 	input	[4:0]	y_rel_pos,
+	input	[10:0]	VGA_xpos,
+	input	[10:0]	VGA_ypos,
 	
 	input			tank_state,	//the state of tank
 	input			tank_ide,	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
 	input	[1:0]	tank_dir,	//the direction of tank
 	
 	//output the VGA data
-	output	reg	[11:0]	VGA_data
-	output 			VGA_en
+	output	reg	[11:0]	VGA_data,
+	output 	reg		VGA_en
 );
 
+endmodule
+/*
 // direction = upward 
   always@(posedge clk)
   begin
@@ -99,3 +113,4 @@ module tank_phy
   end
   
 endmodule
+*/
