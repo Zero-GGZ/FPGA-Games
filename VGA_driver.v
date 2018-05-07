@@ -10,6 +10,7 @@ Date		By			Version		Description
 ----------------------------------------------------------
 180416		QiiNn		1.0			Origin (without Modelsim simulation)
 180420		QiiNn		1.1			First successful simulation and add parameters which only use in simulation
+180507		QiiNn		1.2			Bug fixed - change the VGA_en output property to input 
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -49,9 +50,9 @@ input 					clk,
 input					rst_n,
 
 //vga interface
+input					VGA_en,
 output					Hsync,
 output					Vsync,
-output					VGA_en,
 output		[3:0]		vgaRed,
 output		[3:0]		vgaBlue,
 output		[3:0]		vgaGreen,
