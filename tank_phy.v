@@ -11,6 +11,7 @@ Date		By			Version		Description
 180505		QiiNn		0.5			Module interface definition
 180507		QiiNn		1.0			Initial coding completed (unverified)
 180508		QiiNn		1.1			Corrected the reg conflict error(unverified)
+180509		QiiNn		1.2			Bug fixed - hierarchy and range of y coordinate
 ========================================================*/
 `timescale 1ns/1ns
 
@@ -61,6 +62,7 @@ module tank_phy
 	  VGA_data <= 12'h000;
 	  VGA_en <= 1'b0;
 	  end
+	end
   // direction = downward
     if (tank_state == 1'b1 && tank_dir == 2'b01)
     begin
@@ -109,7 +111,6 @@ module tank_phy
 	  VGA_en <= 1'b0;
 	  end
     end
-  end
   end
   
 endmodule
