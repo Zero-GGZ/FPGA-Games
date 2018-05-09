@@ -127,7 +127,8 @@ wire	[11:0]	VGA_data_enytank4;
 wire 	[10:0]	VGA_xpos;
 wire 	[10:0]	VGA_ypos;
 wire 	[11:0]	VGA_data;
-wire 			VGA_en;
+
+wire			VGA_en;
 
 
 clock u_clock
@@ -532,6 +533,7 @@ VGA_data_selector u_VGA_data_selector
 	.out	(VGA_data)
 );
 
+/*
 VGA_enable u_VGA_enable
 (
 	.clk	(clk),
@@ -550,17 +552,33 @@ VGA_enable u_VGA_enable
 	.out	(VGA_en)
 );						
 						
-
+*/
+/*
+assign VGA_en = VGA_en_bul1 | VGA_en_bul2 | VGA_en_bul3 | VGA_en_bul4 | VGA_en_enytank1 | VGA_en_enytank2 | VGA_en_enytank3 | VGA_en_enytank4
+				| VGA_en_mybul | VGA_en_mytank;
+				
+				*/
+wire	clk_VGA;
+clk_wiz_0 u_VGA_clock
+   (
+    // Clock out ports
+    .clk_out1	(),     // output clk_out1
+    .clk_out2	(clk_VGA),     // output clk_out2
+   // Clock in ports
+    .clk_in1	(clk));				
+				
+				
+				
 VGA_driver		u_VGA_driver
 (
 //global clock
-	.clk		(clk),
+	.clk		(clk_VGA),
 	.rst_n		(1'b1),
 
 //vga interface
 	.Hsync		(Hsync),
 	.Vsync		(Vsync),
-	.VGA_en		(VGA_en),
+	.VGA_en		(),
 	.vgaRed		(vgaRed),
 	.vgaBlue	(vgaBlue),
 	.vgaGreen	(vgaGreen),

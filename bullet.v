@@ -10,6 +10,7 @@ Date		By			Version		Description
 ----------------------------------------------------------
 180505		QiiNn		0.5			Module interface definition
 180508		QiiNn		1.0			Initial coding complete (unverified)
+180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -45,40 +46,51 @@ module bullet
 //---------------------------------------------------
 //sample the tank shooting
 reg		[1:0]	bul_dir_reg;
+reg		[4:0]	x_bul_pos_init;
+reg		[4:0]	y_bul_pos_init;
+
 always@(posedge bul_state)
 begin
 	bul_dir_reg <= bul_dir;
-	x_bul_pos_out <= tank_xpos;
-	y_bul_pos_out <= tank_ypos;
+	x_bul_pos_init <= tank_xpos;
+	y_bul_pos_init <= tank_ypos;
 end
 
 //---------------------------------------------------
 //move
+reg		sample_flag;
+initial sample_flag <= 1'b0;
+
 always@(posedge clk_8Hz)
 begin
 	if(bul_state == 1'b1)
 	begin
-		if(bul_dir_reg == 2'b00)
-			y_bul_pos_out <= y_bul_pos_out - 1'b1;
-		if(bul_dir_reg == 2'b01)
-			y_bul_pos_out <= y_bul_pos_out + 1'b1;
-		if(bul_dir_reg == 2'b10)
-			x_bul_pos_out <= x_bul_pos_out - 1'b1;
-		if(bul_dir_reg == 2'b11)
-			x_bul_pos_out <= x_bul_pos_out + 1'b1;
+		if(sample_flag == 1'b0)
+		begin
+			x_bul_pos_out <= x_bul_pos_init;
+			y_bul_pos_out <= y_bul_pos_init;
+			sample_flag <= 1'b1;
+		end
+		else
+		begin
+			if(bul_dir_reg == 2'b00)
+				y_bul_pos_out <= y_bul_pos_out - 1'b1;
+			if(bul_dir_reg == 2'b01)
+				y_bul_pos_out <= y_bul_pos_out + 1'b1;
+			if(bul_dir_reg == 2'b10)
+				x_bul_pos_out <= x_bul_pos_out - 1'b1;
+			if(bul_dir_reg == 2'b11)
+				x_bul_pos_out <= x_bul_pos_out + 1'b1;
+		end
+		//boundary detection
+		if((x_bul_pos_in <= 0)||(x_bul_pos_in >= 16)||(y_bul_pos_in <= 0)||(y_bul_pos_in >= 20))
+		begin
+			bul_state_feedback <= 1'b0;
+			sample_flag <= 1'b0;
+		end
 	end
 end
 
-//---------------------------------------------------
-//boundary detection
-always@(posedge clk_8Hz)
-begin
-	if(bul_state == 1'b1)
-	begin
-		if((x_bul_pos_in <= 0)||(x_bul_pos_in >= 16)||(y_bul_pos_in <= 0)||(y_bul_pos_in >= 20))
-			bul_state_feedback <= 1'b0;
-	end
-end
 
 //---------------------------------------------------
 //VGA display

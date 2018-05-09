@@ -26,9 +26,10 @@ module VGA_enable
 	input		in9,
 	input		in10,
 //output interfaces	
-	output	reg	out
+	output		out
 );
 
+/*
 always@(posedge clk)
 begin
 	if ((in1 == 1'b1) || (in2 == 1'b1) || (in3 == 1'b1) || (in4 == 1'b1) ||
@@ -38,6 +39,8 @@ begin
 	else
 		out <= 1'b0;
 end
+*/
 
+assign out = in1 | in2 | in3 | in4 | in5 | in6 | in7 | in8 | in8 | in10; 
 
 endmodule

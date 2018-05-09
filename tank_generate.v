@@ -63,7 +63,7 @@ begin
 	begin
 		tank4_en <= 1'b1;
 		game_start_flag <= 1'b1;
-		cnt_game_start <= 0;
+		cnt_game_start <= 6'b0;
 	end
 
 	if(game_start_flag == 1'b1)
@@ -80,44 +80,44 @@ begin
 
 	if (cnt_reg_1 > 12)
 	begin
-		tank1_en <= 1;
+		tank1_en <= 1'b1;
 		cnt_reg_1 <= cnt_reg_1 + 1;
 	end
 	if (cnt_reg_2 > 12)
 	begin
-		tank2_en <= 1;
+		tank2_en <= 1'b1;
 		cnt_reg_2 <= cnt_reg_2 + 1;
 	end
 	if (cnt_reg_3 > 12)
 	begin
-		tank3_en <= 1;
+		tank3_en <= 1'b1;
 		cnt_reg_3 <= cnt_reg_3 + 1;
 	end
 	if (cnt_reg_4 > 12)
 	begin
-		tank1_en <= 1;
+		tank1_en <= 1'b1;
 		cnt_reg_3 <= cnt_reg_3 + 1;
 	end
 
 	if (cnt_reg_1 > 15)
 	begin	
 		tank1_en <= 1'b0;
-		cnt_reg_1 <= 0;
+		cnt_reg_1 <= 1'b0;
 	end
 	if (cnt_reg_2 > 15)
 	begin	
 		tank2_en <= 1'b0;
-		cnt_reg_2 <= 0;
+		cnt_reg_2 <= 1'b0;
 	end
 	if (cnt_reg_3 > 15)
 	begin	
 		tank3_en <= 1'b0;
-		cnt_reg_3 <= 0;
+		cnt_reg_3 <= 1'b0;
 	end
 	if (cnt_reg_4 > 15)
 	begin	
 		tank4_en <= 1'b0;
-		cnt_reg_4 <= 0;
+		cnt_reg_4 <= 1'b0;
 	end
 end
 

@@ -43,47 +43,6 @@ initial tank_state_reg <= 1'b0;
 initial tank_state <= 1'b0;
 
 
-//---------------------------------------------------
-//enemy tank's generation and initialization
-always@(posedge tank_en)
-begin
-	if(tank_state_reg == 1'b0)
-	begin
-		tank_state <= 1'b1;
-		tank_state_reg <= 1'b1;
-		if(tank_num == 2'b00)
-		begin
-			enytank_xpos <= 0;
-			enytank_ypos <= 0;
-		end
-		else if (tank_num == 2'b01)
-		begin
-			enytank_xpos <= 16;
-			enytank_ypos <= 0;
-		end
-		else if (tank_num == 2'b10)
-		begin
-			enytank_xpos <= 0;
-			enytank_ypos <= 20;
-		end
-		else if (tank_num == 2'b10)
-		begin
-			enytank_xpos <= 16;
-			enytank_ypos <= 20;
-		end
-	end
-end
-
-//---------------------------------------------------
-//check whether the tank was hit
-always@(posedge clk)
-begin
-	if ((tank_state_reg == 1'b1) && (enytank_xpos == mybul_x) && (enytank_ypos == mybul_y))
-	begin
-		tank_state_reg <= 1'b0;
-		tank_state <= 1'b0;		
-	end
-end
 
 //---------------------------------------------------
 //Calculate the distance between my tank 
@@ -121,10 +80,39 @@ begin
 end
 
 
+
 //---------------------------------------------------
-//move to my tank by steps
+//generate and move to my tank by steps and check whether it was hit
 always@(posedge clk_4Hz)
 begin
+	//enemy tank's generation and initialization
+	if (tank_state_reg == 1'b0  && tank_en == 1'b1)
+	begin
+		tank_state <= 1'b1;
+		tank_state_reg <= 1'b1;
+		if(tank_num == 2'b00)
+		begin
+			enytank_xpos <= 0;
+			enytank_ypos <= 0;
+		end
+		else if (tank_num == 2'b01)
+		begin
+			enytank_xpos <= 16;
+			enytank_ypos <= 0;
+		end
+		else if (tank_num == 2'b10)
+		begin
+			enytank_xpos <= 0;
+			enytank_ypos <= 20;
+		end
+		else if (tank_num == 2'b10)
+		begin
+			enytank_xpos <= 16;
+			enytank_ypos <= 20;
+		end
+	end
+	
+	//move
 	if (tank_state_reg == 1'b1)
 	begin
 		if(horizontal_dis < vertical_dis)
@@ -132,12 +120,12 @@ begin
 			if	((left_dis > 0)&&(enytank_xpos > 0))
 			begin
 				tank_dir_out <= 2'b10;
-				enytank_xpos = enytank_xpos - 1;
+				enytank_xpos <= enytank_xpos - 1;
 			end
 			if	((right_dis > 0)&&(enytank_xpos < 16))
 			begin
 				tank_dir_out <= 2'b11;
-				enytank_xpos = enytank_xpos + 1;
+				enytank_xpos <= enytank_xpos + 1;
 			end
 		end
 		else 
@@ -145,14 +133,21 @@ begin
 			if	((up_dis > 0)&&(enytank_ypos > 0))
 			begin
 				tank_dir_out <= 2'b00;
-				enytank_ypos = enytank_ypos - 1;
+				enytank_ypos <= enytank_ypos - 1;
 			end
 			if	((down_dis > 0)&&(enytank_ypos < 20))
 			begin
 				tank_dir_out <= 2'b01;
-				enytank_ypos = enytank_ypos + 1;
+				enytank_ypos <= enytank_ypos + 1;
 			end
 		end
+	end
+	
+	//check whether the tank was hit
+	if ((tank_state_reg == 1'b1) && (enytank_xpos == mybul_x) && (enytank_ypos == mybul_y))
+	begin
+		tank_state_reg <= 1'b0;
+		tank_state <= 1'b0;		
 	end
 end
 

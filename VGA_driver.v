@@ -50,7 +50,7 @@ input 					clk,
 input					rst_n,
 
 //vga interface
-input					VGA_en,
+output					VGA_en,
 output					Hsync,
 output					Vsync,
 output		[3:0]		vgaRed,

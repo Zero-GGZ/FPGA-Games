@@ -67,8 +67,8 @@ end
 
 //---------------------------------------------------
 //moving
-always@(posedge bt_w or posedge bt_s or posedge bt_a or posedge bt_d)
-	begin
+always@(posedge clk_4Hz)
+begin
 	//move upward and direction = 00
 	if(bt_w == 1'b1)
 	begin
@@ -110,17 +110,17 @@ always@(posedge bt_w or posedge bt_s or posedge bt_a or posedge bt_d)
 	end
 end
 
+//---------------------------------------------------
 //Shoot 
-always@(posedge bt_st)
-begin
-	if ((tank_en == 1'b1)&&(mybul_state_feedback == 1'b0))
-	bul_sht <= 1'b1;
-end
-
 always@(posedge clk)
 begin
-if (mybul_state_feedback == 1'b0)
-	bul_sht <= 1'b0;
+	if(bt_st == 1'b1)
+	begin
+		if ((tank_en == 1'b1)&&(mybul_state_feedback == 1'b0))
+		bul_sht <= 1'b1;
+	end
+	if (mybul_state_feedback == 1'b0)
+		bul_sht <= 1'b0;
 end
 		
 endmodule
