@@ -107,10 +107,16 @@ begin
 			VGA_data <= 12'hFFF;
 		end
 		else
+		begin
+			VGA_data <= 12'h000;
 			VGA_en <= 1'b0;
+		end
 	end
 	else
+	begin
+		VGA_data <= 12'h000;
 		VGA_en <= 1'b0;
+	end
 end
 
 

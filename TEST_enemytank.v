@@ -1,21 +1,18 @@
 /*=======================================================
 Author				:				QiiNn
 Email Address		:				ctlvie@gmail.com
-Filename			:				game_top.v
-Date				:				2018-05-06
-Description			:				the top module
+Filename			:				TEST_enemytank.v
+Date				:				2018-05-09
+Description			:				test the enemy tanks 
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180506		QiiNn		0.5			Module interface definition and modules links
-180507		QiiNn		0.6			Update some modules' interfaces
+180509		QiiNn		1.0			weiwancheng !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ========================================================*/
 
-`timescale 1ns/1ns
-
-module game_top
-(	
+module TEST_multi
+(
 	input 					clk,
 	
 	input 					bt_w,
@@ -114,24 +111,16 @@ wire	[11:0]	VGA_data_bul3;
 wire	[4:0]	bul4_x_feedback;// = bul4_x;
 wire	[4:0]	bul4_y_feedback;// = bul4_y;
 wire			bul4_state;
-wire			VGA_en_bul4;
-wire	[11:0]	VGA_data_bul4;
-wire			VGA_en_mytank;
-wire	[11:0]	VGA_data_mytank;
-wire			VGA_en_enytank1;
-wire	[11:0]	VGA_data_enytank1;
-wire			VGA_en_enytank2;
-wire	[11:0]	VGA_data_enytank2;
-wire			VGA_en_enytank3;
-wire	[11:0]	VGA_data_enytank3;
-wire			VGA_en_enytank4;
-wire	[11:0]	VGA_data_enytank4;
-wire 	[10:0]	VGA_xpos;
-wire 	[10:0]	VGA_ypos;
-wire 	[11:0]	VGA_data;
 
-wire			VGA_en;
-
+wire 				clk_100M;
+wire				clk_VGA;
+wire	[11:0]		VGA_data;
+wire	[11:0]		VGA_data_1;
+wire	[11:0]		VGA_data_2;
+wire	[11:0]		VGA_data_3;
+wire	[11:0]		VGA_data_4;
+wire 	[10:0]		VGA_xpos;
+wire	[10:0]		VGA_ypos;
 
 assign 			bul1_x 			= 		bul1_x_feedback;
 assign 			bul2_x 			= 		bul2_x_feedback;
@@ -145,57 +134,6 @@ assign			mybul_xpos 		= 		mybul_xpos_feedback;
 assign			mybul_ypos 		= 		mybul_ypos_feedback;
 assign			mytank_xpos 	= 		mytank_xpos_feedback;
 assign			mytank_ypos 	= 		mytank_ypos_feedback;
-
-
-wire		clk_4Hz;
-wire		clk_8Hz;
-wire		clk_100M;
-
-clock u_clock
-(
-	.clk			(clk_100M),
-	.clk_4Hz		(clk_4Hz),
-	.clk_8Hz		(clk_8Hz)
-);
-
-
-
-mytank_app u_mytank_app
-(
-	.clk			(clk_100M),
-	.clk_4Hz		(clk_4Hz),
-	.tank_en		(1'b1),	//enable  
-	
-	// input button direction (w,a,s,d)
-	.bt_w			(bt_w),
-	.bt_a			(bt_a),
-	.bt_s			(bt_s),
-	.bt_d			(bt_d),
-	.bt_st			(bt_st), // shoot button
-	
-	//input the position of each bullet
-	.bul1_x			(bul1_x),
-	.bul1_y			(bul1_y),
-	.bul2_x			(bul2_x),
-	.bul2_y			(bul2_y),
-	.bul3_x			(bul3_x),
-	.bul3_y			(bul3_y),
-	.bul4_x			(bul4_x),
-	.bul4_y			(bul4_y),
-	
-	.mybul_state_feedback	(mybul_state_fb),
-	//relative position input and output
-	.x_rel_pos_in		(mytank_xpos),
-	.y_rel_pos_in		(mytank_ypos),
-	.x_rel_pos_out		(mytank_xpos_feedback),
-	.y_rel_pos_out		(mytank_ypos_feedback),
-	
-	.tank_state		(mytank_state),
-	
-	.tank_dir_out	(mytank_dir),
-	.bul_sht		(mytank_sht)
-);
-
 
 enytank_app u_enytank1_app
 (	
@@ -286,176 +224,6 @@ enytank_app u_enytank4_app
 	.tank_dir_out	(enytank4_dir)
 );
 
-
-bullet u_mybullet
-(
-	.clk		(clk_100M),
-	.clk_8Hz	(clk_8Hz),
-
-	
-	.bul_dir	(mytank_dir),	//the direction of bullet
-	.bul_state	(mytank_sht),	//the state of my bullet
-	
-	.tank_xpos	(mytank_xpos),
-	.tank_ypos	(mytank_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_in	(mybul_xpos),	
-	.y_bul_pos_in	(mybul_ypos),
-	.x_bul_pos_out	(mybul_xpos_feedback),
-	.y_bul_pos_out	(mybul_ypos_feedback),
-	
-	//input VGA scan coordinate
-	.VGA_xpos	(VGA_xpos),
-	.VGA_ypos	(VGA_ypos),
-	
-	//input the VGA data
-	.VGA_data	(VGA_data_mybul),
-	.VGA_en		(),
-	
-	.bul_state_feedback	(mybul_state_fb)
-);
-	
-
-bullet u_bul1
-(
-	.clk		(clk_100M),
-	.clk_8Hz	(clk_8Hz),
-
-	
-	.bul_dir	(enytank1_dir),	//the direction of bullet
-	.bul_state	(bul1_state),	//the state of my bullet
-	
-	.tank_xpos	(enytank1_xpos),
-	.tank_ypos	(enytank1_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_in	(bul1_x),	
-	.y_bul_pos_in	(bul1_y),
-	.x_bul_pos_out	(bul1_x_feedback),
-	.y_bul_pos_out	(bul1_y_feedback),
-	
-	//input VGA scan coordinate
-	.VGA_xpos	(VGA_xpos),
-	.VGA_ypos	(VGA_ypos),
-	
-	//input the VGA data
-	.VGA_data	(VGA_data_bul1),
-	.VGA_en		(),
-	
-	.bul_state_feedback	(enybul1_state_fb)
-);
-
-
-
-bullet u_bul2
-(
-	.clk		(clk_100M),
-	.clk_8Hz	(clk_8Hz),
-
-	
-	.bul_dir	(enytank2_dir),	//the direction of bullet
-	.bul_state	(bul2_state),	//the state of my bullet
-	
-	.tank_xpos	(enytank2_xpos),
-	.tank_ypos	(enytank2_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_in	(bul2_x),	
-	.y_bul_pos_in	(bul2_y),
-	.x_bul_pos_out	(bul2_x_feedback),
-	.y_bul_pos_out	(bul2_y_feedback),
-	
-	//input VGA scan coordinate
-	.VGA_xpos	(VGA_xpos),
-	.VGA_ypos	(VGA_ypos),
-	
-	//input the VGA data
-	.VGA_data	(VGA_data_bul2),
-	.VGA_en		(),
-	
-	.bul_state_feedback	(enybul2_state_fb)
-);
-
-
-
-bullet u_bul3
-(
-	.clk		(clk_100M),
-	.clk_8Hz	(clk_8Hz),
-
-	
-	.bul_dir	(enytank3_dir),	//the direction of bullet
-	.bul_state	(bul3_state),	//the state of my bullet
-	
-	.tank_xpos	(enytank3_xpos),
-	.tank_ypos	(enytank3_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_in	(bul3_x),	
-	.y_bul_pos_in	(bul3_y),
-	.x_bul_pos_out	(bul3_x_feedback),
-	.y_bul_pos_out	(bul3_y_feedback),
-	
-	//input VGA scan coordinate
-	.VGA_xpos	(VGA_xpos),
-	.VGA_ypos	(VGA_ypos),
-	
-	//input the VGA data
-	.VGA_data	(VGA_data_bul3),
-	.VGA_en		(),
-	
-	.bul_state_feedback	(enybul3_state_fb)
-);
-
-
-
-bullet u_bul4
-(
-	.clk		(clk_100M),
-	.clk_8Hz	(clk_8Hz),
-
-	
-	.bul_dir	(enytank4_dir),	//the direction of bullet
-	.bul_state	(bul4_state),	//the state of my bullet
-	
-	.tank_xpos	(enytank4_xpos),
-	.tank_ypos	(enytank4_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_in	(bul4_x),	
-	.y_bul_pos_in	(bul4_y),
-	.x_bul_pos_out	(bul4_x_feedback),
-	.y_bul_pos_out	(bul4_y_feedback),
-	
-	//input VGA scan coordinate
-	.VGA_xpos	(VGA_xpos),
-	.VGA_ypos	(VGA_ypos),
-	
-	//input the VGA data
-	.VGA_data	(VGA_data_bul4),
-	.VGA_en		(),
-	
-	.bul_state_feedback	(enybul4_state_fb)
-);
-
-
-
-tank_phy	mytank_phy
-(
-	.clk		(clk_100M),
-	//input the relative position of tank
-	.x_rel_pos	(mytank_xpos),
-	.y_rel_pos	(mytank_ypos),
-	.VGA_xpos	(VGA_xpos),
-	.VGA_ypos	(VGA_ypos),
-	
-	.tank_state	(mytank_state),	//the state of tank
-	.tank_ide	(1'b1),	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
-	.tank_dir	(mytank_dir),	//the direction of tank
-	
-	//output the VGA data
-	.VGA_data	(VGA_data_mytank),
-	.VGA_en		()
-);
-
-
-
 tank_phy	enytank1_phy
 (
 	.clk		(clk_100M),
@@ -470,7 +238,7 @@ tank_phy	enytank1_phy
 	.tank_dir	(enytank1_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank1),
+	.VGA_data	(VGA_data_1),
 	.VGA_en		()
 );
 
@@ -490,7 +258,7 @@ tank_phy	enytank2_phy
 	.tank_dir	(enytank2_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank2),
+	.VGA_data	(VGA_data_2),
 	.VGA_en		()
 );
 
@@ -510,7 +278,7 @@ tank_phy	enytank3_phy
 	.tank_dir	(enytank3_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank3),
+	.VGA_data	(VGA_data_3),
 	.VGA_en		()
 );
 
@@ -530,69 +298,30 @@ tank_phy	enytank4_phy
 	.tank_dir	(enytank4_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank4),
+	.VGA_data	(VGA_data_4),
 	.VGA_en		()
 );
-
-
-
 
 VGA_data_selector u_VGA_data_selector
 (
 	.clk	(clk_100M),
 //input interfaces
-	.in1	(VGA_data_bul1),
-	.in2	(VGA_data_bul2),
-	.in3	(VGA_data_bul3),
-	.in4	(VGA_data_bul4),
-	.in5	(VGA_data_enytank1),
-	.in6	(VGA_data_enytank2),
-	.in7	(VGA_data_enytank3),
-	.in8	(VGA_data_enytank4),
-	.in9	(VGA_data_mybul),
-	.in10	(VGA_data_mytank),
+	.in1	(VGA_data_1),
+	.in2	(VGA_data_2),
+	.in3	(VGA_data_3),
+	.in4	(VGA_data_4),
+	.in5	(1'b0),
+	.in6	(1'b0),
+	.in7	(1'b0),
+	.in8	(1'b0),
+	.in9	(1'b0),
+	.in10	(1'b0),
 //output interfaces	
 	.out	(VGA_data)
 );
 
-/*
-VGA_enable u_VGA_enable
-(
-	.clk	(clk),
-//input interfaces
-	.in1	(VGA_en_bul1),
-	.in2	(VGA_en_bul2),
-	.in3	(VGA_en_bul3),
-	.in4	(VGA_en_bul4),
-	.in5	(VGA_en_enytank1),
-	.in6	(VGA_en_enytank2),
-	.in7	(VGA_en_enytank3),
-	.in8	(VGA_en_enytank4),
-	.in9	(VGA_en_mybul),
-	.in10	(VGA_en_mytank),
-//output interfaces	
-	.out	(VGA_en)
-);						
-						
-*/
-/*
-assign VGA_en = VGA_en_bul1 | VGA_en_bul2 | VGA_en_bul3 | VGA_en_bul4 | VGA_en_enytank1 | VGA_en_enytank2 | VGA_en_enytank3 | VGA_en_enytank4
-				| VGA_en_mybul | VGA_en_mytank;
-				
-				*/
-wire	clk_VGA;
-clk_wiz_0 u_VGA_clock
-   (
-    // Clock out ports
-    .clk_out1	(clk_100M),     // output clk_out1
-    .clk_out2	(clk_VGA),     // output clk_out2
-   // Clock in ports
-    .clk_in1	(clk)
-	);				
-				
-				
-				
-VGA_driver		u_VGA_driver
+
+VGA_driver		u_test_VGA_driver
 (
 //global clock
 	.clk		(clk_VGA),
@@ -613,25 +342,4 @@ VGA_driver		u_VGA_driver
 	.VGA_data	(VGA_data)
 );
 
-tank_generate	u_tank_generate
-(	
-	.clk_4Hz	(clk_4Hz),
-	
-	.tank1_state(enytank1_state),
-	.tank2_state(enytank2_state),
-	.tank3_state(enytank3_state),
-	.tank4_state(enytank4_state),
-	
-	.tank1_en	(enytank1_en),
-	.tank2_en	(enytank2_en),
-	.tank3_en	(enytank3_en),
-	.tank4_en	(enytank4_en)
-);
-
 endmodule
-
-
-
-
-
-
