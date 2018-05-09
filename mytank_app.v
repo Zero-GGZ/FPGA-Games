@@ -11,6 +11,7 @@ Date		By			Version		Description
 180505		QiiNn		0.5			Module interface definition
 180507		QiiNn		1.0			Initial coding completed (unverified) 
 180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
+180509		QiiNn		1.2			Added initial coordinate generation
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -52,6 +53,14 @@ module mytank_app
 	output  reg				bul_sht
 		
 );
+
+//---------------------------------------------------
+//initial coordinate generation
+initial
+begin
+	x_rel_pos_out <= 7;
+	y_rel_pos_out <= 7;
+end
 
 //---------------------------------------------------
 //check whether it was hit
