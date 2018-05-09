@@ -11,6 +11,7 @@ Date		By			Version		Description
 180416		QiiNn		1.0			Origin (without Modelsim simulation)
 180420		QiiNn		1.1			First successful simulation and add parameters which only use in simulation
 180507		QiiNn		1.2			Bug fixed - change the VGA_en output property to input 
+180507		QiiNn		1.2			Bug fixed - correct the colors interfaces 
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -109,14 +110,15 @@ assign	vgaRed[3] = VGA_en ? VGA_data[11] : 1'b0 ;
 assign	vgaRed[2] = VGA_en ? VGA_data[10] : 1'b0 ;
 assign	vgaRed[1] = VGA_en ? VGA_data[9] : 1'b0 ;
 assign	vgaRed[0] = VGA_en ? VGA_data[8] : 1'b0 ;
-assign	vgaBlue[3] = VGA_en ? VGA_data[7] : 1'b0 ;
-assign	vgaBlue[2] = VGA_en ? VGA_data[6] : 1'b0 ;
-assign	vgaBlue[1] = VGA_en ? VGA_data[5] : 1'b0 ;
-assign	vgaBlue[0] = VGA_en ? VGA_data[4] : 1'b0 ;
-assign	vgaGreen[3] = VGA_en ? VGA_data[3] : 1'b0 ;
-assign	vgaGreen[2] = VGA_en ? VGA_data[2] : 1'b0 ;
-assign	vgaGreen[1] = VGA_en ? VGA_data[1] : 1'b0 ;
-assign	vgaGreen[0] = VGA_en ? VGA_data[0] : 1'b0 ;
+assign	vgaGreen[3] = VGA_en ? VGA_data[7] : 1'b0 ;
+assign	vgaGreen[2] = VGA_en ? VGA_data[6] : 1'b0 ;
+assign	vgaGreen[1] = VGA_en ? VGA_data[5] : 1'b0 ;
+assign	vgaGreen[0] = VGA_en ? VGA_data[4] : 1'b0 ;
+assign	vgaBlue[3] = VGA_en ? VGA_data[3] : 1'b0 ;
+assign	vgaBlue[2] = VGA_en ? VGA_data[2] : 1'b0 ;
+assign	vgaBlue[1] = VGA_en ? VGA_data[1] : 1'b0 ;
+assign	vgaBlue[0] = VGA_en ? VGA_data[0] : 1'b0 ;
+
 
 //----------------------------------------
 //ahead x clock
