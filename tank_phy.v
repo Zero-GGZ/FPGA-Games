@@ -9,7 +9,8 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180505		QiiNn		0.5			Module interface definition
-180507		QiiNn		1.0			Initial coding completed (without add to object)
+180507		QiiNn		1.0			Initial coding completed (unverified)
+180508		QiiNn		1.1			Corrected the reg conflict error(unverified)
 ========================================================*/
 `timescale 1ns/1ns
 
@@ -27,7 +28,6 @@ Date		By			Version		Description
 module tank_phy
 (
 	input			clk,
-	input 			clk_4Hz,
 	//input the relative position of tank
 	input	[4:0]	x_rel_pos,
 	input	[4:0]	y_rel_pos,
@@ -43,11 +43,10 @@ module tank_phy
 	output 	reg		VGA_en
 );
 
-endmodule
-/*
-// direction = upward 
+
   always@(posedge clk)
   begin
+  // direction = upward 
     if (tank_state == 1'b1 && tank_dir == 2'b00)
     begin
       if (((VGA_xpos > x_rel_pos * 20 + 160 - 3)&&(VGA_xpos < x_rel_pos * 20 + 160 + 3))&&((VGA_ypos > y_rel_pos * 20 + 40 - 7)&&(VGA_ypos < y_rel_pos * 20 + 40)) ||
@@ -58,13 +57,7 @@ endmodule
           VGA_en <= 1'b1; 
         end
       else VGA_en <= 1'b0;
-    end
-  end
-  
-  
   // direction = downward
-  always@(posedge clk)
-  begin
     if (tank_state == 1'b1 && tank_dir == 2'b01)
     begin
       if (((VGA_xpos > x_rel_pos * 20 + 160 - 7)&&(VGA_xpos < x_rel_pos * 20 + 160 + 7))&&((VGA_ypos > y_rel_pos * 20 + 40 - 7)&&(VGA_ypos < y_rel_pos * 20 + 40)) ||
@@ -75,13 +68,8 @@ endmodule
           VGA_en <= 1'b1; 
         end
       else VGA_en <= 1'b0;
-    end
-  end
-  
-  
+    end 
   //direction = left
-  always@(posedge clk)
-  begin
     if (tank_state == 1'b1 && tank_dir == 2'b10)
     begin
       if (((VGA_xpos > x_rel_pos * 20 + 160 - 7)&&(VGA_xpos < x_rel_pos * 20 + 160 ))&&((VGA_ypos > y_rel_pos * 20 + 40 - 3)&&(VGA_ypos < y_rel_pos * 20 + 40 + 3)) ||
@@ -92,13 +80,8 @@ endmodule
           VGA_en <= 1'b1; 
         end
       else VGA_en <= 1'b0;
-    end
-  end
-  
-  
+    end 
   //direction = right
-  always@(posedge clk)
-  begin
     if (tank_state == 1'b1 && tank_dir == 2'b11)
     begin
       if (((VGA_xpos > x_rel_pos * 20 + 160 - 7)&&(VGA_xpos < x_rel_pos * 20 + 160 ))&&((VGA_ypos > y_rel_pos * 20 + 40 - 7)&&(VGA_ypos < y_rel_pos * 20 + 40 + 7)) ||
@@ -111,6 +94,7 @@ endmodule
       else VGA_en <= 1'b0;
     end
   end
+  end
   
 endmodule
-*/
+

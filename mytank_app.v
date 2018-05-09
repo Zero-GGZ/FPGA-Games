@@ -9,7 +9,8 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180505		QiiNn		0.5			Module interface definition
-180507		QiiNn		1.0			Initial coding completed (without add to object) 
+180507		QiiNn		1.0			Initial coding completed (unverified) 
+180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -37,6 +38,8 @@ module mytank_app
 	input	[4:0]	bul4_x,
 	input	[4:0]	bul4_y,
 	
+	input 			mybul_state_feedback, //888888888888888888
+	
 	//relative position input and output
 	input	[4:0] 	x_rel_pos_in,
 	input	[4:0]	y_rel_pos_in,
@@ -50,8 +53,7 @@ module mytank_app
 		
 );
 
-endmodule
-/*
+//---------------------------------------------------
 //check whether it was hit
 always@(posedge clk)
 begin
@@ -63,58 +65,62 @@ begin
 	else	tank_state <= 1'b1;
 end 
 
-//move upward and direction = 00
-always@(posedge bt_w)
-begin
-	if (y_rel_pos_in > 0 && y_rel_pos_in < 20 && tank_en == 1'b1)
+//---------------------------------------------------
+//moving
+always@(posedge bt_w or posedge bt_s or posedge bt_a or posedge bt_d)
 	begin
-		y_rel_pos_out <= y_rel_pos_out + 1'b1;
-		tank_dir_out <= 2'b00;
+	//move upward and direction = 00
+	if(bt_w == 1'b1)
+	begin
+		if (y_rel_pos_in > 0 && y_rel_pos_in < 20 && tank_en == 1'b1)
+		begin
+			y_rel_pos_out <= y_rel_pos_out + 1'b1;
+			tank_dir_out <= 2'b00;
+		end
 	end
-end
 
-//move downward and direction = 01
-always@(posedge bt_s)
-begin
-	if (y_rel_pos_in > 0 && y_rel_pos_in < 20 && tank_en == 1'b1)
+	//move downward and direction = 01
+	if(bt_s == 1'b1)
 	begin
-		y_rel_pos_out <= y_rel_pos_out - 1'b1;
-		tank_dir_out <= 2'b01;
+		if (y_rel_pos_in > 0 && y_rel_pos_in < 20 && tank_en == 1'b1)
+		begin
+			y_rel_pos_out <= y_rel_pos_out - 1'b1;
+			tank_dir_out <= 2'b01;
+		end
 	end
-end
 
-//move left and direction = 10
-always@(posedge bt_a)
-begin
-	if (x_rel_pos_in > 0 && x_rel_pos_in < 16 && tank_en == 1'b1)
+	//move left and direction = 10
+	if(bt_a ==1'b1)
 	begin
-		x_rel_pos_out <= x_rel_pos_out +	1'b1;
-		tank_dir_out <= 2'b10;
+		if (x_rel_pos_in > 0 && x_rel_pos_in < 16 && tank_en == 1'b1)
+		begin
+			x_rel_pos_out <= x_rel_pos_out +	1'b1;
+			tank_dir_out <= 2'b10;
+		end
 	end
-end
 
-//move right and direction = 11
-always@(posedge bt_d)
-begin
-	if (x_rel_pos_in > 0 && x_rel_pos_in < 16 && tank_en == 1'b1)
+	//move right and direction = 11
+	if(bt_d == 1'b1)
 	begin
-		x_rel_pos_out <= x_rel_pos_out - 1'b1;
-		tank_dir_out <= 2'b11;
+		if (x_rel_pos_in > 0 && x_rel_pos_in < 16 && tank_en == 1'b1)
+		begin
+			x_rel_pos_out <= x_rel_pos_out - 1'b1;
+			tank_dir_out <= 2'b11;
+		end
 	end
 end
 
 //Shoot 
 always@(posedge bt_st)
 begin
-	if (tank_en == 1'b1)
+	if ((tank_en == 1'b1)&&(mybul_state_feedback == 1'b0))
 	bul_sht <= 1'b1;
 end
 
-always@(negedge bt_st)
+always@(posedge clk)
 begin
-	if (tank_en == 1'b1)
+if (mybul_state_feedback == 1'b0)
 	bul_sht <= 1'b0;
 end
-
+		
 endmodule
-*/

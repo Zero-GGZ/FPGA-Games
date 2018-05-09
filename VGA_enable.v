@@ -8,7 +8,7 @@ Description			:				the VGA enable signal selector
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180507		QiiNn		1.0			Initial coding completed 
+180507		QiiNn		1.0			Initial coding completed(unverified)
 ========================================================*/
 
 module VGA_enable
