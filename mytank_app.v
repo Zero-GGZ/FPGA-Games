@@ -12,6 +12,7 @@ Date		By			Version		Description
 180507		QiiNn		1.0			Initial coding completed (unverified) 
 180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
 180509		QiiNn		1.2			Added initial coordinate generation
+180510		QiiNn		1.3			moving and shoot bugs fixed
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -54,12 +55,14 @@ module mytank_app
 		
 );
 
+reg 	tank_state_reg;
 //---------------------------------------------------
 //initial coordinate generation
 initial
 begin
 	x_rel_pos_out <= 7;
 	y_rel_pos_out <= 7;
+	tank_state_reg <= 1'b1;
 end
 
 //---------------------------------------------------
@@ -81,9 +84,9 @@ begin
 	//move upward and direction = 00
 	if(bt_w == 1'b1)
 	begin
-		if (y_rel_pos_in > 0 && y_rel_pos_in < 20 && tank_en == 1'b1)
+		if (y_rel_pos_in > 0 && tank_en == 1'b1)
 		begin
-			y_rel_pos_out <= y_rel_pos_out + 1'b1;
+			y_rel_pos_out <= y_rel_pos_out - 1'b1;
 			tank_dir_out <= 2'b00;
 		end
 	end
@@ -91,9 +94,9 @@ begin
 	//move downward and direction = 01
 	if(bt_s == 1'b1)
 	begin
-		if (y_rel_pos_in > 0 && y_rel_pos_in < 20 && tank_en == 1'b1)
+		if ( y_rel_pos_in < 20 && tank_en == 1'b1)
 		begin
-			y_rel_pos_out <= y_rel_pos_out - 1'b1;
+			y_rel_pos_out <= y_rel_pos_out + 1'b1;
 			tank_dir_out <= 2'b01;
 		end
 	end
@@ -101,9 +104,9 @@ begin
 	//move left and direction = 10
 	if(bt_a ==1'b1)
 	begin
-		if (x_rel_pos_in > 0 && x_rel_pos_in < 16 && tank_en == 1'b1)
+		if (x_rel_pos_in > 0  && tank_en == 1'b1)
 		begin
-			x_rel_pos_out <= x_rel_pos_out +	1'b1;
+			x_rel_pos_out <= x_rel_pos_out - 1'b1;
 			tank_dir_out <= 2'b10;
 		end
 	end
@@ -111,25 +114,30 @@ begin
 	//move right and direction = 11
 	if(bt_d == 1'b1)
 	begin
-		if (x_rel_pos_in > 0 && x_rel_pos_in < 16 && tank_en == 1'b1)
+		if ( x_rel_pos_in < 16 && tank_en == 1'b1)
 		begin
-			x_rel_pos_out <= x_rel_pos_out - 1'b1;
+			x_rel_pos_out <= x_rel_pos_out + 1'b1;
 			tank_dir_out <= 2'b11;
 		end
 	end
 end
 
 //---------------------------------------------------
-//Shoot 
+//Shoot
+
 always@(posedge clk)
 begin
-	if(bt_st == 1'b1)
+	if (mybul_state_feedback == 1'b0)
 	begin
-		if ((tank_en == 1'b1)&&(mybul_state_feedback == 1'b0))
+		if ((tank_en == 1'b1)&&(bt_st == 1'b1))
+			bul_sht <= 1'b1;
+		else
+			bul_sht <= 1'b0;	
+	end
+	else
+	begin
 		bul_sht <= 1'b1;
 	end
-	if (mybul_state_feedback == 1'b0)
-		bul_sht <= 1'b0;
 end
-		
+
 endmodule
