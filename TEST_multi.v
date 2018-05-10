@@ -3,31 +3,32 @@ Author				:				QiiNn
 Email Address		:				ctlvie@gmail.com
 Filename			:				TEST_multi.v
 Date				:				2018-05-09
-Description			:				test the multiple tanks display 
+Description			:				test multiple tanks display 
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180509		QiiNn		1.0			Initial test
+									Finish!
 ========================================================*/
 
 module TEST_multi
 (
 	input 					clk,
 	
-	//input 					bt_w,
-	//input 					bt_a,
-	//input 					bt_s,
-	//input 					bt_d,
-	//input 					bt_st,
+	input 					bt_w,
+	input 					bt_a,
+	input 					bt_s,
+	input 					bt_d,
+	input 					bt_st,
 	
 	output					Hsync,
 	output					Vsync,
 	output		[3:0]		vgaRed,
 	output		[3:0]		vgaBlue,
-	output		[3:0]		vgaGreen//,
+	output		[3:0]		vgaGreen,
 	
-	//output					null_pin
+	output					null_pin
 );
 
 wire					clk_100M;
@@ -78,7 +79,7 @@ tank_phy	u2_tank_phy
 	
 	.tank_state	(1'b1),	//the state of tank
 	.tank_ide	(1'b0),	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
-	.tank_dir	(2'b00),	//the direction of tank
+	.tank_dir	(2'b01),	//the direction of tank
 	
 	//output the VGA data
 	.VGA_data	(VGA_data_2),
@@ -96,7 +97,7 @@ tank_phy	u3_tank_phy
 	
 	.tank_state	(1'b1),	//the state of tank
 	.tank_ide	(1'b1),	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
-	.tank_dir	(2'b00),	//the direction of tank
+	.tank_dir	(2'b10),	//the direction of tank
 	
 	//output the VGA data
 	.VGA_data	(VGA_data_3),
@@ -114,7 +115,7 @@ tank_phy	u4_tank_phy
 	
 	.tank_state	(1'b1),	//the state of tank
 	.tank_ide	(1'b0),	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
-	.tank_dir	(2'b00),	//the direction of tank
+	.tank_dir	(2'b11),	//the direction of tank
 	
 	//output the VGA data
 	.VGA_data	(VGA_data_4),
