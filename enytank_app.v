@@ -47,27 +47,81 @@ initial tank_state <= 1'b0;
 //---------------------------------------------------
 //Calculate the distance between my tank 
 //and the enemy tank in each directions 
-reg 	[4:0]	left_dis;
-reg		[4:0]	right_dis;
-reg		[4:0]	up_dis;
-reg		[4:0]	down_dis;
-reg		[4:0]	horizontal_dis;
-reg		[4:0]	vertical_dis;
+
+reg				eql;		//if 
+reg		[2:0]	rel_dir;	//relative direction (1:000,2:001,3:011,4:010,x+:100,x-:101,y+:110;y-:111;
+reg		[4:0]	h_dis;	//horizontal distance
+reg		[4:0]	v_dis;	//vertical distance
 
 initial
 begin
-	left_dis <= 5'b0;
-	right_dis <= 5'b0;
-	up_dis <= 5'b0;
-	down_dis <= 5'b0;
-	horizontal_dis <= 5'b0;
-	vertical_dis <= 5'b0;
+	eql <= 1'b0;
+	rel_dir <= 	3'b0;
+	h_dis 	<=	5'b0;
+	v_dis 	<=	5'b0;
 end
 
 always@(posedge clk)
 begin
+	if (enytank_xpos == mytank_xpos && enytank_ypos == mytank_ypos)
+	begin
+		eql <= 1'b1;
+		h_dis <= 1'b0;
+		v_dis <= 1'b0;
+	end
+	else 
+	begin
+		eql <= 1'b0;
+		rel_dir[2] <= 1'b0;
+		if  (enytank_xpos < mytank_xpos)
+			begin
+			rel_dir[0] <= 1'b0;
+			h_dis <= mytank_xpos - enytank_xpos;
+			end
+		else if	(enytank_xpos > mytank_xpos)
+			begin
+			h_dis <= enytank_xpos - mytank_xpos;
+			rel_dir[0] <= 1'b1;
+			end
+		else 
+			begin
+			h_dis <= 1'b0;
+			if (enytank_ypos > mytank_ypos)
+				begin
+				rel_dir <= 3'b110;
+				end
+			else
+				begin
+				rel_dir <= 3'b111;
+				end
+			end
+			
+		if	(enytank_ypos > mytank_ypos)
+			begin
+			v_dis <= enytank_ypos - mytank_ypos;
+			rel_dir[1]	<= 1'b0;
+			end
+		else if (enytank_ypos < mytank_ypos)
+			begin
+			v_dis <= mytank_ypos - enytank_ypos;
+			rel_dir[1]	<= 1'b1;
+			end
+		else
+			begin
+			v_dis <= 1'b0;
+			if (enytank_xpos > mytank_xpos)
+				rel_dir <= 3'b101;
+			else
+				rel_dir <= 3'b100;
+			end
+	end
+end
+/*
+always@(posedge clk)
+begin
 	if (tank_state_reg == 1'b1)
 	begin
+		if (enytank_xpos )
 		left_dis <= enytank_xpos - mytank_xpos;
 		right_dis <= mytank_xpos - enytank_xpos;
 		up_dis <= mytank_ypos - enytank_ypos;
@@ -78,7 +132,7 @@ begin
 		else vertical_dis <= down_dis;
 	end
 end
-
+*/
 
 
 //---------------------------------------------------
@@ -105,7 +159,7 @@ begin
 			enytank_xpos <= 0;
 			enytank_ypos <= 20;
 		end
-		else if (tank_num == 2'b10)
+		else if (tank_num == 2'b11)
 		begin
 			enytank_xpos <= 16;
 			enytank_ypos <= 20;
@@ -115,36 +169,140 @@ begin
 	//move
 	if (tank_state_reg == 1'b1)
 	begin
-		if(horizontal_dis < vertical_dis)
-		begin
-			if	((left_dis > 0)&&(enytank_xpos > 0))
+		if (eql)
+			tank_dir_out <= tank_dir_out;
+		else
 			begin
-				tank_dir_out <= 2'b10;
-				enytank_xpos <= enytank_xpos - 1;
+			if (h_dis == 0 && v_dis != 0)
+				begin
+				if(rel_dir[0] == 0 && enytank_ypos > 0)	//up
+					begin
+					tank_dir_out <= 2'b00;
+					enytank_ypos <= enytank_ypos - 1;
+					end
+				else if (rel_dir[0] == 1 && enytank_ypos < 20) //down
+					begin
+					tank_dir_out <= 2'b01;
+					enytank_ypos <= enytank_ypos + 1;
+					end
+				else 
+					enytank_ypos <= enytank_ypos;
+				end
+			else if (h_dis != 0 && v_dis == 0)
+				begin
+				if(rel_dir[0] == 1 && enytank_xpos > 0) //left
+					begin
+					tank_dir_out <= 2'b10;
+					enytank_xpos <= enytank_xpos - 1;
+					end
+				else if(rel_dir[0] == 0 && enytank_xpos < 16) //right
+					begin
+					tank_dir_out <= 2'b11;
+					enytank_xpos <= enytank_xpos + 1;
+					end
+				else
+					enytank_xpos <= enytank_xpos;
+				end
+			else
+				begin
+				if (h_dis < v_dis)
+					begin
+					if(rel_dir[0] ==  1 && enytank_xpos > 0) //left
+						begin
+						tank_dir_out <= 2'b10;
+						enytank_xpos <= enytank_xpos - 1;
+						end
+					else if (rel_dir[0] ==  0 && enytank_xpos < 16)	//right
+						begin
+						tank_dir_out <= 2'b11;
+						enytank_xpos <= enytank_xpos + 1;
+						end
+					else
+						enytank_xpos <= enytank_xpos;
+					end
+				else
+					begin
+					if(rel_dir[1] == 0 && enytank_ypos > 0) //up
+						begin
+						tank_dir_out <= 2'b00;
+						enytank_ypos <= enytank_ypos - 1;
+						end
+					else if(rel_dir[1] == 1 && enytank_ypos < 20)	//down
+						begin
+						tank_dir_out <= 2'b01;
+						enytank_ypos <= enytank_ypos + 1;
+						end
+					else
+						enytank_ypos <= enytank_ypos;
+					end
+					end
+				end
 			end
-			if	((right_dis > 0)&&(enytank_xpos < 16))
-			begin
-				tank_dir_out <= 2'b11;
-				enytank_xpos <= enytank_xpos + 1;
-			end
-		end
-		else 
+	//old!
+	/*
+		if(horizontal_dis == 0 && vertical_dis == 0)
+			tank_dir_out <= tank_dir_out;
+		else if(horizontal_dis == 0 && vertical_dis != 0)
 		begin
-			if	((up_dis > 0)&&(enytank_ypos > 0))
+			if	((up_dis > 0)&&(enytank_ypos >= 0))
 			begin
 				tank_dir_out <= 2'b00;
 				enytank_ypos <= enytank_ypos - 1;
 			end
-			if	((down_dis > 0)&&(enytank_ypos < 20))
+			if	((down_dis > 0)&&(enytank_ypos <= 20))
 			begin
 				tank_dir_out <= 2'b01;
 				enytank_ypos <= enytank_ypos + 1;
 			end
 		end
+		else if(vertical_dis == 0 && horizontal_dis != 0)
+		begin
+			if	((left_dis > 0)&&(enytank_xpos >= 0))
+			begin
+				tank_dir_out <= 2'b10;
+				enytank_xpos <= enytank_xpos - 1;
+			end
+			if	((right_dis > 0)&&(enytank_xpos <= 16))
+			begin
+				tank_dir_out <= 2'b11;
+				enytank_xpos <= enytank_xpos + 1;
+			end
+		end
+		else
+		begin
+			if(horizontal_dis < vertical_dis)
+			begin
+				if	((left_dis > 0)&&(enytank_xpos >= 0))
+				begin
+					tank_dir_out <= 2'b10;
+					enytank_xpos <= enytank_xpos - 1;
+				end
+				if	((right_dis > 0)&&(enytank_xpos <= 16))
+				begin
+					tank_dir_out <= 2'b11;
+					enytank_xpos <= enytank_xpos + 1;
+				end
+			end
+			else if (horizontal_dis > vertical_dis)
+			begin
+				if	((up_dis > 0)&&(enytank_ypos >= 0))
+				begin
+					tank_dir_out <= 2'b00;
+					enytank_ypos <= enytank_ypos - 1;
+				end
+				if	((down_dis > 0)&&(enytank_ypos <= 20))
+				begin
+					tank_dir_out <= 2'b01;
+					enytank_ypos <= enytank_ypos + 1;
+				end
+			end
+			else tank_dir_out <= tank_dir_out; 
+		end
+		
 	end
-	
+	*/
 	//check whether the tank was hit
-	if ((tank_state_reg == 1'b1) && (enytank_xpos == mybul_x) && (enytank_ypos == mybul_y))
+	if ((tank_state_reg == 1'b1) && (((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y))||((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))))
 	begin
 		tank_state_reg <= 1'b0;
 		tank_state <= 1'b0;		
@@ -157,17 +315,17 @@ always@(posedge clk_4Hz)
 begin
 	if(tank_state_reg == 1'b1)
 	begin
-		if((horizontal_dis == 0)&&(enybul_state_feedback == 1'b0))
+		if	(h_dis == 0)
 		begin
 			enybul_state <= 1'b1;
 		end
-		if((vertical_dis == 0)&&(enybul_state_feedback == 1'b0))
+		if	(v_dis == 0)
 		begin
 			enybul_state <= 1'b1;
 		end
 	end
-	if (enybul_state_feedback == 1'b0)
-		enybul_state <= 1'b0;
+//	if (enybul_state_feedback == 1'b0)
+//		enybul_state <= 1'b0;
 end
 
 

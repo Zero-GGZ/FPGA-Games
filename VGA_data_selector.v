@@ -10,6 +10,7 @@ Date		By			Version		Description
 ----------------------------------------------------------
 180508		QiiNn		1.0			Initial coding completed(unverified)
 180508		QiiNn		1.1			Corrected the reg conflict error(unverified)
+180509		QiiNn		1.2			Update to \assign\ rather than \if-else\
 ========================================================*/
 
 module VGA_data_selector

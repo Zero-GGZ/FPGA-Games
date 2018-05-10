@@ -35,8 +35,14 @@ module game_top
 
 //----------------------------------------
 //wires definition
-//wire			clk_4Hz;
-//wire			clk_8Hz;
+
+//clocks
+wire			clk_2Hz;
+wire			clk_4Hz;
+wire			clk_8Hz;
+wire			clk_100M;
+
+
 wire	[4:0]	bul1_x;
 wire	[4:0]	bul1_y;
 wire	[4:0]	bul2_x;
@@ -147,15 +153,13 @@ assign			mytank_xpos 	= 		mytank_xpos_feedback;
 assign			mytank_ypos 	= 		mytank_ypos_feedback;
 
 
-wire		clk_4Hz;
-wire		clk_8Hz;
-wire		clk_100M;
 
 clock u_clock
 (
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_4Hz),
-	.clk_8Hz		(clk_8Hz)
+	.clk_8Hz		(clk_8Hz),
+	.clk_2Hz		(clk_2Hz)
 );
 
 
@@ -200,7 +204,7 @@ mytank_app u_mytank_app
 enytank_app u_enytank1_app
 (	
 	.clk			(clk_100M),
-	.clk_4Hz		(clk_4Hz),
+	.clk_4Hz		(clk_2Hz),
 	.tank_en		(enytank1_en),
 	
 	.tank_num		(2'b00),
@@ -222,7 +226,7 @@ enytank_app u_enytank1_app
 enytank_app u_enytank2_app
 (	
 	.clk			(clk_100M),
-	.clk_4Hz		(clk_4Hz),
+	.clk_4Hz		(clk_2Hz),
 	.tank_en		(enytank2_en),
 	
 	.tank_num		(2'b01),
@@ -245,7 +249,7 @@ enytank_app u_enytank2_app
 enytank_app u_enytank3_app
 (	
 	.clk			(clk_100M),
-	.clk_4Hz		(clk_4Hz),
+	.clk_4Hz		(clk_2Hz),
 	.tank_en		(enytank3_en),
 	
 	.tank_num		(2'b10),
@@ -268,7 +272,7 @@ enytank_app u_enytank3_app
 enytank_app u_enytank4_app
 (	
 	.clk			(clk_100M),
-	.clk_4Hz		(clk_4Hz),
+	.clk_4Hz		(clk_2Hz),
 	.tank_en		(enytank4_en),
 	
 	.tank_num		(2'b11),
@@ -299,8 +303,8 @@ bullet u_mybullet
 	.tank_xpos	(mytank_xpos),
 	.tank_ypos	(mytank_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(mybul_xpos),	
-	.y_bul_pos_in	(mybul_ypos),
+	.x_bul_pos_in	(),	
+	.y_bul_pos_in	(),
 	.x_bul_pos_out	(mybul_xpos_feedback),
 	.y_bul_pos_out	(mybul_ypos_feedback),
 	
@@ -328,8 +332,8 @@ bullet u_bul1
 	.tank_xpos	(enytank1_xpos),
 	.tank_ypos	(enytank1_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(bul1_x),	
-	.y_bul_pos_in	(bul1_y),
+	.x_bul_pos_in	(),	
+	.y_bul_pos_in	(),
 	.x_bul_pos_out	(bul1_x_feedback),
 	.y_bul_pos_out	(bul1_y_feedback),
 	
@@ -358,8 +362,8 @@ bullet u_bul2
 	.tank_xpos	(enytank2_xpos),
 	.tank_ypos	(enytank2_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(bul2_x),	
-	.y_bul_pos_in	(bul2_y),
+	.x_bul_pos_in	(),	
+	.y_bul_pos_in	(),
 	.x_bul_pos_out	(bul2_x_feedback),
 	.y_bul_pos_out	(bul2_y_feedback),
 	
@@ -388,8 +392,8 @@ bullet u_bul3
 	.tank_xpos	(enytank3_xpos),
 	.tank_ypos	(enytank3_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(bul3_x),	
-	.y_bul_pos_in	(bul3_y),
+	.x_bul_pos_in	(),	
+	.y_bul_pos_in	(),
 	.x_bul_pos_out	(bul3_x_feedback),
 	.y_bul_pos_out	(bul3_y_feedback),
 	
@@ -418,8 +422,8 @@ bullet u_bul4
 	.tank_xpos	(enytank4_xpos),
 	.tank_ypos	(enytank4_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(bul4_x),	
-	.y_bul_pos_in	(bul4_y),
+	.x_bul_pos_in	(),	
+	.y_bul_pos_in	(),
 	.x_bul_pos_out	(bul4_x_feedback),
 	.y_bul_pos_out	(bul4_y_feedback),
 	

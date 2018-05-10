@@ -8,10 +8,10 @@ Description			:				test the enemy tanks
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180509		QiiNn		1.0			weiwancheng !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+180509		QiiNn		1.0			Initial coding complete
 ========================================================*/
 
-module TEST_multi
+module TEST_enemytank
 (
 	input 					clk,
 	
@@ -29,11 +29,10 @@ module TEST_multi
 	
 	output					null_pin
 );
-
+//---------------------------------------------
+//-------public definition-----------------
 //----------------------------------------
 //wires definition
-//wire			clk_4Hz;
-//wire			clk_8Hz;
 wire	[4:0]	bul1_x;
 wire	[4:0]	bul1_y;
 wire	[4:0]	bul2_x;
@@ -112,6 +111,8 @@ wire	[4:0]	bul4_x_feedback;// = bul4_x;
 wire	[4:0]	bul4_y_feedback;// = bul4_y;
 wire			bul4_state;
 
+wire				clk_4Hz;
+wire				clk_8Hz;
 wire 				clk_100M;
 wire				clk_VGA;
 wire	[11:0]		VGA_data;
@@ -135,6 +136,39 @@ assign			mybul_ypos 		= 		mybul_ypos_feedback;
 assign			mytank_xpos 	= 		mytank_xpos_feedback;
 assign			mytank_ypos 	= 		mytank_ypos_feedback;
 
+
+clock 		u_clock
+(
+	.clk			(clk_100M),
+	.clk_4Hz		(clk_4Hz),
+	.clk_8Hz		(clk_8Hz)
+);
+
+
+clk_wiz_0 	u_test_VGA_clock
+   (
+    // Clock out ports
+    .clk_out1	(clk_100M),     // output clk_out1
+    .clk_out2	(clk_VGA),     // output clk_out2
+   // Clock in ports
+    .clk_in1	(clk)
+	);	
+
+tank_generate	u_tank_generate
+(	
+	.clk_4Hz	(clk_4Hz),
+	
+	.tank1_state(enytank1_state),
+	.tank2_state(enytank2_state),
+	.tank3_state(enytank3_state),
+	.tank4_state(enytank4_state),
+	
+	.tank1_en	(enytank1_en),
+	.tank2_en	(enytank2_en),
+	.tank3_en	(enytank3_en),
+	.tank4_en	(enytank4_en)
+);	
+	
 enytank_app u_enytank1_app
 (	
 	.clk			(clk_100M),
@@ -142,11 +176,11 @@ enytank_app u_enytank1_app
 	.tank_en		(enytank1_en),
 	
 	.tank_num		(2'b00),
-	.mybul_x		(mybul_xpos),
-	.mybul_y		(mybul_ypos),
+	.mybul_x		(9),
+	.mybul_y		(9),
 	
-	.mytank_xpos	(mytank_xpos),
-	.mytank_ypos	(mytank_ypos),
+	.mytank_xpos	(9),
+	.mytank_ypos	(9),
 	
 	.enybul_state_feedback	(enybul1_state_fb),
 	.enybul_state	(bul1_state),
@@ -164,11 +198,11 @@ enytank_app u_enytank2_app
 	.tank_en		(enytank2_en),
 	
 	.tank_num		(2'b01),
-	.mybul_x		(mybul_xpos),
-	.mybul_y		(mybul_ypos),
+	.mybul_x		(9),
+	.mybul_y		(9),
 	
-	.mytank_xpos	(mytank_xpos),
-	.mytank_ypos	(mytank_ypos),
+	.mytank_xpos	(9),
+	.mytank_ypos	(9),
 	
 	.enybul_state_feedback	(enybul2_state_fb),
 	.enybul_state	(bul2_state),
@@ -187,11 +221,11 @@ enytank_app u_enytank3_app
 	.tank_en		(enytank3_en),
 	
 	.tank_num		(2'b10),
-	.mybul_x		(mybul_xpos),
-	.mybul_y		(mybul_ypos),
+	.mybul_x		(9),
+	.mybul_y		(9),
 	
-	.mytank_xpos	(mytank_xpos),
-	.mytank_ypos	(mytank_ypos),
+	.mytank_xpos	(9),
+	.mytank_ypos	(9),
 	
 	.enybul_state_feedback	(enybul3_state_fb),
 	.enybul_state	(bul3_state),
@@ -210,11 +244,11 @@ enytank_app u_enytank4_app
 	.tank_en		(enytank4_en),
 	
 	.tank_num		(2'b11),
-	.mybul_x		(mybul_xpos),
-	.mybul_y		(mybul_ypos),
+	.mybul_x		(9),
+	.mybul_y		(9),
 	
-	.mytank_xpos	(mytank_xpos),
-	.mytank_ypos	(mytank_ypos),
+	.mytank_xpos	(9),
+	.mytank_ypos	(9),
 	
 	.enybul_state_feedback	(enybul4_state_fb),
 	.enybul_state	(bul4_state),

@@ -73,21 +73,45 @@ begin
 		end
 		else
 		begin
+			//boundary detection
+			if((x_bul_pos_out == 5'b11111)||(x_bul_pos_out >= 16)||(y_bul_pos_out == 5'b11111)||(y_bul_pos_out >= 20))
+			begin
+				bul_state_feedback <= 1'b0;	//output 0 if reach the boundaries
+				sample_flag <= 1'b0;
+			end
+			else
+			begin
 			if(bul_dir_reg == 2'b00)
+				begin
+				bul_state_feedback <= 1'b1;	
 				y_bul_pos_out <= y_bul_pos_out - 1'b1;
+				x_bul_pos_out <= x_bul_pos_out;
+				end
 			if(bul_dir_reg == 2'b01)
+				begin
+				bul_state_feedback <= 1'b1;
 				y_bul_pos_out <= y_bul_pos_out + 1'b1;
+				x_bul_pos_out <= x_bul_pos_out;
+				end
 			if(bul_dir_reg == 2'b10)
+				begin
+				bul_state_feedback <= 1'b1;
 				x_bul_pos_out <= x_bul_pos_out - 1'b1;
+				y_bul_pos_out <= y_bul_pos_out;
+				end
 			if(bul_dir_reg == 2'b11)
+				begin
+				bul_state_feedback <= 1'b1;
 				x_bul_pos_out <= x_bul_pos_out + 1'b1;
+				y_bul_pos_out <= y_bul_pos_out;
+				end
+			end
 		end
-		//boundary detection
-		if((x_bul_pos_in <= 0)||(x_bul_pos_in >= 16)||(y_bul_pos_in <= 0)||(y_bul_pos_in >= 20))
-		begin
-			bul_state_feedback <= 1'b0;
-			sample_flag <= 1'b0;
-		end
+	end
+	else
+	begin
+		x_bul_pos_out <= 5'b11111;
+		y_bul_pos_out <= 5'b11111;
 	end
 end
 
@@ -98,10 +122,10 @@ always@(posedge clk)
 begin
 	if(bul_state == 1'b1)
 	begin
-		if((VGA_xpos > x_bul_pos_in * 20 + 160 - 3 )
-			&&(VGA_xpos > x_bul_pos_in * 20 + 160 + 3 )
-			&&(VGA_ypos > y_bul_pos_in * 20 + 40 - 3 )
-			&&(VGA_ypos > y_bul_pos_in * 20 + 40 + 3 ))
+		if((VGA_xpos > x_bul_pos_out * 20 + 160 - 3 )
+			&&(VGA_xpos < x_bul_pos_out * 20 + 160 + 3 )
+			&&(VGA_ypos > y_bul_pos_out * 20 + 40 - 3 )
+			&&(VGA_ypos < y_bul_pos_out * 20 + 40 + 3 ))
 		begin
 			VGA_en <= 1'b1;
 			VGA_data <= 12'hFFF;
