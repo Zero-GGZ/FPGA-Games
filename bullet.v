@@ -11,21 +11,22 @@ Date		By			Version		Description
 180505		QiiNn		0.5			Module interface definition
 180508		QiiNn		1.0			Initial coding complete (unverified)
 180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
+180510		QiiNn		1.5			Full Version!
 ========================================================*/
 
 `timescale 1ns/1ns
 
 module bullet
 (
-	input				clk,		//888888888888888888888888888888
+	input				clk,		
 	input 				clk_8Hz,
 	
 	input	[1:0]		bul_dir,	//the direction of bullet
 	input				bul_state,	//the state of bullet
 		
 	//input and output the position of bullet
-	input		[4:0]	tank_xpos,//8888888888888888888888888888888888888888
-	input		[4:0]	tank_ypos,//888888888888888888888888888888888888888
+	input		[4:0]	tank_xpos,
+	input		[4:0]	tank_ypos,
 	input		[4:0]	x_bul_pos_in,	
 	input		[4:0]	y_bul_pos_in,
 	output	reg	[4:0]	x_bul_pos_out,
@@ -37,10 +38,9 @@ module bullet
 	
 	//output the VGA data
 	output	reg	[11:0]	VGA_data,
-	output	reg			VGA_en,
 	
 	//output the bullet state to each module
-	output	reg			bul_state_feedback     //8888888888888888888888888888
+	output	reg			bul_state_feedback     
 );
 
 //---------------------------------------------------
@@ -71,7 +71,7 @@ begin
 			y_bul_pos_out <= y_bul_pos_init;
 			sample_flag <= 1'b1;
 		end
-		else
+		if(sample_flag == 1'b1)
 		begin
 			//boundary detection
 			if((x_bul_pos_out == 5'b11111)||(x_bul_pos_out >= 16)||(y_bul_pos_out == 5'b11111)||(y_bul_pos_out >= 20))
@@ -126,21 +126,12 @@ begin
 			&&(VGA_xpos < x_bul_pos_out * 20 + 160 + 3 )
 			&&(VGA_ypos > y_bul_pos_out * 20 + 40 - 3 )
 			&&(VGA_ypos < y_bul_pos_out * 20 + 40 + 3 ))
-		begin
-			VGA_en <= 1'b1;
 			VGA_data <= 12'hFFF;
-		end
 		else
-		begin
 			VGA_data <= 12'h000;
-			VGA_en <= 1'b0;
-		end
 	end
 	else
-	begin
 		VGA_data <= 12'h000;
-		VGA_en <= 1'b0;
-	end
 end
 
 

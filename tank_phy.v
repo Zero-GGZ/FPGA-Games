@@ -11,7 +11,7 @@ Date		By			Version		Description
 180505		QiiNn		0.5			Module interface definition
 180507		QiiNn		1.0			Initial coding completed (unverified)
 180508		QiiNn		1.1			Corrected the reg conflict error(unverified)
-180509		QiiNn		1.2			 
+180510		QiiNn		1.5			Full Version!		 
 ========================================================*/
 `timescale 1ns/1ns
 
@@ -40,8 +40,7 @@ module tank_phy
 	input	[1:0]	tank_dir,	//the direction of tank
 	
 	//output the VGA data
-	output	reg	[11:0]	VGA_data,
-	output 	reg		VGA_en
+	output	reg	[11:0]	VGA_data
 );
 
 
@@ -55,13 +54,9 @@ module tank_phy
         begin
           if (tank_ide == 1'b1)  VGA_data <= `BLUE;
           else VGA_data <= `RED;
-          VGA_en <= 1'b1; 
         end
       else
-	  begin
 	  VGA_data <= 12'h000;
-	  VGA_en <= 1'b0;
-	  end
 	end
   // direction = downward
     if (tank_state == 1'b1 && tank_dir == 2'b01)
@@ -71,13 +66,9 @@ module tank_phy
         begin
           if (tank_ide == 1'b1)  VGA_data <= `BLUE;
           else VGA_data <= `RED;
-          VGA_en <= 1'b1; 
         end
       else
-	  begin
 	  VGA_data <= 12'h000;
-	  VGA_en <= 1'b0;
-	  end
     end 
   //direction = left
     if (tank_state == 1'b1 && tank_dir == 2'b10)
@@ -87,13 +78,9 @@ module tank_phy
         begin
           if (tank_ide == 1'b1)  VGA_data <= `BLUE;
           else VGA_data <= `RED;
-          VGA_en <= 1'b1; 
         end
       else
-	  begin
 	  VGA_data <= 12'h000;
-	  VGA_en <= 1'b0;
-	  end
     end 
   //direction = right
     if (tank_state == 1'b1 && tank_dir == 2'b11)
@@ -103,13 +90,9 @@ module tank_phy
         begin
           if (tank_ide == 1'b1)  VGA_data <= `BLUE;
           else VGA_data <= `RED;
-          VGA_en <= 1'b1; 
         end
       else
-	  begin
 	  VGA_data <= 12'h000;
-	  VGA_en <= 1'b0;
-	  end
     end
   end
   

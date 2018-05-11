@@ -11,6 +11,7 @@ Date		By			Version		Description
 180505		QiiNn		0.5			Module interface definition
 180508		QiiNn		1.0			Initial coding complete (unverified)
 180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
+180510		QiiNn		1.5			Full Version!
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -19,6 +20,7 @@ module enytank_app
 (
 	input 			clk,
 	input 			clk_4Hz,
+	input 			clk_8Hz,
 	input 			tank_en,
 	
 	input	[1:0]	tank_num,//888888888888888888888888888		
@@ -41,8 +43,9 @@ module enytank_app
 reg 	tank_state_reg;
 initial tank_state_reg <= 1'b0;
 initial tank_state <= 1'b0;
+reg 	btn_sht;
 
-
+reg		bul_flying;
 
 //---------------------------------------------------
 //Calculate the distance between my tank 
@@ -116,24 +119,6 @@ begin
 			end
 	end
 end
-/*
-always@(posedge clk)
-begin
-	if (tank_state_reg == 1'b1)
-	begin
-		if (enytank_xpos )
-		left_dis <= enytank_xpos - mytank_xpos;
-		right_dis <= mytank_xpos - enytank_xpos;
-		up_dis <= mytank_ypos - enytank_ypos;
-		down_dis <= enytank_ypos - mytank_ypos;
-		if(left_dis >= 0) horizontal_dis <= left_dis;
-		else horizontal_dis <= right_dis;
-		if(up_dis >= 0) vertical_dis <= up_dis;
-		else vertical_dis <= down_dis;
-	end
-end
-*/
-
 
 //---------------------------------------------------
 //generate and move to my tank by steps and check whether it was hit
@@ -173,9 +158,9 @@ begin
 			tank_dir_out <= tank_dir_out;
 		else
 			begin
-			if (h_dis == 0 && v_dis != 0)
+			if ( h_dis == 0 && v_dis != 0)
 				begin
-				enybul_state <= 1'b1;
+				btn_sht <= 1'b1;
 				if(rel_dir[0] == 0 && enytank_ypos > 0)	//up
 					begin
 					tank_dir_out <= 2'b00;
@@ -191,7 +176,7 @@ begin
 				end
 			else if (h_dis != 0 && v_dis == 0)
 				begin
-				enybul_state <= 1'b1;
+				btn_sht <= 1'b1;
 				if(rel_dir[0] == 1 && enytank_xpos > 0) //left
 					begin
 					tank_dir_out <= 2'b10;
@@ -207,7 +192,7 @@ begin
 				end
 			else
 				begin
-				enybul_state <= 1'b0;
+				btn_sht <= 1'b0;
 				if (h_dis < v_dis)
 					begin
 					if(rel_dir[0] ==  1 && enytank_xpos > 0) //left
@@ -241,8 +226,14 @@ begin
 					end
 				end
 			end
-	//check whether the tank was hit
-	if ((tank_state_reg == 1'b1) && (((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y))||((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))))
+//	check whether the tank was hit
+	if ((tank_state_reg == 1'b1) && (((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))
+									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y + 1))
+									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y - 1))
+									||((enytank_xpos == mybul_x + 1) && (enytank_ypos == mybul_y))
+									||((enytank_xpos == mybul_x - 1) && (enytank_ypos == mybul_y))
+									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y))
+									))
 	begin
 		tank_state_reg <= 1'b0;
 		tank_state <= 1'b0;		
@@ -251,23 +242,19 @@ end
 
 //---------------------------------------------------
 //shoot if horizontal distance = 0 or vertical distance = 0
-/*
-always@(posedge clk_4Hz)
+always@(posedge clk)
 begin
-	if(tank_state_reg == 1'b1)
+	if (enybul_state_feedback == 1'b0)
 	begin
-		if	(h_dis == 0)
-		begin
+		if ((tank_state_reg == 1'b1) && (btn_sht == 1'b1))
 			enybul_state <= 1'b1;
-		end
-		if	(v_dis == 0)
-		begin
-			enybul_state <= 1'b1;
-		end
+		else
+			enybul_state <= 1'b0;	
 	end
-//	if (enybul_state_feedback == 1'b0)
-//		enybul_state <= 1'b0;
+	else
+	begin
+		enybul_state <= 1'b1;
+	end
 end
 
-*/
 endmodule

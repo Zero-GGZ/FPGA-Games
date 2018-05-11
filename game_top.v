@@ -10,6 +10,10 @@ Date		By			Version		Description
 ----------------------------------------------------------
 180506		QiiNn		0.5			Module interface definition and modules links
 180507		QiiNn		0.6			Update some modules' interfaces
+180510		QiiNn		0.8			Bugs fixed:
+									1. change enemy tanks' speed to clk_2Hz
+									2. cancel the VGA enable signal
+180510		QiiNn		1.5			Full Version!
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -41,6 +45,7 @@ wire			clk_2Hz;
 wire			clk_4Hz;
 wire			clk_8Hz;
 wire			clk_100M;
+wire			clk_VGA;
 
 
 wire	[4:0]	bul1_x;
@@ -98,45 +103,34 @@ wire			enybul4_state_fb;
 //wires about bullets
 wire	[4:0]	mybul_xpos;
 wire	[4:0]	mybul_ypos;
-wire	[4:0]	mybul_xpos_feedback;// = mybul_xpos;
-wire	[4:0]	mybul_ypos_feedback;// = mybul_ypos;
-wire			VGA_en_mybul;
+wire	[4:0]	mybul_xpos_feedback;
+wire	[4:0]	mybul_ypos_feedback;
 wire	[11:0]	VGA_data_mybul;	
-wire	[4:0]	bul1_x_feedback;// = bul1_x;
-wire	[4:0]	bul1_y_feedback;// = bul1_y;
+wire	[4:0]	bul1_x_feedback;
+wire	[4:0]	bul1_y_feedback;
 wire			bul1_state;
-wire			VGA_en_bul1;
 wire	[11:0]	VGA_data_bul1;
-wire	[4:0]	bul2_x_feedback;// = bul2_x;
-wire	[4:0]	bul2_y_feedback;// = bul2_y;
+wire	[4:0]	bul2_x_feedback;
+wire	[4:0]	bul2_y_feedback;
 wire			bul2_state;
-wire			VGA_en_bul2;
 wire	[11:0]	VGA_data_bul2;
-wire	[4:0]	bul3_x_feedback;// = bul3_x;
-wire	[4:0]	bul3_y_feedback;// = bul3_y;
+wire	[4:0]	bul3_x_feedback;
+wire	[4:0]	bul3_y_feedback;
 wire			bul3_state;
-wire			VGA_en_bul3;
 wire	[11:0]	VGA_data_bul3;
-wire	[4:0]	bul4_x_feedback;// = bul4_x;
-wire	[4:0]	bul4_y_feedback;// = bul4_y;
+wire	[4:0]	bul4_x_feedback;
+wire	[4:0]	bul4_y_feedback;
 wire			bul4_state;
-wire			VGA_en_bul4;
 wire	[11:0]	VGA_data_bul4;
-wire			VGA_en_mytank;
 wire	[11:0]	VGA_data_mytank;
-wire			VGA_en_enytank1;
 wire	[11:0]	VGA_data_enytank1;
-wire			VGA_en_enytank2;
 wire	[11:0]	VGA_data_enytank2;
-wire			VGA_en_enytank3;
 wire	[11:0]	VGA_data_enytank3;
-wire			VGA_en_enytank4;
 wire	[11:0]	VGA_data_enytank4;
 wire 	[10:0]	VGA_xpos;
 wire 	[10:0]	VGA_ypos;
 wire 	[11:0]	VGA_data;
 
-wire			VGA_en;
 
 
 assign 			bul1_x 			= 		bul1_x_feedback;
@@ -152,6 +146,16 @@ assign			mybul_ypos 		= 		mybul_ypos_feedback;
 assign			mytank_xpos 	= 		mytank_xpos_feedback;
 assign			mytank_ypos 	= 		mytank_ypos_feedback;
 
+
+
+clk_wiz_0 u_VGA_clock
+   (
+    // Clock out ports
+    .clk_out1	(clk_100M),     // output clk_out1
+    .clk_out2	(clk_VGA),     // output clk_out2
+   // Clock in ports
+    .clk_in1	(clk)
+	);		
 
 
 clock u_clock
@@ -205,6 +209,7 @@ enytank_app u_enytank1_app
 (	
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
+	.clk_8Hz		(clk_8Hz),
 	.tank_en		(enytank1_en),
 	
 	.tank_num		(2'b00),
@@ -227,6 +232,7 @@ enytank_app u_enytank2_app
 (	
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
+	.clk_8Hz		(clk_8Hz),
 	.tank_en		(enytank2_en),
 	
 	.tank_num		(2'b01),
@@ -250,6 +256,7 @@ enytank_app u_enytank3_app
 (	
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
+	.clk_8Hz		(clk_8Hz),
 	.tank_en		(enytank3_en),
 	
 	.tank_num		(2'b10),
@@ -273,6 +280,7 @@ enytank_app u_enytank4_app
 (	
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
+	.clk_8Hz		(clk_8Hz),
 	.tank_en		(enytank4_en),
 	
 	.tank_num		(2'b11),
@@ -314,7 +322,6 @@ bullet u_mybullet
 	
 	//input the VGA data
 	.VGA_data	(VGA_data_mybul),
-	.VGA_en		(),
 	
 	.bul_state_feedback	(mybul_state_fb)
 );
@@ -343,7 +350,6 @@ bullet u_bul1
 	
 	//input the VGA data
 	.VGA_data	(VGA_data_bul1),
-	.VGA_en		(),
 	
 	.bul_state_feedback	(enybul1_state_fb)
 );
@@ -373,7 +379,6 @@ bullet u_bul2
 	
 	//input the VGA data
 	.VGA_data	(VGA_data_bul2),
-	.VGA_en		(),
 	
 	.bul_state_feedback	(enybul2_state_fb)
 );
@@ -403,7 +408,6 @@ bullet u_bul3
 	
 	//input the VGA data
 	.VGA_data	(VGA_data_bul3),
-	.VGA_en		(),
 	
 	.bul_state_feedback	(enybul3_state_fb)
 );
@@ -433,7 +437,6 @@ bullet u_bul4
 	
 	//input the VGA data
 	.VGA_data	(VGA_data_bul4),
-	.VGA_en		(),
 	
 	.bul_state_feedback	(enybul4_state_fb)
 );
@@ -454,8 +457,7 @@ tank_phy	mytank_phy
 	.tank_dir	(mytank_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_mytank),
-	.VGA_en		()
+	.VGA_data	(VGA_data_mytank)
 );
 
 
@@ -474,8 +476,7 @@ tank_phy	enytank1_phy
 	.tank_dir	(enytank1_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank1),
-	.VGA_en		()
+	.VGA_data	(VGA_data_enytank1)
 );
 
 
@@ -494,8 +495,7 @@ tank_phy	enytank2_phy
 	.tank_dir	(enytank2_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank2),
-	.VGA_en		()
+	.VGA_data	(VGA_data_enytank2)
 );
 
 
@@ -514,8 +514,7 @@ tank_phy	enytank3_phy
 	.tank_dir	(enytank3_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank3),
-	.VGA_en		()
+	.VGA_data	(VGA_data_enytank3)
 );
 
 
@@ -534,12 +533,8 @@ tank_phy	enytank4_phy
 	.tank_dir	(enytank4_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank4),
-	.VGA_en		()
+	.VGA_data	(VGA_data_enytank4)
 );
-
-
-
 
 VGA_data_selector u_VGA_data_selector
 (
@@ -559,42 +554,7 @@ VGA_data_selector u_VGA_data_selector
 	.out	(VGA_data)
 );
 
-/*
-VGA_enable u_VGA_enable
-(
-	.clk	(clk),
-//input interfaces
-	.in1	(VGA_en_bul1),
-	.in2	(VGA_en_bul2),
-	.in3	(VGA_en_bul3),
-	.in4	(VGA_en_bul4),
-	.in5	(VGA_en_enytank1),
-	.in6	(VGA_en_enytank2),
-	.in7	(VGA_en_enytank3),
-	.in8	(VGA_en_enytank4),
-	.in9	(VGA_en_mybul),
-	.in10	(VGA_en_mytank),
-//output interfaces	
-	.out	(VGA_en)
-);						
-						
-*/
-/*
-assign VGA_en = VGA_en_bul1 | VGA_en_bul2 | VGA_en_bul3 | VGA_en_bul4 | VGA_en_enytank1 | VGA_en_enytank2 | VGA_en_enytank3 | VGA_en_enytank4
-				| VGA_en_mybul | VGA_en_mytank;
-				
-				*/
-wire	clk_VGA;
-clk_wiz_0 u_VGA_clock
-   (
-    // Clock out ports
-    .clk_out1	(clk_100M),     // output clk_out1
-    .clk_out2	(clk_VGA),     // output clk_out2
-   // Clock in ports
-    .clk_in1	(clk)
-	);				
-				
-				
+		
 				
 VGA_driver		u_VGA_driver
 (

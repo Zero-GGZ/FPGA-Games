@@ -12,7 +12,8 @@ Date		By			Version		Description
 180507		QiiNn		1.0			Initial coding completed (unverified) 
 180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
 180509		QiiNn		1.2			Added initial coordinate generation
-180510		QiiNn		1.3			moving and shoot bugs fixed
+180510		QiiNn		1.3			Moving and shoot bugs fixed
+180510		QiiNn		1.5			Full Version!
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -40,7 +41,7 @@ module mytank_app
 	input	[4:0]	bul4_x,
 	input	[4:0]	bul4_y,
 	
-	input 			mybul_state_feedback, //888888888888888888
+	input 			mybul_state_feedback, 
 	
 	//relative position input and output
 	input	[4:0] 	x_rel_pos_in,

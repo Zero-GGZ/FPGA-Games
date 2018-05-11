@@ -12,6 +12,7 @@ Date		By			Version		Description
 180507		QiiNn		0.6			Add tank_state interfaces
 180508		QiiNn		1.0			Initial coding completed(unverified)
 180508		QiiNn		1.1			Corrected the reg conflict error(unverified)
+180510		QiiNn		1.5			Full Version!
 ========================================================*/
 
 `timescale 1ns/1ns
