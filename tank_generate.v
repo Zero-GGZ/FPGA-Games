@@ -4,7 +4,6 @@ Email Address		:				ctlvie@gmail.com
 Filename			:				tank_generate.v
 Date				:				2018-05-05
 Description			:				the generate module of four enemy's tanks 
-
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------

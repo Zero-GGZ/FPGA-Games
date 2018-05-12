@@ -27,14 +27,16 @@ module game_top
 	input 					bt_s,
 	input 					bt_d,
 	input 					bt_st,
-	
+	input		[4:0]		sw,	
 	output					Hsync,
 	output					Vsync,
 	output		[3:0]		vgaRed,
 	output		[3:0]		vgaBlue,
 	output		[3:0]		vgaGreen,
-	
-	output					null_pin
+	output		[3:0]		an,
+	output		[6:0]		seg,
+	output					dp,
+	output		[15:0]		led
 );
 
 //----------------------------------------
@@ -131,7 +133,26 @@ wire 	[10:0]	VGA_xpos;
 wire 	[10:0]	VGA_ypos;
 wire 	[11:0]	VGA_data;
 
+wire		enable_bul1;
+wire		enable_bul2;
+wire		enable_bul3;
+wire		enable_bul4;
+wire		enable_mybul;
+wire		enable_mytank_app;
+wire		enable_mytank_phy;
+wire		enable_enytank1_app;
+wire		enable_enytank1_phy;
+wire		enable_enytank2_app;
+wire		enable_enytank2_phy;
+wire		enable_enytank3_app;
+wire		enable_enytank3_phy;
+wire		enable_enytank4_app;
+wire		enable_enytank4_phy;
 
+wire		[2:0]		HP_value;
+wire		[4:0]		score;
+wire		[11:0]		VGA_data_interface;
+wire		[2:0]		mode;
 
 assign 			bul1_x 			= 		bul1_x_feedback;
 assign 			bul2_x 			= 		bul2_x_feedback;
@@ -166,12 +187,72 @@ clock u_clock
 	.clk_2Hz		(clk_2Hz)
 );
 
+wire	[4:0]	score1;
+wire	[4:0]	score2;
+wire	[4:0]	score3;
+wire	[4:0]	score4;
+
+
+game_logic u_game_logic
+(
+	.clk				(clk_100M),
+	.game_en			(1'b1),
+	.mytank_state		(mytank_state),
+	.scorea				(score1),
+	.scoreb				(score2),
+	.scorec				(score3),
+	.scored				(score4),
+	.sw					(sw),		
+	.HP_value			(HP_value),
+	.an					(an),
+	.seg				(seg),
+	.dp					(dp),
+	.led				(led)
+);
+
+
+game_interface  u_game_interface
+(
+	.clk			(clk_100M),
+	.clk_4Hz		(clk_4Hz),
+	.clk_8Hz		(clk_8Hz),
+	.mode			(mode),
+	.VGA_xpos		(VGA_xpos),
+	.VGA_ypos		(VGA_ypos),
+	.VGA_data		(VGA_data_interface)
+);
+
+game_mode   u_game_mode
+(
+	.clk			(clk_100M),
+	.sw				(sw),	
+	.bt_st			(bt_st),
+	.HP_value		(HP_value),
+	.enable_bul1	(enable_bul1),
+	.enable_bul2	(enable_bul2),
+	.enable_bul3	(enable_bul3),
+	.enable_bul4	(enable_bul4),
+	.enable_mybul	(enable_mybul),
+	.enable_mytank_app	(enable_mytank_app),
+	.enable_mytank_phy	(enable_mytank_phy),
+	.enable_enytank1_app(enable_enytank1_app),
+	.enable_enytank1_phy(enable_enytank1_phy),
+	.enable_enytank2_app(enable_enytank2_app),
+	.enable_enytank2_phy(enable_enytank2_phy),
+	.enable_enytank3_app(enable_enytank3_app),
+	.enable_enytank3_phy(enable_enytank3_phy),
+	.enable_enytank4_app(enable_enytank4_app),
+	.enable_enytank4_phy(enable_enytank4_phy),
+	.mode()
+);  
+
 
 
 mytank_app u_mytank_app
 (
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_4Hz),
+	.enable			(enable_mytank_app),
 	.tank_en		(1'b1),	//enable  
 	
 	// input button direction (w,a,s,d)
@@ -210,6 +291,7 @@ enytank_app u_enytank1_app
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
 	.clk_8Hz		(clk_8Hz),
+	.enable			(enable_enytank1_app),
 	.tank_en		(enytank1_en),
 	
 	.tank_num		(2'b00),
@@ -218,6 +300,8 @@ enytank_app u_enytank1_app
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
+	
+	.score				(score1),
 	
 	.enybul_state_feedback	(enybul1_state_fb),
 	.enybul_state	(bul1_state),
@@ -233,6 +317,7 @@ enytank_app u_enytank2_app
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
 	.clk_8Hz		(clk_8Hz),
+	.enable			(enable_enytank2_app),
 	.tank_en		(enytank2_en),
 	
 	.tank_num		(2'b01),
@@ -241,6 +326,8 @@ enytank_app u_enytank2_app
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
+	
+	.score				(score2),
 	
 	.enybul_state_feedback	(enybul2_state_fb),
 	.enybul_state	(bul2_state),
@@ -257,6 +344,7 @@ enytank_app u_enytank3_app
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
 	.clk_8Hz		(clk_8Hz),
+	.enable			(enable_enytank3_app),
 	.tank_en		(enytank3_en),
 	
 	.tank_num		(2'b10),
@@ -265,6 +353,8 @@ enytank_app u_enytank3_app
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
+	
+	.score				(score3),
 	
 	.enybul_state_feedback	(enybul3_state_fb),
 	.enybul_state	(bul3_state),
@@ -281,6 +371,7 @@ enytank_app u_enytank4_app
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
 	.clk_8Hz		(clk_8Hz),
+	.enable			(enable_enytank4_app),
 	.tank_en		(enytank4_en),
 	
 	.tank_num		(2'b11),
@@ -289,6 +380,8 @@ enytank_app u_enytank4_app
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
+	
+	.score			(score4),
 	
 	.enybul_state_feedback	(enybul4_state_fb),
 	.enybul_state	(bul4_state),
@@ -303,6 +396,7 @@ bullet u_mybullet
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
+	.enable		(enable_mybul),
 
 	
 	.bul_dir	(mytank_dir),	//the direction of bullet
@@ -331,6 +425,7 @@ bullet u_bul1
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
+	.enable		(enable_bul1),
 
 	
 	.bul_dir	(enytank1_dir),	//the direction of bullet
@@ -360,6 +455,7 @@ bullet u_bul2
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
+	.enable		(enable_bul2),
 
 	
 	.bul_dir	(enytank2_dir),	//the direction of bullet
@@ -389,6 +485,7 @@ bullet u_bul3
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
+	.enable		(enable_bul3),
 
 	
 	.bul_dir	(enytank3_dir),	//the direction of bullet
@@ -418,6 +515,7 @@ bullet u_bul4
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
+	.enable		(enable_bul4),
 
 	
 	.bul_dir	(enytank4_dir),	//the direction of bullet
@@ -446,6 +544,8 @@ bullet u_bul4
 tank_phy	mytank_phy
 (
 	.clk		(clk_100M),
+	.enable		(enable_mytank_phy),
+
 	//input the relative position of tank
 	.x_rel_pos	(mytank_xpos),
 	.y_rel_pos	(mytank_ypos),
@@ -465,6 +565,7 @@ tank_phy	mytank_phy
 tank_phy	enytank1_phy
 (
 	.clk		(clk_100M),
+	.enable		(enable_enytank1_phy),
 	//input the relative position of tank
 	.x_rel_pos	(enytank1_xpos),
 	.y_rel_pos	(enytank1_ypos),
@@ -484,6 +585,7 @@ tank_phy	enytank1_phy
 tank_phy	enytank2_phy
 (
 	.clk		(clk_100M),
+	.enable		(enable_enytank2_phy),
 	//input the relative position of tank
 	.x_rel_pos	(enytank2_xpos),
 	.y_rel_pos	(enytank2_ypos),
@@ -503,6 +605,7 @@ tank_phy	enytank2_phy
 tank_phy	enytank3_phy
 (
 	.clk		(clk_100M),
+	.enable		(enable_enytank3_phy),
 	//input the relative position of tank
 	.x_rel_pos	(enytank3_xpos),
 	.y_rel_pos	(enytank3_ypos),
@@ -522,6 +625,7 @@ tank_phy	enytank3_phy
 tank_phy	enytank4_phy
 (
 	.clk		(clk_100M),
+	.enable		(enable_enytank4_phy),
 	//input the relative position of tank
 	.x_rel_pos	(enytank4_xpos),
 	.y_rel_pos	(enytank4_ypos),
@@ -550,6 +654,16 @@ VGA_data_selector u_VGA_data_selector
 	.in8	(VGA_data_enytank4),
 	.in9	(VGA_data_mybul),
 	.in10	(VGA_data_mytank),
+	.in11	(VGA_data_interface),
+	.in12(),
+	.in13(),
+	.in14(),
+	.in15(),
+	.in16(),
+	.in17(),
+	.in18(),
+	.in19(),
+	.in20(),
 //output interfaces	
 	.out	(VGA_data)
 );

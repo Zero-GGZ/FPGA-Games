@@ -11,7 +11,10 @@ Date		By			Version		Description
 180505		QiiNn		0.5			Module interface definition
 180507		QiiNn		1.0			Initial coding completed (unverified)
 180508		QiiNn		1.1			Corrected the reg conflict error(unverified)
-180510		QiiNn		1.5			Full Version!		 
+180510		QiiNn		1.5			Full Version!
+180512		QiiNn		1.6			1. Change the coordinate
+									2. Add enable interface
+									3. Change the tank's size
 ========================================================*/
 `timescale 1ns/1ns
 
@@ -29,6 +32,7 @@ Date		By			Version		Description
 module tank_phy
 (
 	input			clk,
+	input			enable,
 	//input the relative position of tank
 	input	[4:0]	x_rel_pos,
 	input	[4:0]	y_rel_pos,
@@ -46,11 +50,13 @@ module tank_phy
 
   always@(posedge clk)
   begin
+  if(enable)
+  begin
   // direction = upward 
     if (tank_state == 1'b1 && tank_dir == 2'b00)
     begin
-      if (((VGA_xpos > x_rel_pos * 20 + 160 - 3)&&(VGA_xpos < x_rel_pos * 20 + 160 + 3))&&((VGA_ypos > y_rel_pos * 20 + 40 - 7)&&(VGA_ypos < y_rel_pos * 20 + 40)) ||
-      ((VGA_xpos > x_rel_pos * 20 + 160 - 7)&&(VGA_xpos < x_rel_pos *20 + 160 + 7))&&((VGA_ypos > y_rel_pos * 20 + 40)&&(VGA_ypos < y_rel_pos * 20 + 40 + 7))) 
+      if (((VGA_xpos > x_rel_pos * 20 + 80 - 5)&&(VGA_xpos < x_rel_pos * 20 + 80 + 5))&&((VGA_ypos > y_rel_pos * 20 + 80 - 10)&&(VGA_ypos < y_rel_pos * 20 + 80)) ||
+      ((VGA_xpos > x_rel_pos * 20 + 80 - 10)&&(VGA_xpos < x_rel_pos *20 + 80 + 10))&&((VGA_ypos > y_rel_pos * 20 + 80)&&(VGA_ypos < y_rel_pos * 20 + 80 + 10))) 
         begin
           if (tank_ide == 1'b1)  VGA_data <= `BLUE;
           else VGA_data <= `RED;
@@ -61,8 +67,8 @@ module tank_phy
   // direction = downward
     if (tank_state == 1'b1 && tank_dir == 2'b01)
     begin
-      if (((VGA_xpos > x_rel_pos * 20 + 160 - 7)&&(VGA_xpos < x_rel_pos * 20 + 160 + 7))&&((VGA_ypos > y_rel_pos * 20 + 40 - 7)&&(VGA_ypos < y_rel_pos * 20 + 40)) ||
-          ((VGA_xpos > x_rel_pos * 20 + 160 - 3)&&(VGA_xpos < x_rel_pos *20 + 160 + 3))&&((VGA_ypos > y_rel_pos * 20 + 40)&&(VGA_ypos < y_rel_pos * 20 + 40 + 7))) 
+      if (((VGA_xpos > x_rel_pos * 20 + 80 - 10)&&(VGA_xpos < x_rel_pos * 20 + 80 + 10))&&((VGA_ypos > y_rel_pos * 20 + 80 - 10)&&(VGA_ypos < y_rel_pos * 20 + 80)) ||
+          ((VGA_xpos > x_rel_pos * 20 + 80 - 5)&&(VGA_xpos < x_rel_pos *20 + 80 + 5))&&((VGA_ypos > y_rel_pos * 20 + 80)&&(VGA_ypos < y_rel_pos * 20 + 80 + 10))) 
         begin
           if (tank_ide == 1'b1)  VGA_data <= `BLUE;
           else VGA_data <= `RED;
@@ -73,8 +79,8 @@ module tank_phy
   //direction = left
     if (tank_state == 1'b1 && tank_dir == 2'b10)
     begin
-      if (((VGA_xpos > x_rel_pos * 20 + 160 - 7)&&(VGA_xpos < x_rel_pos * 20 + 160 ))&&((VGA_ypos > y_rel_pos * 20 + 40 - 3)&&(VGA_ypos < y_rel_pos * 20 + 40 + 3)) ||
-          ((VGA_xpos > x_rel_pos * 20 + 160 )&&(VGA_xpos < x_rel_pos *20 + 160 + 7))&&((VGA_ypos > y_rel_pos * 20 + 40 - 7)&&(VGA_ypos < y_rel_pos * 20 + 40 + 7))) 
+      if (((VGA_xpos > x_rel_pos * 20 + 80 - 10)&&(VGA_xpos < x_rel_pos * 20 + 80 ))&&((VGA_ypos > y_rel_pos * 20 + 80 - 5)&&(VGA_ypos < y_rel_pos * 20 + 80 + 5)) ||
+          ((VGA_xpos > x_rel_pos * 20 + 80 )&&(VGA_xpos < x_rel_pos *20 + 80 + 10))&&((VGA_ypos > y_rel_pos * 20 + 80 - 10)&&(VGA_ypos < y_rel_pos * 20 + 80 + 10))) 
         begin
           if (tank_ide == 1'b1)  VGA_data <= `BLUE;
           else VGA_data <= `RED;
@@ -85,8 +91,8 @@ module tank_phy
   //direction = right
     if (tank_state == 1'b1 && tank_dir == 2'b11)
     begin
-      if (((VGA_xpos > x_rel_pos * 20 + 160 - 7)&&(VGA_xpos < x_rel_pos * 20 + 160 ))&&((VGA_ypos > y_rel_pos * 20 + 40 - 7)&&(VGA_ypos < y_rel_pos * 20 + 40 + 7)) ||
-          ((VGA_xpos > x_rel_pos * 20 + 160 )&&(VGA_xpos < x_rel_pos *20 + 160 + 7))&&((VGA_ypos > y_rel_pos * 20 + 40 - 3)&&(VGA_ypos < y_rel_pos * 20 + 40 + 3))) 
+      if (((VGA_xpos > x_rel_pos * 20 + 80 - 10)&&(VGA_xpos < x_rel_pos * 20 + 80 ))&&((VGA_ypos > y_rel_pos * 20 + 80 - 10)&&(VGA_ypos < y_rel_pos * 20 + 80 + 10)) ||
+          ((VGA_xpos > x_rel_pos * 20 + 80 )&&(VGA_xpos < x_rel_pos *20 + 80 + 10))&&((VGA_ypos > y_rel_pos * 20 + 80 - 5)&&(VGA_ypos < y_rel_pos * 20 + 80 + 5))) 
         begin
           if (tank_ide == 1'b1)  VGA_data <= `BLUE;
           else VGA_data <= `RED;
@@ -94,6 +100,7 @@ module tank_phy
       else
 	  VGA_data <= 12'h000;
     end
+  end
   end
   
 endmodule

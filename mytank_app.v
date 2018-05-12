@@ -14,6 +14,8 @@ Date		By			Version		Description
 180509		QiiNn		1.2			Added initial coordinate generation
 180510		QiiNn		1.3			Moving and shoot bugs fixed
 180510		QiiNn		1.5			Full Version!
+180512		QiiNn		1.6			1. Change the coordinate
+									2. Add enable interface
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -22,6 +24,7 @@ module mytank_app
 (	
 	input clk,
 	input clk_4Hz,
+	input enable,
 	input tank_en,	//enable
 	
 	// input button direction (w,a,s,d)
@@ -70,17 +73,22 @@ end
 //check whether it was hit
 always@(posedge clk)
 begin
+if(enable)
+begin
 	if	( ( bul1_x == x_rel_pos_in && bul1_y == y_rel_pos_in) ||
 			(bul2_x == x_rel_pos_in && bul2_y == y_rel_pos_in) ||
 			(bul3_x == x_rel_pos_in && bul3_y == y_rel_pos_in) ||
 			(bul4_x == x_rel_pos_in && bul4_y == y_rel_pos_in) )
 			tank_state <= 1'b0;
 	else	tank_state <= 1'b1;
+end
 end 
 
 //---------------------------------------------------
 //moving
 always@(posedge clk_4Hz)
+begin
+if(enable)
 begin
 	//move upward and direction = 00
 	if(bt_w == 1'b1)
@@ -95,7 +103,7 @@ begin
 	//move downward and direction = 01
 	if(bt_s == 1'b1)
 	begin
-		if ( y_rel_pos_in < 20 && tank_en == 1'b1)
+		if ( y_rel_pos_in < 12 && tank_en == 1'b1)
 		begin
 			y_rel_pos_out <= y_rel_pos_out + 1'b1;
 			tank_dir_out <= 2'b01;
@@ -115,18 +123,21 @@ begin
 	//move right and direction = 11
 	if(bt_d == 1'b1)
 	begin
-		if ( x_rel_pos_in < 16 && tank_en == 1'b1)
+		if ( x_rel_pos_in < 24 && tank_en == 1'b1)
 		begin
 			x_rel_pos_out <= x_rel_pos_out + 1'b1;
 			tank_dir_out <= 2'b11;
 		end
 	end
 end
+end
 
 //---------------------------------------------------
 //Shoot
 
 always@(posedge clk)
+begin
+if(enable)
 begin
 	if (mybul_state_feedback == 1'b0)
 	begin
@@ -139,6 +150,7 @@ begin
 	begin
 		bul_sht <= 1'b1;
 	end
+end
 end
 
 endmodule

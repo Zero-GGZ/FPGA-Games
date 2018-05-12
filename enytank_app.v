@@ -12,6 +12,9 @@ Date		By			Version		Description
 180508		QiiNn		1.0			Initial coding complete (unverified)
 180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
 180510		QiiNn		1.5			Full Version!
+180510		QiiNn		1.6			Add the score counter function
+180512		QiiNn		1.6			1. Change the coordinate
+									2. Add enable interface (need to link it!)
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -19,11 +22,12 @@ Date		By			Version		Description
 module enytank_app
 (
 	input 			clk,
+	input			enable,
 	input 			clk_4Hz,
 	input 			clk_8Hz,
 	input 			tank_en,
 	
-	input	[1:0]	tank_num,//888888888888888888888888888		
+	input	[1:0]	tank_num,	
 	
 	input	[4:0] 	mybul_x,
 	input 	[4:0]	mybul_y,
@@ -31,12 +35,13 @@ module enytank_app
 	input 	[4:0]	mytank_xpos,
 	input	[4:0]	mytank_ypos,
 	
-	input 			enybul_state_feedback,  //8888888888888888888
+	input 			enybul_state_feedback,
 	
 	output  reg			enybul_state,
 	output	reg			tank_state,
 	output	reg	[4:0] 	enytank_xpos,
 	output	reg	[4:0]	enytank_ypos,
+	output 	reg	[4:0]	score,
 	output	reg	[1:0]	tank_dir_out	
 );
 
@@ -56,16 +61,30 @@ reg		[2:0]	rel_dir;	//relative direction (1:000,2:001,3:011,4:010,x+:100,x-:101,
 reg		[4:0]	h_dis;	//horizontal distance
 reg		[4:0]	v_dis;	//vertical distance
 
+
 initial
 begin
 	eql <= 1'b0;
 	rel_dir <= 	3'b0;
 	h_dis 	<=	5'b0;
 	v_dis 	<=	5'b0;
+	score <= 1'b0;
 end
 
+/*
+always@(posedge enable)
+begin
+	eql <= 1'b0;
+	rel_dir <= 	3'b0;
+	h_dis 	<=	5'b0;
+	v_dis 	<=	5'b0;
+	score <= 1'b0;
+end
+*/
 always@(posedge clk)
 begin
+	if (enable)
+	begin
 	if (enytank_xpos == mytank_xpos && enytank_ypos == mytank_ypos)
 	begin
 		eql <= 1'b1;
@@ -118,11 +137,14 @@ begin
 				rel_dir <= 3'b100;
 			end
 	end
+	end
 end
 
 //---------------------------------------------------
 //generate and move to my tank by steps and check whether it was hit
 always@(posedge clk_4Hz)
+begin
+if(enable)
 begin
 	//enemy tank's generation and initialization
 	if (tank_state_reg == 1'b0  && tank_en == 1'b1)
@@ -136,18 +158,18 @@ begin
 		end
 		else if (tank_num == 2'b01)
 		begin
-			enytank_xpos <= 16;
+			enytank_xpos <= 24;
 			enytank_ypos <= 0;
 		end
 		else if (tank_num == 2'b10)
 		begin
 			enytank_xpos <= 0;
-			enytank_ypos <= 20;
+			enytank_ypos <= 12;
 		end
 		else if (tank_num == 2'b11)
 		begin
-			enytank_xpos <= 16;
-			enytank_ypos <= 20;
+			enytank_xpos <= 24;
+			enytank_ypos <= 12;
 		end
 	end
 	
@@ -236,13 +258,17 @@ begin
 									))
 	begin
 		tank_state_reg <= 1'b0;
-		tank_state <= 1'b0;		
+		tank_state <= 1'b0;	
+		score <= score + 1'b1;
 	end
+end
 end
 
 //---------------------------------------------------
 //shoot if horizontal distance = 0 or vertical distance = 0
 always@(posedge clk)
+begin
+if(enable)
 begin
 	if (enybul_state_feedback == 1'b0)
 	begin
@@ -255,6 +281,7 @@ begin
 	begin
 		enybul_state <= 1'b1;
 	end
+end
 end
 
 endmodule
