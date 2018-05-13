@@ -24,7 +24,7 @@ module game_interface
 reg			startshow_enable ;
 
 reg 	[16:0] 	addr_background_pic;
-wire	[16:0]	background_pic;
+wire	[15:0]	background_pic;
 reg 	[16:0] 	addr_gameover_pic;
 reg		[16:0]	addr_start_pic;
 wire	[2:0]	start_pic;	

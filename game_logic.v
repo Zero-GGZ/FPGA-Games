@@ -22,7 +22,7 @@ module game_logic
 	input	[4:0]			sw,	
 	output	reg 	[2:0]	HP_value,
 	output		[3:0]		an,
-	output		[7:0]		seg,
+	output		[6:0]		seg,
 	output	reg	[15:0]		led,
 	output					dp
 );

@@ -31,18 +31,21 @@ reg 	tank_state_reg;
 reg		[3:0]	cnt;
 //---------------------------------------------------
 //initial coordinate generation
-initial
-begin
-	x_rel_pos_out <= start_x;
-	y_rel_pos_out <= start_y;
-end
 
+reg sample;
+initial sample <= 1'b0;
 //---------------------------------------------------
 //moving
 always@(posedge clk_4Hz)
 begin
 if(enable)
 begin
+	if(!sample)
+		begin
+		x_rel_pos_out <= start_x;
+		y_rel_pos_out <= start_y;
+		sample <= 1'b1;
+		end
 	//move upward and direction = 00
 	if(start_dir == 2'b00)
 	begin

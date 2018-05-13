@@ -22,11 +22,11 @@ Date		By			Version		Description
 
 module game_startshow
 (
-	input 	clk,
-	input	clk_4Hz,
-	input	clk_8Hz,
-	input	enable,
-	input 	mode,
+	input 			clk,
+	input			clk_4Hz,
+	input			clk_8Hz,
+	input			enable,
+	input [2:0]		mode,
 	input	[10:0]	VGA_xpos,
 	input	[10:0]	VGA_ypos,
 	output	reg	[11:0]	VGA_data
@@ -38,6 +38,7 @@ reg			show2_sht_auto;
 
 always@(posedge clk_4Hz)
 begin
+	counter <= counter + 1;
 	if(counter == 0 )
 		begin
 		show1_sht_auto <=  1'b1;
@@ -61,8 +62,6 @@ wire	[11:0]	VGA_data_show1_bul;
 wire	[11:0]	VGA_data_show1_tank;
 wire	[1:0]	show1_dir_out;
 
-always@(clk)
-	show_en <= enable;
 
 showtank_app show1_app
 (	

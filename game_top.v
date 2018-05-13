@@ -243,7 +243,7 @@ game_mode   u_game_mode
 	.enable_enytank3_phy(enable_enytank3_phy),
 	.enable_enytank4_app(enable_enytank4_app),
 	.enable_enytank4_phy(enable_enytank4_phy),
-	.mode()
+	.mode				(mode)
 );  
 
 
@@ -640,6 +640,7 @@ tank_phy	enytank4_phy
 	.VGA_data	(VGA_data_enytank4)
 );
 
+
 VGA_data_selector u_VGA_data_selector
 (
 	.clk	(clk_100M),
@@ -655,15 +656,15 @@ VGA_data_selector u_VGA_data_selector
 	.in9	(VGA_data_mybul),
 	.in10	(VGA_data_mytank),
 	.in11	(VGA_data_interface),
-	.in12(),
-	.in13(),
-	.in14(),
-	.in15(),
-	.in16(),
-	.in17(),
-	.in18(),
-	.in19(),
-	.in20(),
+	.in12	(0),
+	.in13	(0),
+	.in14	(0),
+	.in15	(0),
+	.in16	(0),
+	.in17	(0),
+	.in18	(0),
+	.in19	(0),
+	.in20	(0),
 //output interfaces	
 	.out	(VGA_data)
 );
