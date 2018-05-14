@@ -43,21 +43,25 @@ always@(posedge clk)
 begin
 if(enable_game_infinity)
 	begin
-	score <= scorea + scoreb + scorec + scored;
-	seg_infinity <= score;
-	cnt <= cnt + 1;
-	if(cnt == 500000000)
-	begin
-		timer <= timer - 1;
-		cnt <= 0;
-	end
-	led_infinity <= timer;
 	if(timer == 0)		
-	begin
+		begin
 		timer <= 16;
-		gameover_infinity <= 1;
 		score_infinity <= score;
-	end
+		gameover_infinity <= 1;
+		end
+	else
+		begin
+		score_infinity <= 0;
+		score <= scorea + scoreb + scorec + scored;
+		seg_infinity <= score;
+		cnt <= cnt + 1;
+		if(cnt == 500000000)
+			begin
+			timer <= timer - 1;
+			cnt <= 0;
+			end
+		led_infinity <= timer;
+		end
 	end
 else
 	begin
@@ -65,7 +69,6 @@ else
 	cnt <= 0;
 	timer <= 16;
 	seg_infinity <= 0;
-	score_infinity <= 0;
 	end
 end
 

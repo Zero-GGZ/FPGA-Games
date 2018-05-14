@@ -207,7 +207,7 @@ begin
 	begin
 		addr_bigtank <= (VGA_xpos - bigtank_x_offset)  + 90 * (VGA_ypos - 260) ;
 		if (bigtank_pic)
-			bigtank_reg <= `YELLOW;
+			bigtank_reg <= `GREEN;
 		else
 			bigtank_reg <= 0;
 	end

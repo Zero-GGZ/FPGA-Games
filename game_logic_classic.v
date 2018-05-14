@@ -55,10 +55,10 @@ begin
 	if(!enable_game_classic)
 	begin
 		gameover_classic <= 0;
-		score_classic <= 0;
 	end
 	else
 	begin
+	score_classic <= 0;
 	score <= scorea + scoreb + scorec + scored;
 	if (score == 10 | 20 | 30) 
 		HP_add <= 1;

@@ -89,10 +89,12 @@ begin
 	begin
 	if(mode == 3)
 	begin
-		if(score_classic == 0)
+		if(score_classic == 0 && score_infinity != 0)
 			seg_display <= score_infinity;
-		else
+		else if	(score_classic != 0 && score_infinity == 0)
 			seg_display <= score_classic;
+		else
+			seg_display <= 0;
 	end
 	else
 		seg_display <= 0;

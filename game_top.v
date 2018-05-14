@@ -155,6 +155,29 @@ wire		[4:0]		score;
 wire		[11:0]		VGA_data_interface;
 wire		[2:0]		mode;
 
+
+wire	[4:0]		score1;
+wire	[4:0]		score2;
+wire	[4:0]		score3;
+wire	[4:0]		score4;
+wire				gameover;
+
+
+wire				gameover_classic;
+wire				gameover_infinity;
+wire				enable_game_classic;
+wire				enable_game_infinity;
+wire	[3:0]		an_classic;
+wire	[15:0]		seg_classic;
+wire	[15:0]		led_classic;
+wire				gameover_classic;
+wire	[3:0]		an_infinity;
+wire	[15:0]		seg_infinity;
+wire	[15:0]		led_infinity;
+wire				gameover_infinity;
+wire	[4:0]		score_classic;
+wire	[4:0]		score_infinity;
+
 assign 			bul1_x 			= 		bul1_x_feedback;
 assign 			bul2_x 			= 		bul2_x_feedback;
 assign 			bul3_x 			= 		bul3_x_feedback;
@@ -188,28 +211,6 @@ clock u_clock
 	.clk_2Hz		(clk_2Hz)
 );
 
-wire	[4:0]	score1;
-wire	[4:0]	score2;
-wire	[4:0]	score3;
-wire	[4:0]	score4;
-wire			gameover;
-
-
-/////////////////////////////////////////////////////////////////////////////////
-wire	gameover_classic;
-wire	gameover_infinity;
-wire	enable_game_classic;
-wire	enable_game_infinity;
-wire	[3:0]		an_classic;
-wire	[15:0]		seg_classic;
-wire	[15:0]		led_classic;
-wire				gameover_classic;
-wire	[3:0]		an_infinity;
-wire	[15:0]		seg_infinity;
-wire	[15:0]		led_infinity;
-wire				gameover_infinity;
-wire	[4:0]		score_classic;
-wire	[4:0]		score_infinity;
 
 game_mode_v2  u_game_mode_v2
 (
@@ -284,27 +285,6 @@ game_SegAndLed 	u_game_SegAndLed
 	.led					(led)
 );
 
-/////////////////////////////////////////////////////////////////////////////////
-
-/*
-game_logic u_game_logic
-(	
-	.clk				(clk_100M),
-	.game_en			(1'b1),
-//	.mode				(mode),
-	.mytank_state		(mytank_state),
-	.scorea				(score1),
-	.scoreb				(score2),
-	.scorec				(score3),
-	.scored				(score4),
-	.sw					(sw),		
-	.HP_value			(HP_value),
-	.an					(an),
-	.seg				(seg),
-	.dp					(dp),
-	.led				(led)
-);
-*/
 
 game_interface  u_game_interface
 (
@@ -317,34 +297,6 @@ game_interface  u_game_interface
 	.VGA_data		(VGA_data_interface)
 );
 
-/*
-game_mode   u_game_mode
-(
-	.clk			(clk_100M),
-	.sw				(sw),	
-	.bt_st			(bt_st),
-	.gameover		(gameover),
-	.HP_value		(HP_value),
-	.enable_bul1	(enable_bul1),
-	.enable_bul2	(enable_bul2),
-	.enable_bul3	(enable_bul3),
-	.enable_bul4	(enable_bul4),
-	.enable_mybul	(enable_mybul),
-	.enable_mytank_app	(enable_mytank_app),
-	.enable_mytank_phy	(enable_mytank_phy),
-	.enable_enytank1_app(enable_enytank1_app),
-	.enable_enytank1_phy(enable_enytank1_phy),
-	.enable_enytank2_app(enable_enytank2_app),
-	.enable_enytank2_phy(enable_enytank2_phy),
-	.enable_enytank3_app(enable_enytank3_app),
-	.enable_enytank3_phy(enable_enytank3_phy),
-	.enable_enytank4_app(enable_enytank4_app),
-	.enable_enytank4_phy(enable_enytank4_phy),
-	.enable_gamelogic	(enable_gamelogic),
-	.mode				(mode)
-);  
-
-*/
 
 mytank_app u_mytank_app
 (
