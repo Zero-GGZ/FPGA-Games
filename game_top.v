@@ -148,6 +148,7 @@ wire		enable_enytank3_app;
 wire		enable_enytank3_phy;
 wire		enable_enytank4_app;
 wire		enable_enytank4_phy;
+wire		enable_gamelogic;
 
 wire		[2:0]		HP_value;
 wire		[4:0]		score;
@@ -191,12 +192,14 @@ wire	[4:0]	score1;
 wire	[4:0]	score2;
 wire	[4:0]	score3;
 wire	[4:0]	score4;
-
+wire			gameover;
 
 game_logic u_game_logic
-(
+(	
+	.gamemode_sim		(1'b0),
 	.clk				(clk_100M),
 	.game_en			(1'b1),
+	.mode				(mode),
 	.mytank_state		(mytank_state),
 	.scorea				(score1),
 	.scoreb				(score2),
@@ -207,7 +210,8 @@ game_logic u_game_logic
 	.an					(an),
 	.seg				(seg),
 	.dp					(dp),
-	.led				(led)
+	.led				(led),
+	.gameover		(gameover)
 );
 
 
@@ -227,6 +231,7 @@ game_mode   u_game_mode
 	.clk			(clk_100M),
 	.sw				(sw),	
 	.bt_st			(bt_st),
+	.gameover		(gameover),
 	.HP_value		(HP_value),
 	.enable_bul1	(enable_bul1),
 	.enable_bul2	(enable_bul2),
@@ -243,6 +248,7 @@ game_mode   u_game_mode
 	.enable_enytank3_phy(enable_enytank3_phy),
 	.enable_enytank4_app(enable_enytank4_app),
 	.enable_enytank4_phy(enable_enytank4_phy),
+	.enable_gamelogic	(enable_gamelogic),
 	.mode				(mode)
 );  
 

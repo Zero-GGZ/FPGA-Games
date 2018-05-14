@@ -16,6 +16,7 @@ module  game_mode
 	input	[4:0]		sw,	
 	input 				bt_st,
 	input 	[2:0]		HP_value,
+	input				gameover,
 	output		reg		enable_bul1,
 	output		reg		enable_bul2,
 	output		reg		enable_bul3,
@@ -31,6 +32,7 @@ module  game_mode
 	output		reg		enable_enytank3_phy,
 	output		reg		enable_enytank4_app,
 	output		reg		enable_enytank4_phy,
+	output		reg		enable_gamelogic,
 	output 		reg		[2:0] mode
 );              
                 
@@ -56,6 +58,7 @@ begin
 	enable_enytank3_phy <= 1'b0;
 	enable_enytank4_app <= 1'b0;
 	enable_enytank4_phy <= 1'b0;
+	enable_gamelogic	<= 1'b0;
 	if(bt_st == 1)
 		mode <= 1;
 	else
@@ -78,7 +81,8 @@ begin
 	enable_enytank3_phy <= 1'b1;
 	enable_enytank4_app <= 1'b1;
 	enable_enytank4_phy <= 1'b1;
-	if( HP_value == 0)
+	enable_gamelogic	<= 1'b1;
+	if( gameover == 1)
 		mode <= 2;
 	else
 		mode <= 1;
@@ -100,7 +104,8 @@ begin
 	enable_enytank3_phy <= 1'b0;
 	enable_enytank4_app <= 1'b0;
 	enable_enytank4_phy <= 1'b0;
-	if(bt_st == 1)
+	enable_gamelogic	<= 1'b0;
+	if(sw[0] == 1)
 		mode <= 0;
 	else
 		mode <= 2;

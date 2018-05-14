@@ -8,6 +8,8 @@ Description			:
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
+180512		QiiNn		1.0			Initial Version
+180514		QiiNn		1.1			Change the size of background picture (16bit -> 8bit)
 ========================================================*/
 
 module game_interface 
@@ -24,7 +26,7 @@ module game_interface
 reg			startshow_enable ;
 
 reg 	[16:0] 	addr_background_pic;
-wire	[15:0]	background_pic;
+wire	[7:0]	background_pic;
 reg 	[16:0] 	addr_gameover_pic;
 reg		[16:0]	addr_start_pic;
 wire	[2:0]	start_pic;	
@@ -43,21 +45,21 @@ begin
 		addr_background_pic <= VGA_xpos[10:1] + 320 * VGA_ypos[10:1];
 end
 
-
-interface_pic u_interface_pic(
+interface_pic 	u_interface_pic (
   .clka(clk),    // input wire clka
   .ena(1'b1),      // input wire ena
   .addra(addr_background_pic),  // input wire [16 : 0] addra
-  .douta(background_pic)  // output wire [15 : 0] douta
+  .douta(background_pic)  // output wire [7 : 0] douta
 );
 
+
 //game over picture
-/*
+
 always @(posedge clk)
 begin
-	if(VGA_xpos > 60 && VGA_xpos <= 580 && VGA_ypos > 80 && VGA_ypos <= 320)
+	if(VGA_xpos > 130 && VGA_xpos <= 510 && VGA_ypos > 90 && VGA_ypos <= 270)
 	begin
-		addr_gameover_pic <= (VGA_xpos - 60)  + 520 * (VGA_ypos -80) ;
+		addr_gameover_pic <= (VGA_xpos - 130)  + 380 * (VGA_ypos - 90) ;
 		gameover_reg <= gameover_pic ;
 	end
 	else
@@ -70,7 +72,6 @@ gameover_pic u_gameover_pic (
   .addra(addr_gameover_pic),  // input wire [16 : 0] addra
   .douta(gameover_pic)  // output wire [2 : 0] douta
 );
-*/
 
 
 always @(posedge clk)
@@ -110,18 +111,18 @@ always@(posedge clk)
 case	(mode)
 	0 :
 		begin
-			VGA_data[0] 	= 	background_pic[1]	|	VGA_data_show[0]	|	start_reg[0];
-			VGA_data[1] 	=	background_pic[2]	|	VGA_data_show[1]	|	start_reg[0];
-			VGA_data[2] 	=	background_pic[3]	|	VGA_data_show[2]	|	start_reg[0];
-			VGA_data[3] 	=	background_pic[4]	|	VGA_data_show[3]	|	start_reg[0];
-			VGA_data[4] 	= 	background_pic[7]	|	VGA_data_show[4]	|	start_reg[1];
-			VGA_data[5] 	= 	background_pic[8]	|	VGA_data_show[5]	|	start_reg[1];
-			VGA_data[6] 	= 	background_pic[9]	|	VGA_data_show[6]	|	start_reg[1];
-			VGA_data[7] 	= 	background_pic[10]	|	VGA_data_show[7]	|	start_reg[1];
-			VGA_data[8] 	= 	background_pic[12]	|	VGA_data_show[8]	|	start_reg[2];
-			VGA_data[9] 	= 	background_pic[13]	|	VGA_data_show[9]	|	start_reg[2];
-			VGA_data[10] 	= 	background_pic[14]	|	VGA_data_show[10]	|	start_reg[2];
-			VGA_data[11] 	= 	background_pic[15]	|	VGA_data_show[11]	|	start_reg[2];
+			VGA_data[0] 	= 	background_pic[0]	|	VGA_data_show[0]	|	start_reg[0];
+			VGA_data[1] 	=	background_pic[0]	|	VGA_data_show[1]	|	start_reg[0];
+			VGA_data[2] 	=	background_pic[1]	|	VGA_data_show[2]	|	start_reg[0];
+			VGA_data[3] 	=	background_pic[1]	|	VGA_data_show[3]	|	start_reg[0];
+			VGA_data[4] 	= 	background_pic[2]	|	VGA_data_show[4]	|	start_reg[1];
+			VGA_data[5] 	= 	background_pic[2]	|	VGA_data_show[5]	|	start_reg[1];
+			VGA_data[6] 	= 	background_pic[3]	|	VGA_data_show[6]	|	start_reg[1];
+			VGA_data[7] 	= 	background_pic[4]	|	VGA_data_show[7]	|	start_reg[1];
+			VGA_data[8] 	= 	background_pic[5]	|	VGA_data_show[8]	|	start_reg[2];
+			VGA_data[9] 	= 	background_pic[5]	|	VGA_data_show[9]	|	start_reg[2];
+			VGA_data[10] 	= 	background_pic[6]	|	VGA_data_show[10]	|	start_reg[2];
+			VGA_data[11] 	= 	background_pic[7]	|	VGA_data_show[11]	|	start_reg[2];
 		end
 	1:
 		begin
