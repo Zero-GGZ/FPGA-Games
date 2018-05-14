@@ -194,12 +194,97 @@ wire	[4:0]	score3;
 wire	[4:0]	score4;
 wire			gameover;
 
+
+/////////////////////////////////////////////////////////////////////////////////
+wire	gameover_classic;
+wire	gameover_infinity;
+wire	enable_game_classic;
+wire	enable_game_infinity;
+wire	[3:0]		an_classic;
+wire	[15:0]		seg_classic;
+wire	[15:0]		led_classic;
+wire				gameover_classic;
+wire	[3:0]		an_infinity;
+wire	[15:0]		seg_infinity;
+wire	[15:0]		led_infinity;
+wire				gameover_infinity;
+
+game_mode_v2  u_game_mode_v2
+(
+	.clk				(clk_100M),
+	.sw					(sw),	
+	.bt_st				(bt_st),
+	.gameover_classic	(gameover_classic),
+	.gameover_infinity	(gameover_infinity),
+	.enable_bul1		(enable_bul1),
+	.enable_bul2		(enable_bul2),
+	.enable_bul3		(enable_bul3),
+	.enable_bul4		(enable_bul4),
+	.enable_mybul		(enable_mybul),
+	.enable_mytank_app	(enable_mytank_app),
+	.enable_mytank_phy	(enable_mytank_phy),
+	.enable_enytank1_app(enable_enytank1_app),
+	.enable_enytank1_phy(enable_enytank1_phy),
+	.enable_enytank2_app(enable_enytank2_app),
+	.enable_enytank2_phy(enable_enytank2_phy),
+	.enable_enytank3_app(enable_enytank3_app),
+	.enable_enytank3_phy(enable_enytank3_phy),
+	.enable_enytank4_app(enable_enytank4_app),
+	.enable_enytank4_phy(enable_enytank4_phy),
+	.enable_game_classic(enable_game_classic),
+	.enable_game_infinity(enable_game_infinity),
+	.mode				(mode)
+);   
+
+game_logic_classic u_game_logic_classic
+(	
+	.clk				(clk_100M),
+	.enable_game_classic(enable_game_classic),
+	.mytank_state		(mytank_state),
+	.scorea				(score1),
+	.scoreb				(score2),
+	.scorec				(score3),
+	.scored				(score4),
+	.seg_classic		(seg_classic),
+	.led_classic		(led_classic),
+	.gameover_classic	(gameover_classic)
+);
+
+game_logic_infinity u_game_logic_infinity
+(
+	.clk				(clk_100M),
+	.enable_game_infinity(enable_game_infinity),
+	.scorea				(score1),
+	.scoreb				(score2),
+	.scorec				(score3),
+	.scored				(score4),
+	.seg_infinity		(seg_infinity),
+	.led_infinity		(led_infinity),
+	.gameover_infinity	(gameover_infinity)
+);
+
+game_SegAndLed 	u_game_SegAndLed
+(
+	.clk					(clk_100M),
+	.led_classic			(led_classic),
+	.led_infinity			(led_infinity),
+	.seg_classic			(seg_classic),
+	.seg_infinity			(seg_infinity),
+	.enable_game_classic	(enable_game_classic),
+	.enable_game_infinity	(enable_game_infinity),
+	.an						(an),
+	.seg					(seg),
+	.led					(led)
+);
+
+/////////////////////////////////////////////////////////////////////////////////
+
+/*
 game_logic u_game_logic
 (	
-	.gamemode_sim		(1'b0),
 	.clk				(clk_100M),
 	.game_en			(1'b1),
-	.mode				(mode),
+//	.mode				(mode),
 	.mytank_state		(mytank_state),
 	.scorea				(score1),
 	.scoreb				(score2),
@@ -210,10 +295,9 @@ game_logic u_game_logic
 	.an					(an),
 	.seg				(seg),
 	.dp					(dp),
-	.led				(led),
-	.gameover		(gameover)
+	.led				(led)
 );
-
+*/
 
 game_interface  u_game_interface
 (
@@ -226,6 +310,7 @@ game_interface  u_game_interface
 	.VGA_data		(VGA_data_interface)
 );
 
+/*
 game_mode   u_game_mode
 (
 	.clk			(clk_100M),
@@ -252,7 +337,7 @@ game_mode   u_game_mode
 	.mode				(mode)
 );  
 
-
+*/
 
 mytank_app u_mytank_app
 (
@@ -714,9 +799,3 @@ tank_generate	u_tank_generate
 );
 
 endmodule
-
-
-
-
-
-
