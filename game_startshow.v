@@ -195,7 +195,7 @@ tank_phy	show2_phy
 reg		[12:0]		addr_bigtank;
 wire	[0:0]		bigtank_pic;
 reg		[11:0]		bigtank_reg;
-reg		[10:0]		bigtank_x_offset;
+reg		[8:0]		bigtank_x_offset;
 initial 	bigtank_x_offset <= 0;
 
 always@(posedge clk_4Hz)
@@ -207,9 +207,9 @@ begin
 	begin
 		addr_bigtank <= (VGA_xpos - bigtank_x_offset)  + 90 * (VGA_ypos - 260) ;
 		if (bigtank_pic)
-			bigtank_reg <= 0;
+			bigtank_reg <= `YELLOW;
 		else
-			bigtank_reg <= `WHITE;
+			bigtank_reg <= 0;
 	end
 	else
 		bigtank_reg <= 0;

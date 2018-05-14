@@ -208,6 +208,8 @@ wire	[3:0]		an_infinity;
 wire	[15:0]		seg_infinity;
 wire	[15:0]		led_infinity;
 wire				gameover_infinity;
+wire	[4:0]		score_classic;
+wire	[4:0]		score_infinity;
 
 game_mode_v2  u_game_mode_v2
 (
@@ -247,7 +249,8 @@ game_logic_classic u_game_logic_classic
 	.scored				(score4),
 	.seg_classic		(seg_classic),
 	.led_classic		(led_classic),
-	.gameover_classic	(gameover_classic)
+	.gameover_classic	(gameover_classic),
+	.score_classic		(score_classic)
 );
 
 game_logic_infinity u_game_logic_infinity
@@ -260,16 +263,20 @@ game_logic_infinity u_game_logic_infinity
 	.scored				(score4),
 	.seg_infinity		(seg_infinity),
 	.led_infinity		(led_infinity),
-	.gameover_infinity	(gameover_infinity)
+	.gameover_infinity	(gameover_infinity),
+	.score_infinity		(score_infinity)
 );
 
 game_SegAndLed 	u_game_SegAndLed
 (
 	.clk					(clk_100M),
+	.mode					(mode),
 	.led_classic			(led_classic),
 	.led_infinity			(led_infinity),
 	.seg_classic			(seg_classic),
 	.seg_infinity			(seg_infinity),
+	.score_classic			(score_classic),
+	.score_infinity			(score_infinity),
 	.enable_game_classic	(enable_game_classic),
 	.enable_game_infinity	(enable_game_infinity),
 	.an						(an),

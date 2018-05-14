@@ -21,7 +21,8 @@ module game_logic_classic
 	input	[4:0]			scored,
 	output	reg [15:0]		seg_classic,
 	output	reg	[15:0]		led_classic,
-	output	reg				gameover_classic
+	output	reg				gameover_classic,
+	output	reg	[4:0]		score_classic
 );
 
 
@@ -36,6 +37,7 @@ begin
 	led_classic <= 16'b0;
 	score <= 0;
 	gameover_classic <= 0;
+	score_classic <= 0;
 end
 
 always@(negedge enable_game_classic or negedge mytank_state)
@@ -51,7 +53,10 @@ end
 always@(posedge clk)
 begin
 	if(!enable_game_classic)
+	begin
 		gameover_classic <= 0;
+		score_classic <= 0;
+	end
 	else
 	begin
 	score <= scorea + scoreb + scorec + scored;
@@ -60,20 +65,12 @@ begin
 	else 
 		HP_add <= 0;
 	seg_classic <= score;
-	case(HP_value)
-	8:	led_classic <= 16'b1111111100000000;
-	7:	led_classic <= 16'b1111111000000000;
-	6:	led_classic <= 16'b1111110000000000;
-	5:	led_classic <= 16'b1111100000000000;
-	4:	led_classic <= 16'b1111000000000000;
-	3:	led_classic <= 16'b1110000000000000;
-	2:	led_classic <= 16'b1100000000000000;
-	1:	led_classic <= 16'b1000000000000000;
-	0:	begin
-		led_classic <= 16'b0000000000000000;
+	led_classic <= HP_value;
+	if(HP_value == 0)
+	begin
 		gameover_classic <= 1;
-		end
-	endcase
+		score_classic <= score;
+	end
 	end
 end
 

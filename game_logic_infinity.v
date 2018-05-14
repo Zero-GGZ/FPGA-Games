@@ -21,7 +21,8 @@ module game_logic_infinity
 	input		[4:0]		scored,
 	output	reg [15:0]		seg_infinity,
 	output	reg	[15:0]		led_infinity,
-	output	reg				gameover_infinity
+	output	reg				gameover_infinity,
+	output	reg	[4:0]		score_infinity
 	 
 );
 
@@ -35,6 +36,7 @@ begin
 	cnt <= 0;
 	timer <= 16;
 	seg_infinity <= 0;
+	score_infinity <= 0;
 end
 	
 always@(posedge clk)
@@ -45,33 +47,17 @@ if(enable_game_infinity)
 	seg_infinity <= score;
 	cnt <= cnt + 1;
 	if(cnt == 500000000)
-		begin
+	begin
 		timer <= timer - 1;
 		cnt <= 0;
-		end
-	case(timer)
-	16:	led_infinity <= 16'b1111_1111_1111_1111;
-	15:	led_infinity <= 16'b1111_1111_1111_1110;
-	14:	led_infinity <= 16'b1111_1111_1111_1100;
-	13:	led_infinity <= 16'b1111_1111_1111_1000;
-	12:	led_infinity <= 16'b1111_1111_1111_0000;
-	11:	led_infinity <= 16'b1111_1111_1110_0000;
-	10:	led_infinity <= 16'b1111_1111_1100_0000;
-	9:	led_infinity <= 16'b1111_1111_1000_0000;
-	8:	led_infinity <= 16'b1111_1111_0000_0000;
-	7:	led_infinity <= 16'b1111_1110_0000_0000;
-	6:	led_infinity <= 16'b1111_1100_0000_0000;
-	5:	led_infinity <= 16'b1111_1000_0000_0000;
-	4:	led_infinity <= 16'b1111_0000_0000_0000;
-	3:	led_infinity <= 16'b1110_0000_0000_0000;
-	2:	led_infinity <= 16'b1100_0000_0000_0000;
-	1:	led_infinity <= 16'b1000_0000_0000_0000;
-	0:	begin
-		led_infinity <= 16'b0000_0000_0000_0000;
-		timer	<=	16;
+	end
+	led_infinity <= timer;
+	if(timer == 0)		
+	begin
+		timer <= 16;
 		gameover_infinity <= 1;
-		end
-	endcase
+		score_infinity <= score;
+	end
 	end
 else
 	begin
@@ -79,6 +65,7 @@ else
 	cnt <= 0;
 	timer <= 16;
 	seg_infinity <= 0;
+	score_infinity <= 0;
 	end
 end
 
