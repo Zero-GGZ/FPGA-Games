@@ -24,6 +24,7 @@ module bullet
 	input 				clk_8Hz,
 	input				enable,
 	
+	input				bul_ide,
 	input	[1:0]		bul_dir,	//the direction of bullet
 	input				bul_state,	//the state of bullet
 		
@@ -75,14 +76,14 @@ begin
 	begin
 		if(sample_flag == 1'b0)
 		begin
-			x_bul_pos_out <= tank_xpos;//x_bul_pos_init;??????????????????????????????????????????????????
+			x_bul_pos_out <= tank_xpos;//x_bul_pos_init;
 			y_bul_pos_out <= tank_ypos;//y_bul_pos_init;
 			sample_flag <= 1'b1;
 		end
 		if(sample_flag == 1'b1)
 		begin
 			//boundary detection
-			if((x_bul_pos_out == 5'b11111)||(x_bul_pos_out >= 24)||(y_bul_pos_out == 5'b11111)||(y_bul_pos_out >= 12))
+			if((x_bul_pos_out == 5'b11111)||(x_bul_pos_out > 24)||(y_bul_pos_out == 5'b11111)||(y_bul_pos_out > 12))
 			begin
 				bul_state_feedback <= 1'b0;	//output 0 if reach the boundaries
 				sample_flag <= 1'b0;
@@ -137,7 +138,12 @@ begin
 			&&(VGA_xpos < x_bul_pos_out * 20 + 80 + 3 )
 			&&(VGA_ypos > y_bul_pos_out * 20 + 80 - 3 )
 			&&(VGA_ypos < y_bul_pos_out * 20 + 80 + 3 ))
-			VGA_data <= 12'hFFF;
+			begin
+				if(bul_ide)
+				VGA_data <= 12'hFFF;
+				else
+				VGA_data <= 12'hFF0;
+			end
 		else
 			VGA_data <= 12'h000;
 	end

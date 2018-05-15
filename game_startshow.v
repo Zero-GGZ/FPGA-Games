@@ -32,14 +32,14 @@ module game_startshow
 	output	reg	[11:0]	VGA_data
 );
 
-reg [2:0]	counter;
+reg [5:0]	counter;
 reg			show1_sht_auto;
 reg			show2_sht_auto;
 
 always@(posedge clk_4Hz)
 begin
 	counter <= counter + 1;
-	if(counter == 0 )
+	if(counter <= 60 )
 		begin
 		show1_sht_auto <=  1'b1;
 		show2_sht_auto <=  1'b1;
@@ -69,7 +69,7 @@ showtank_app show1_app
 	.clk_4Hz		(clk_4Hz),
 	.enable			(show_en),
 	.start_x		(0),
-	.start_y		(7),
+	.start_y		(2),
 	.start_dir		(2'b11),
 	.bul_state_feedback	(show1_bul_fb),
 	.x_rel_pos_out		(show1_x),
@@ -137,7 +137,7 @@ showtank_app show2_app
 	.clk			(clk),
 	.clk_4Hz		(clk_4Hz),
 	.enable			(show_en),
-	.start_x		(16),
+	.start_x		(20),
 	.start_y		(4),
 	.start_dir		(2'b01),
 	.bul_state_feedback	(show2_bul_fb),

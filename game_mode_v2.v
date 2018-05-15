@@ -8,6 +8,7 @@ Description			:
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
+180515		QiiNn		1.0			
 ========================================================*/
 
 module  game_mode_v2

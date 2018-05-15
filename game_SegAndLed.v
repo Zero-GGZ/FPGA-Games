@@ -8,6 +8,7 @@ Description			:
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
+180515		QiiNn		1.0			Initial version
 ========================================================*/
 
 module game_SegAndLed
@@ -84,32 +85,6 @@ begin
 		end
 end
 
-/*
-always@(posedge clk)
-begin
-	if(enable_game_classic == 0 && enable_game_infinity == 0)
-	begin
-	if(mode == 3)
-	begin
-		if(score_classic == 0 && score_infinity != 0)
-			seg_display <= score_infinity;
-		else if	(score_classic != 0 && score_infinity == 0)
-			seg_display <= score_classic;
-		else
-			seg_display <= 0;
-	end
-	else
-		seg_display <= 0;
-	end
-	else
-		begin
-		if (enable_game_classic)
-			seg_display <= seg_classic;
-		else
-			seg_display <= seg_infinity;
-		end
-end
-*/
 always@(posedge clk)
 begin
 	if (sw[0] == 1)
@@ -125,24 +100,6 @@ begin
 		end
 end
 
-/*
-always@(posedge clk)
-begin
-	if (sw[0] == 1)
-		begin
-		seg_display <= 0;
-		end
-	else
-		begin
-		if (enable_game_classic == 1 && enable_game_classic == 0)
-			seg_display <= seg_classic;
-		else if (enable_game_classic == 0 && enable_game_classic == 1)
-			seg_display <= seg_infinity;
-		else
-			seg_display <= seg_display;
-		end
-end
-*/
 seg7decimal u_seg7decimal
 (
 	.data		(seg_display),

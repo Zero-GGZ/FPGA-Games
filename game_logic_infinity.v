@@ -59,7 +59,8 @@ if(enable_game_infinity)
 		score_infinity <= 0;
 		score <= scorea + scoreb + scorec + scored;
 		if(score == 5 || score == 10 || score == 15 || score == 20 ||
-			score == 25 || score == 30 || score == 35 || score == 40 )
+			score == 25 || score == 30 || score == 35 || score == 40 ||
+			score == 45 || score == 50 || score == 55 || score == 60 || score == 65)
 		begin
 			if(add_flag == 0)
 			begin
@@ -90,7 +91,6 @@ else
 		seg_infinity <= 0;
 		score <= 0;
 		end
-//	seg_infinity <= 0;
 	end
 end
 

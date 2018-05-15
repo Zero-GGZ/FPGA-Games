@@ -76,9 +76,9 @@ gameove_pic u_gameover_pic (
 
 always @(posedge clk)
 begin
-	if(VGA_xpos > 95 && VGA_xpos <= 545 && VGA_ypos > 110 && VGA_ypos <= 310)
+	if(VGA_xpos > 95 && VGA_xpos <= 545 && VGA_ypos > 90 && VGA_ypos <= 290)
 	begin
-		addr_start_pic <= (VGA_xpos - 95)  + 450 * (VGA_ypos - 100) ;
+		addr_start_pic <= (VGA_xpos - 95)  + 450 * (VGA_ypos - 90) ;
 		start_reg <= start_pic ;
 	end
 	else

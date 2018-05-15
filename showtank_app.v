@@ -2,12 +2,13 @@
 Author				:				QiiNn
 Email Address		:				ctlvie@gmail.com
 Filename			:				showtank_app.v
-Date				:				2018-05-12
-Description			:				
+Date				:				2018-05-13
+Description			:				the function of show tank
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
+180515		QiiNn		1.0			Initial version
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -84,61 +85,4 @@ begin
 end
 end
 
-//---------------------------------------------------
-//Shoot
-
-always@(posedge clk_4Hz)
-	cnt <= cnt + 1;
-/*
-always@(posedge clk)
-begin
-if(enable)
-begin
-	if (bul_state_feedback == 1'b0)
-	begin
-		if (cnt == 0)
-			bul_sht <= 1'b1;
-		else
-			bul_sht <= 1'b0;	
-	end
-	else
-	begin
-		bul_sht <= 1'b1;
-	end
-end
-end
-*/
-
-reg [10:0]	cnt;
-initial cnt <= 0;
-/*
-always@(posedge clk)
-begin
-if(enable)
-begin
-	if (bul_state_feedback == 1'b0)
-	begin
-		bul_sht <= 0;
-		cnt <= cnt + 1;
-		if (cnt >= 20000)
-		begin
-			bul_sht <= 1;
-			cnt <= 0;
-		end
-	end
-	else
-		bul_sht <= 1;
-end
-end
-*/
-
-always@(posedge clk)
-begin
-if(enable)
-	begin
-	bul_sht <= 1;
-	end
-else
-	bul_sht <= 0;
-end
 endmodule

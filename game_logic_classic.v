@@ -67,10 +67,6 @@ begin
 	begin
 	score_classic <= 0;
 	score <= scorea + scoreb + scorec + scored;
-	if (score == 5 | 10 | 15 | 20 | 25 | 30 | 35| 40 | 45 | 50) 
-		HP_add <= 1;
-	else 
-		HP_add <= 0;
 	seg_classic <= score;
 	led_classic <= HP_value;
 	if(HP_value == 0)

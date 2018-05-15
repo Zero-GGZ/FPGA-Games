@@ -466,6 +466,7 @@ bullet u_mybullet
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
 	.enable		(enable_mybul),
+	.bul_ide	(1'b0),
 
 	
 	.bul_dir	(mytank_dir),	//the direction of bullet
@@ -495,6 +496,7 @@ bullet u_bul1
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
 	.enable		(enable_bul1),
+	.bul_ide	(1'b1),
 
 	
 	.bul_dir	(enytank1_dir),	//the direction of bullet
@@ -525,6 +527,7 @@ bullet u_bul2
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
 	.enable		(enable_bul2),
+	.bul_ide	(1'b1),
 
 	
 	.bul_dir	(enytank2_dir),	//the direction of bullet
@@ -555,6 +558,7 @@ bullet u_bul3
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
 	.enable		(enable_bul3),
+	.bul_ide	(1'b1),
 
 	
 	.bul_dir	(enytank3_dir),	//the direction of bullet
@@ -585,6 +589,7 @@ bullet u_bul4
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
 	.enable		(enable_bul4),
+	.bul_ide	(1'b1),
 
 	
 	.bul_dir	(enytank4_dir),	//the direction of bullet
