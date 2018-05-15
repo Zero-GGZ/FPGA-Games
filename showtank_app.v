@@ -89,7 +89,7 @@ end
 
 always@(posedge clk_4Hz)
 	cnt <= cnt + 1;
-
+/*
 always@(posedge clk)
 begin
 if(enable)
@@ -107,5 +107,38 @@ begin
 	end
 end
 end
+*/
 
+reg [10:0]	cnt;
+initial cnt <= 0;
+/*
+always@(posedge clk)
+begin
+if(enable)
+begin
+	if (bul_state_feedback == 1'b0)
+	begin
+		bul_sht <= 0;
+		cnt <= cnt + 1;
+		if (cnt >= 20000)
+		begin
+			bul_sht <= 1;
+			cnt <= 0;
+		end
+	end
+	else
+		bul_sht <= 1;
+end
+end
+*/
+
+always@(posedge clk)
+begin
+if(enable)
+	begin
+	bul_sht <= 1;
+	end
+else
+	bul_sht <= 0;
+end
 endmodule

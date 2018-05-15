@@ -14,6 +14,7 @@ Date		By			Version		Description
 module game_logic_infinity
 (
 	input					clk,
+	input		[4:0]		sw,
 	input					enable_game_infinity,
 	input		[4:0]		scorea,
 	input		[4:0]		scoreb,
@@ -23,12 +24,12 @@ module game_logic_infinity
 	output	reg	[15:0]		led_infinity,
 	output	reg	[5:0]		timer,
 	output	reg				gameover_infinity,
-	output	reg	[4:0]		score_infinity
+	output	reg	[5:0]		score_infinity
 	 
 );
 
 reg		[31:0]	cnt;
-reg		[4:0]	score;
+reg		[5:0]	score;
 
 initial
 begin
@@ -65,10 +66,16 @@ if(enable_game_infinity)
 	end
 else
 	begin
+	seg_infinity <= score;
 	gameover_infinity <= 0;
 	cnt <= 0;
 	timer <= 16;
-	seg_infinity <= 0;
+	if(sw[0])
+		begin
+		seg_infinity <= 0;
+		score <= 0;
+		end
+//	seg_infinity <= 0;
 	end
 end
 

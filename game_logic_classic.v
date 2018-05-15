@@ -13,6 +13,7 @@ Date		By			Version		Description
 module game_logic_classic
 (	
 	input					clk,
+	input	[4:0]			sw,
 	input					enable_game_classic,
 	input 					mytank_state,
 	input	[4:0]			scorea,
@@ -23,11 +24,11 @@ module game_logic_classic
 	output	reg [15:0]		seg_classic,
 	output	reg	[15:0]		led_classic,
 	output	reg				gameover_classic,
-	output	reg	[4:0]		score_classic
+	output	reg	[5:0]		score_classic
 );
 
 
-reg	[4:0]	score;
+reg	[5:0]	score;
 reg	[2:0]	HP_add;
 
 initial
@@ -55,12 +56,18 @@ begin
 	if(!enable_game_classic)
 	begin
 		gameover_classic <= 0;
+		seg_classic <= score;
+		if(sw[0])
+			begin
+			score <= 0;
+			seg_classic <= 0;
+			end
 	end
 	else
 	begin
 	score_classic <= 0;
 	score <= scorea + scoreb + scorec + scored;
-	if (score == 10 | 20 | 30) 
+	if (score == 5 | 10 | 15 | 20 | 25 | 30 | 35| 40 | 45 | 50) 
 		HP_add <= 1;
 	else 
 		HP_add <= 0;

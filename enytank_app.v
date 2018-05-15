@@ -263,7 +263,10 @@ begin
 	end
 end
 else
+	begin
 	score <= 0;
+	tank_state_reg <= 0;
+	end
 end
 
 //---------------------------------------------------

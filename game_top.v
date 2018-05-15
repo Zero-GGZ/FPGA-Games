@@ -14,6 +14,7 @@ Date		By			Version		Description
 									1. change enemy tanks' speed to clk_2Hz
 									2. cancel the VGA enable signal
 180510		QiiNn		1.5			Full Version!
+180515		QiiNn		2.0			Updated Version!
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -172,13 +173,11 @@ wire				enable_game_infinity;
 wire	[3:0]		an_classic;
 wire	[15:0]		seg_classic;
 wire	[15:0]		led_classic;
-wire				gameover_classic;
 wire	[3:0]		an_infinity;
 wire	[15:0]		seg_infinity;
 wire	[15:0]		led_infinity;
-wire				gameover_infinity;
-wire	[4:0]		score_classic;
-wire	[4:0]		score_infinity;
+wire	[5:0]		score_classic;
+wire	[5:0]		score_infinity;
 
 assign 			bul1_x 			= 		bul1_x_feedback;
 assign 			bul2_x 			= 		bul2_x_feedback;
@@ -244,6 +243,7 @@ game_mode_v2  u_game_mode_v2
 game_logic_classic u_game_logic_classic
 (	
 	.clk				(clk_100M),
+	.sw					(sw),
 	.enable_game_classic(enable_game_classic),
 	.mytank_state		(mytank_state),
 	.scorea				(score1),
@@ -260,6 +260,7 @@ game_logic_classic u_game_logic_classic
 game_logic_infinity u_game_logic_infinity
 (
 	.clk				(clk_100M),
+	.sw					(sw),
 	.enable_game_infinity(enable_game_infinity),
 	.scorea				(score1),
 	.scoreb				(score2),
@@ -289,6 +290,7 @@ game_SegAndLed 	u_game_SegAndLed
 (
 	.clk					(clk_100M),
 	.mode					(mode),
+	.sw						(sw),
 	.led_classic			(led_classic),
 	.led_infinity			(led_infinity),
 	.seg_classic			(seg_classic),

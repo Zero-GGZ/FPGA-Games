@@ -18,7 +18,6 @@ module	game_information
 	input				clk,
 	input				enable_game_classic,
 	input				enable_game_infinity,
-	input				enable_information,
 	input	[2:0]		mode,
 	input	[4:0]		HP_print,
 	input	[4:0]		time_print,

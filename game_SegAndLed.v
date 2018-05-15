@@ -14,6 +14,7 @@ module game_SegAndLed
 (
 	input					clk,
 	input		[2:0]		mode,
+	input		[4:0]		sw,
 	input		[15:0]		led_classic,
 	input		[15:0]		led_infinity,
 	input		[15:0]		seg_classic,
@@ -83,6 +84,7 @@ begin
 		end
 end
 
+/*
 always@(posedge clk)
 begin
 	if(enable_game_classic == 0 && enable_game_infinity == 0)
@@ -107,12 +109,45 @@ begin
 			seg_display <= seg_infinity;
 		end
 end
+*/
+always@(posedge clk)
+begin
+	if (sw[0] == 1)
+		begin
+		seg_display <= 0;
+		end
+	else
+		begin
+		if(seg_classic == 0)
+			seg_display <= seg_infinity;
+		else
+			seg_display <= seg_classic;
+		end
+end
 
+/*
+always@(posedge clk)
+begin
+	if (sw[0] == 1)
+		begin
+		seg_display <= 0;
+		end
+	else
+		begin
+		if (enable_game_classic == 1 && enable_game_classic == 0)
+			seg_display <= seg_classic;
+		else if (enable_game_classic == 0 && enable_game_classic == 1)
+			seg_display <= seg_infinity;
+		else
+			seg_display <= seg_display;
+		end
+end
+*/
 seg7decimal u_seg7decimal
 (
 	.data		(seg_display),
 	.clk		(clk),
-	.clr		(),
+	.clr		(0),
 	.a_to_g		(seg),
 	.an			(an),
 	.dp			()
