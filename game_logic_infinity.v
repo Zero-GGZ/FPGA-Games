@@ -40,6 +40,10 @@ begin
 	score_infinity <= 0;
 end
 	
+	
+reg 	add_flag;
+initial add_flag <= 0;
+	
 always@(posedge clk)
 begin
 if(enable_game_infinity)
@@ -54,6 +58,17 @@ if(enable_game_infinity)
 		begin
 		score_infinity <= 0;
 		score <= scorea + scoreb + scorec + scored;
+		if(score == 5 || score == 10 || score == 15 || score == 20 ||
+			score == 25 || score == 30 || score == 35 || score == 40 )
+		begin
+			if(add_flag == 0)
+			begin
+			timer <= timer + 1;
+			add_flag <= 1;
+			end
+		end
+		else
+			add_flag <= 0;	
 		seg_infinity <= score;
 		cnt <= cnt + 1;
 		if(cnt == 500000000)
