@@ -22,11 +22,10 @@ module	game_information
 	input	[2:0]		mode,
 	input	[4:0]		HP_print,
 	input	[4:0]		time_print,
-	input				clk_VGA,
 	input	[10:0]		VGA_xpos,
 	input	[10:0]		VGA_ypos,
 	output	reg	[11:0]	VGA_data
-)
+);
 
 `define	RED			12'hF00
 `define	GREEN		12'h0F0
@@ -37,40 +36,105 @@ module	game_information
 `define	CYAN		12'hF0F
 `define	ROYAL		12'h0FF
 
+reg		[11:0]	addr_info_classic;
+reg		[11:0]	addr_info_infinity;
+wire	[0:0]	dout_info_classic;
+wire	[0:0]	dout_info_infinity;
+reg		[11:0]	VGA_data_1;
+reg		[11:0]	VGA_data_2;
+
+always @(posedge clk)
+begin
+	if(enable_game_classic)
+	begin
+		if(VGA_xpos > 130 && VGA_xpos <= 310 && VGA_ypos > 50 && VGA_ypos <= 70)
+		begin
+			addr_info_classic <= (VGA_xpos - 130)  + 180 * (VGA_ypos - 50) ;
+			if(dout_info_classic)
+				VGA_data_1 <= 12'hFFF;
+			else
+				VGA_data_1 <= 0;
+		end
+			else
+				VGA_data_1 <= 0;
+	end
+	else if (enable_game_infinity)
+	begin
+		if(VGA_xpos > 130 && VGA_xpos <= 310 && VGA_ypos > 50 && VGA_ypos <= 70)
+		begin
+			addr_info_infinity <= (VGA_xpos - 130)  + 180 * (VGA_ypos - 50) ;
+			if(dout_info_infinity)
+				VGA_data_1 <= 12'hFFF;
+			else
+				VGA_data_1 <= 0;
+		end
+		else
+				VGA_data_1 <= 0;
+	end
+	else
+		VGA_data_1 <= 0;
+end
+
+info_classic_pic u_info_classic_pic(
+  .clka(clk),    // input wire clka
+  .ena(1'b1),      // input wire ena
+  .addra(addr_info_classic),  // input wire [11 : 0] addra
+  .douta(dout_info_classic)  // output wire [0 : 0] douta
+);
+
+info_infinity_pic u_info_infinity_pic (
+  .clka(clk),    // input wire clka
+  .ena(1'b1),      // input wire ena
+  .addra(addr_info_infinity),  // input wire [11 : 0] addra
+  .douta(dout_info_infinity)  // output wire [0 : 0] douta
+);
+
+
 always@(posedge clk)
 begin
 	if(enable_game_classic || enable_game_infinity )
 	begin
-		if	( (VGA_xpos == 120 && VGA_ypos >= 52 && VGA_ypos <= 68) 
-			||(VGA_xpos == 300 && VGA_ypos >= 52 && VGA_ypos <= 68)	
-			||(VGA_ypos == 52 && VGA_xpos >= 120 && VGA_xpos <= 300)
-			||(VGA_ypos == 68 && VGA_xpos >= 120 && VGA_xpos <= 300) )
-			VGA_data <= `RED;
+		if	( (VGA_xpos == 320 && VGA_ypos >= 52 && VGA_ypos <= 68) 
+			||(VGA_xpos == 500 && VGA_ypos >= 52 && VGA_ypos <= 68)	
+			||(VGA_ypos == 52 && VGA_xpos >= 320 && VGA_xpos <= 500)
+			||(VGA_ypos == 68 && VGA_xpos >= 320 && VGA_xpos <= 500) )
+			VGA_data_2 <= `RED;
+		else
+			VGA_data_2 <= `BLACK;
 		if(enable_game_classic)
 		begin
-			if (VGA_ypos >= 52 && VGA_ypos <= 68 && VGA_xpos >= 120 + HP_print * 20 && VGA_xpos <= 300)
+			if (VGA_ypos >= 52 && VGA_ypos <= 68 && VGA_xpos >= 320 && (VGA_xpos <= 320 + HP_print * 20))
 			begin
-				if (VGA_xpos == 140 || VGA_xpos == 160 || VGA_xpos == 180 || VGA_xpos == 200
-					|| VGA_xpos == 220 || VGA_xpos == 240 || VGA_xpos == 260 || VGA_xpos == 280 )
-					VGA_data <= `BLACK;
+				if (VGA_xpos == 340 || VGA_xpos == 360 || VGA_xpos == 380 || VGA_xpos == 400
+					|| VGA_xpos == 420 || VGA_xpos == 440 || VGA_xpos == 460 || VGA_xpos == 480 )
+					VGA_data_2 <= `BLACK;
 				else
-					VGA_data <= `RED;
+					VGA_data_2 <= `RED;
 			end
+			else
+				VGA_data_2 <= `BLACK;
 		end
 		else
 		begin
-			if (VGA_ypos >= 52 && VGA_ypos <= 68 && VGA_xpos >= 120 + time_print * 10 && VGA_xpos <= 300)
+			if (VGA_ypos >= 52 && VGA_ypos <= 68 && VGA_xpos >= 320 && (VGA_xpos <= 320 + time_print * 10))
 			begin
-				if (VGA_xpos == 130 || VGA_xpos == 140 || VGA_xpos == 150 || VGA_xpos == 160
-					|| VGA_xpos == 170 || VGA_xpos == 180 || VGA_xpos == 190 || VGA_xpos == 200
-					|| VGA_xpos == 210 || VGA_xpos == 220 || VGA_xpos == 230 || VGA_xpos == 240
-					|| VGA_xpos == 250 || VGA_xpos == 260 || VGA_xpos == 270 || VGA_xpos == 280 || VGA_xpos == 290)
-					VGA_data <= `BLACK;
+				if (VGA_xpos == 330 || VGA_xpos == 340 || VGA_xpos == 350 || VGA_xpos == 360
+					|| VGA_xpos == 370 || VGA_xpos == 380 || VGA_xpos == 390 || VGA_xpos == 400
+					|| VGA_xpos == 410 || VGA_xpos == 420 || VGA_xpos == 430 || VGA_xpos == 440
+					|| VGA_xpos == 450 || VGA_xpos == 460 || VGA_xpos == 470 || VGA_xpos == 480 || VGA_xpos == 490)
+					VGA_data_2 <= `BLACK;
 				else
-					VGA_data <= `RED;
+					VGA_data_2 <= `RED;
 			end
+			else
+				VGA_data_2 <= `BLACK;
 		end
 	end
+	else
+		VGA_data_2 <= `BLACK;
 end
+
+always@(posedge clk)
+	VGA_data <= VGA_data_1 | VGA_data_2;
 
 endmodule

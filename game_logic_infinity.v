@@ -21,13 +21,13 @@ module game_logic_infinity
 	input		[4:0]		scored,
 	output	reg [15:0]		seg_infinity,
 	output	reg	[15:0]		led_infinity,
+	output	reg	[5:0]		timer,
 	output	reg				gameover_infinity,
 	output	reg	[4:0]		score_infinity
 	 
 );
 
 reg		[31:0]	cnt;
-reg		[10:0]	timer;
 reg		[4:0]	score;
 
 initial

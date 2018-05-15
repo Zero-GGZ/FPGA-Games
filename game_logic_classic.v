@@ -19,6 +19,7 @@ module game_logic_classic
 	input	[4:0]			scoreb,
 	input	[4:0]			scorec,
 	input	[4:0]			scored,
+	output	reg	[4:0]		HP_value,
 	output	reg [15:0]		seg_classic,
 	output	reg	[15:0]		led_classic,
 	output	reg				gameover_classic,
@@ -28,7 +29,6 @@ module game_logic_classic
 
 reg	[4:0]	score;
 reg	[2:0]	HP_add;
-reg	[4:0]	HP_value;
 
 initial
 begin

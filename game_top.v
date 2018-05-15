@@ -129,6 +129,7 @@ wire	[11:0]	VGA_data_enytank1;
 wire	[11:0]	VGA_data_enytank2;
 wire	[11:0]	VGA_data_enytank3;
 wire	[11:0]	VGA_data_enytank4;
+wire	[11:0]	VGA_data_info;
 wire 	[10:0]	VGA_xpos;
 wire 	[10:0]	VGA_ypos;
 wire 	[11:0]	VGA_data;
@@ -150,7 +151,8 @@ wire		enable_enytank4_app;
 wire		enable_enytank4_phy;
 wire		enable_gamelogic;
 
-wire		[2:0]		HP_value;
+wire		[4:0]		HP_value;
+wire		[5:0]		timer;
 wire		[4:0]		score;
 wire		[11:0]		VGA_data_interface;
 wire		[2:0]		mode;
@@ -248,6 +250,7 @@ game_logic_classic u_game_logic_classic
 	.scoreb				(score2),
 	.scorec				(score3),
 	.scored				(score4),
+	.HP_value			(HP_value),
 	.seg_classic		(seg_classic),
 	.led_classic		(led_classic),
 	.gameover_classic	(gameover_classic),
@@ -262,10 +265,24 @@ game_logic_infinity u_game_logic_infinity
 	.scoreb				(score2),
 	.scorec				(score3),
 	.scored				(score4),
+	.timer				(timer),
 	.seg_infinity		(seg_infinity),
 	.led_infinity		(led_infinity),
 	.gameover_infinity	(gameover_infinity),
 	.score_infinity		(score_infinity)
+);
+
+game_information	u_game_information
+(
+	.clk					(clk_100M),
+	.enable_game_classic	(enable_game_classic),
+	.enable_game_infinity	(enable_game_infinity),
+	.mode					(mode),
+	.HP_print				(HP_value),
+	.time_print				(timer),
+	.VGA_xpos				(VGA_xpos),
+	.VGA_ypos				(VGA_ypos),
+	.VGA_data				(VGA_data_info)
 );
 
 game_SegAndLed 	u_game_SegAndLed
@@ -706,7 +723,7 @@ VGA_data_selector u_VGA_data_selector
 	.in9	(VGA_data_mybul),
 	.in10	(VGA_data_mytank),
 	.in11	(VGA_data_interface),
-	.in12	(0),
+	.in12	(VGA_data_info),
 	.in13	(0),
 	.in14	(0),
 	.in15	(0),
