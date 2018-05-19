@@ -13,7 +13,9 @@ Date		By			Version		Description
 
 module music
 (
-	input		clk,
+	input				clk,
+	input  		enable_music1,
+	input		enable_music2,
 	output reg	audio
 );
 
@@ -21,6 +23,10 @@ module music
 reg [3:0]high,med,low;
 reg [13:0]divider,origin;
 reg [9:0]counter;
+reg [9:0]counter_2;
+initial	counter <= 0;
+initial counter_2 <= 0;
+
 wire carry;
 assign carry = (divider==16383);
 
@@ -44,7 +50,7 @@ parameter L1 =12'b000000000001,
 		  H4 =12'b010000000000,	
 		  H5 =12'b010100000000,
 		  H6 =12'b011000000000,		
-		  H7 =12'b011100000000, 
+		  H7 =12'b011100000000,
 		  E0 =12'b000000000000;
 
 		  
@@ -69,7 +75,8 @@ reg  clk_4Hz;
 
 always @(posedge clk)
 begin
-	if(cnt_4Hz < 12499999)  
+	//if(cnt_4Hz < 12499999)
+	if(cnt_4Hz < 8499999)
 			cnt_4Hz = cnt_4Hz + 1;  // (50m/4hz=12500000,cnt<[12 500 000/2-1=12499999）
 	else  
 		begin  
@@ -87,6 +94,7 @@ begin
 		divider <= divider + 1;
 end
 
+reg		start_flag;
 
 always @(posedge carry)
 	audio <=~ audio; 
@@ -119,9 +127,13 @@ always @(posedge clk_4Hz)
 		E0:origin<=16383;
 		endcase
 end
+
+
 always @(posedge clk_4Hz)
+begin
+	if(enable_music1 == 1'b1)
 	begin
-		if(counter == 696)
+		if(counter >= 259)
 			counter <= 0;
 		else counter <= counter+1;
 		case(counter)
@@ -383,654 +395,84 @@ always @(posedge clk_4Hz)
 		256	:{high,med,low} <= M1 ;
 		257	:{high,med,low} <= E0 ;
 		258	:{high,med,low} <= M1 ;
-		259	:{high,med,low} <= M3 ;
-		260	:{high,med,low} <= E0 ;
-		261	:{high,med,low} <= M3 ;
-		262	:{high,med,low} <= E0 ;
-		263	:{high,med,low} <= M3 ;
-		264	:{high,med,low} <= M3 ;
-		265	:{high,med,low} <= M3 ;
-		266	:{high,med,low} <= M3 ;
-		267	:{high,med,low} <= E0 ;
-		268	:{high,med,low} <= E0 ;
-		269	:{high,med,low} <= M3 ;
-		270	:{high,med,low} <= M3 ;
-		271	:{high,med,low} <= M1 ;
-		272	:{high,med,low} <= L7 ;
-		273	:{high,med,low} <= M1 ;
-		274	:{high,med,low} <= M2 ;
-		275	:{high,med,low} <= M3 ;
-		276	:{high,med,low} <= M4 ;
-		277	:{high,med,low} <= M5 ;
-		278	:{high,med,low} <= M5 ;
-		279	:{high,med,low} <= M5 ;
-		280	:{high,med,low} <= M5 ;
-		281	:{high,med,low} <= M5 ;
-		282	:{high,med,low} <= M5 ;
-		283	:{high,med,low} <= M5 ;
-		284	:{high,med,low} <= M5 ;
-		285	:{high,med,low} <= M5 ;
-		286	:{high,med,low} <= M5 ;
-		287	:{high,med,low} <= M3 ;
-		288	:{high,med,low} <= M2 ;
-		289	:{high,med,low} <= M3 ;
-		290	:{high,med,low} <= M4 ;
-		291	:{high,med,low} <= M5 ;
-		292	:{high,med,low} <= M6 ;
-		293	:{high,med,low} <= M7 ;
-		294	:{high,med,low} <= M7 ;
-		295	:{high,med,low} <= M7 ;
-		296	:{high,med,low} <= M7 ;
-		297	:{high,med,low} <= M7 ;
-		298	:{high,med,low} <= M7 ;
-		299	:{high,med,low} <= M7 ;
-		300	:{high,med,low} <= M7 ;
-		301	:{high,med,low} <= M7 ;
-		302	:{high,med,low} <= M7 ;
-		303	:{high,med,low} <= M5 ;
-		304	:{high,med,low} <= M4 ;
-		305	:{high,med,low} <= M5 ;
-		306	:{high,med,low} <= M6 ;
-		307	:{high,med,low} <= M7 ;
-		308	:{high,med,low} <= H1 ;
-		309	:{high,med,low} <= H2 ;
-		310	:{high,med,low} <= H2 ;
-		311	:{high,med,low} <= H2 ;
-		312	:{high,med,low} <= H2 ;
-		313	:{high,med,low} <= H2 ;
-		314	:{high,med,low} <= H2 ;
-		315	:{high,med,low} <= H2 ;
-		316	:{high,med,low} <= H2 ;
-		317	:{high,med,low} <= M2 ;
-		318	:{high,med,low} <= M2 ;
-		319	:{high,med,low} <= M2 ;
-		320	:{high,med,low} <= M2 ;
-		321	:{high,med,low} <= E0 ;
-		322	:{high,med,low} <= E0 ;
-		323	:{high,med,low} <= M2 ;
-		324	:{high,med,low} <= M3 ;
-		325	:{high,med,low} <= M4 ;
-		326	:{high,med,low} <= E0 ;
-		327	:{high,med,low} <= M4 ;
-		328	:{high,med,low} <= E0 ;
-		329	:{high,med,low} <= M4 ;
-		330	:{high,med,low} <= E0 ;
-		331	:{high,med,low} <= M4 ;
-		332	:{high,med,low} <= E0 ;
-		333	:{high,med,low} <= M4 ;
-		334	:{high,med,low} <= M3 ;
-		335	:{high,med,low} <= M4 ;
-		336	:{high,med,low} <= M4 ;
-		337	:{high,med,low} <= M4 ;
-		338	:{high,med,low} <= M4 ;
-		339	:{high,med,low} <= E0 ;
-		340	:{high,med,low} <= M4 ;
-		341	:{high,med,low} <= M5 ;
-		342	:{high,med,low} <= E0 ;
-		343	:{high,med,low} <= M5 ;
-		344	:{high,med,low} <= E0 ;
-		345	:{high,med,low} <= M5 ;
-		346	:{high,med,low} <= M4 ;
-		347	:{high,med,low} <= M3 ;
-		348	:{high,med,low} <= M4 ;
-		349	:{high,med,low} <= M5 ;
-		350	:{high,med,low} <= M5 ;
-		351	:{high,med,low} <= M5 ;
-		352	:{high,med,low} <= M5 ;
-		353	:{high,med,low} <= M5 ;
-		354	:{high,med,low} <= M5 ;
-		355	:{high,med,low} <= M2 ;
-		356	:{high,med,low} <= M3 ;
-		357	:{high,med,low} <= M4 ;
-		358	:{high,med,low} <= E0 ;
-		359	:{high,med,low} <= M4 ;
-		360	:{high,med,low} <= E0 ;
-		361	:{high,med,low} <= M4 ;
-		362	:{high,med,low} <= E0 ;
-		363	:{high,med,low} <= M4 ;
-		364	:{high,med,low} <= E0 ;
-		365	:{high,med,low} <= M4 ;
-		366	:{high,med,low} <= M3 ;
-		367	:{high,med,low} <= M4 ;
-		368	:{high,med,low} <= M4 ;
-		369	:{high,med,low} <= M4 ;
-		370	:{high,med,low} <= E0 ;
-		371	:{high,med,low} <= M4 ;
-		372	:{high,med,low} <= M4 ;
-		373	:{high,med,low} <= M5 ;
-		374	:{high,med,low} <= E0 ;
-		375	:{high,med,low} <= M5 ;
-		376	:{high,med,low} <= E0 ;
-		377	:{high,med,low} <= M5 ;
-		378	:{high,med,low} <= M4 ;
-		379	:{high,med,low} <= M3 ;
-		380	:{high,med,low} <= M4 ;
-		381	:{high,med,low} <= M5 ;
-		382	:{high,med,low} <= M5 ;
-		383	:{high,med,low} <= M5 ;
-		384	:{high,med,low} <= M5 ;
-		385	:{high,med,low} <= M5 ;
-		386	:{high,med,low} <= M5 ;
-		387	:{high,med,low} <= M1 ;
-		388	:{high,med,low} <= M1 ;
-		389	:{high,med,low} <= M6 ;
-		390	:{high,med,low} <= E0 ;
-		391	:{high,med,low} <= M6 ;
-		392	:{high,med,low} <= E0 ;
-		393	:{high,med,low} <= H1 ;
-		394	:{high,med,low} <= H1 ;
-		395	:{high,med,low} <= H1 ;
-		396	:{high,med,low} <= M6 ;
-		397	:{high,med,low} <= M5 ;
-		398	:{high,med,low} <= E0 ;
-		399	:{high,med,low} <= M5 ;
-		400	:{high,med,low} <= E0 ;
-		401	:{high,med,low} <= M5 ;
-		402	:{high,med,low} <= M4 ;
-		403	:{high,med,low} <= M3 ;
-		404	:{high,med,low} <= M3 ;
-		405	:{high,med,low} <= M4 ;
-		406	:{high,med,low} <= E0 ;
-		407	:{high,med,low} <= M4 ;
-		408	:{high,med,low} <= E0 ;
-		409	:{high,med,low} <= L7 ;
-		410	:{high,med,low} <= L7 ;
-		411	:{high,med,low} <= M4 ;
-		412	:{high,med,low} <= M4 ;
-		413	:{high,med,low} <= M3 ;
-		414	:{high,med,low} <= E0 ;
-		415	:{high,med,low} <= M3 ;
-		416	:{high,med,low} <= E0 ;
-		417	:{high,med,low} <= M3 ;
-		418	:{high,med,low} <= M2 ;
-		419	:{high,med,low} <= M1 ;
-		420	:{high,med,low} <= M1 ;
-		421	:{high,med,low} <= M6 ;
-		422	:{high,med,low} <= E0 ;
-		423	:{high,med,low} <= M6 ;
-		424	:{high,med,low} <= E0 ;
-		425	:{high,med,low} <= H1 ;
-		426	:{high,med,low} <= H1 ;
-		427	:{high,med,low} <= H1 ;
-		428	:{high,med,low} <= M6 ;
-		429	:{high,med,low} <= M5 ;
-		430	:{high,med,low} <= E0 ;
-		431	:{high,med,low} <= M5 ;
-		432	:{high,med,low} <= E0 ;
-		433	:{high,med,low} <= M5 ;
-		434	:{high,med,low} <= M4 ;
-		435	:{high,med,low} <= M3 ;
-		436	:{high,med,low} <= M3 ;
-		437	:{high,med,low} <= M4 ;
-		438	:{high,med,low} <= E0 ;
-		439	:{high,med,low} <= M4 ;
-		440	:{high,med,low} <= E0 ;
-		441	:{high,med,low} <= L7 ;
-		442	:{high,med,low} <= L7 ;
-		443	:{high,med,low} <= M2 ;
-		444	:{high,med,low} <= M2 ;
-		445	:{high,med,low} <= M1 ;
-		446	:{high,med,low} <= M1 ;
-		447	:{high,med,low} <= E0 ;
-		448	:{high,med,low} <= M1 ;
-		449	:{high,med,low} <= E0 ;
-		450	:{high,med,low} <= M1 ;
-		451	:{high,med,low} <= M1 ;
-		452	:{high,med,low} <= E0 ;
-		453	:{high,med,low} <= M1 ;
-		454	:{high,med,low} <= M1 ;
-		455	:{high,med,low} <= E0 ;
-		456	:{high,med,low} <= M1 ;
-		457	:{high,med,low} <= M1 ;
-		458	:{high,med,low} <= E0 ;
-		459	:{high,med,low} <= M1 ;
-		460	:{high,med,low} <= M1 ;
-		461	:{high,med,low} <= M2 ;
-		462	:{high,med,low} <= M2 ;
-		463	:{high,med,low} <= M2 ;
-		464	:{high,med,low} <= M2 ;
-		465	:{high,med,low} <= M5 ;
-		466	:{high,med,low} <= M5 ;
-		467	:{high,med,low} <= M5 ;
-		468	:{high,med,low} <= M4 ;
-		469	:{high,med,low} <= M3 ;
-		470	:{high,med,low} <= M3 ;
-		471	:{high,med,low} <= M1 ;
-		472	:{high,med,low} <= M1 ;
-		473	:{high,med,low} <= M1 ;
-		474	:{high,med,low} <= M1 ;
-		475	:{high,med,low} <= M1 ;
-		476	:{high,med,low} <= M1 ;
-		477	:{high,med,low} <= M1 ;
-		478	:{high,med,low} <= M1 ;
-		479	:{high,med,low} <= M1 ;
-		480	:{high,med,low} <= E0 ;
-		481	:{high,med,low} <= M1 ;
-		482	:{high,med,low} <= M1 ;
-		483	:{high,med,low} <= L7 ;
-		484	:{high,med,low} <= L7 ;
-		485	:{high,med,low} <= L6 ;
-		486	:{high,med,low} <= L6 ;
-		487	:{high,med,low} <= L6 ;
-		488	:{high,med,low} <= E0 ;
-		489	:{high,med,low} <= L6 ;
-		490	:{high,med,low} <= L6 ;
-		491	:{high,med,low} <= L6 ;
-		492	:{high,med,low} <= L5 ;
-		493	:{high,med,low} <= M4 ;
-		494	:{high,med,low} <= M4 ;
-		495	:{high,med,low} <= M3 ;
-		496	:{high,med,low} <= M3 ;
-		497	:{high,med,low} <= M2 ;
-		498	:{high,med,low} <= M2 ;
-		499	:{high,med,low} <= M1 ;
-		500	:{high,med,low} <= M1 ;
-		501	:{high,med,low} <= E0 ;
-		502	:{high,med,low} <= M1 ;
-		503	:{high,med,low} <= M1 ;
-		504	:{high,med,low} <= M1 ;
-		505	:{high,med,low} <= E0 ;
-		506	:{high,med,low} <= E0 ;
-		507	:{high,med,low} <= E0 ;
-		508	:{high,med,low} <= E0 ;
-		509	:{high,med,low} <= L7 ;
-		510	:{high,med,low} <= L7 ;
-		511	:{high,med,low} <= L7 ;
-		512	:{high,med,low} <= L7 ;
-		513	:{high,med,low} <= M2 ;
-		514	:{high,med,low} <= M2 ;
-		515	:{high,med,low} <= M2 ;
-		516	:{high,med,low} <= M2 ;
-		517	:{high,med,low} <= M2 ;
-		518	:{high,med,low} <= E0 ;
-		519	:{high,med,low} <= M2 ;
-		520	:{high,med,low} <= E0 ;
-		521	:{high,med,low} <= M2 ;
-		522	:{high,med,low} <= M2 ;
-		523	:{high,med,low} <= M2 ;
-		524	:{high,med,low} <= E0 ;
-		525	:{high,med,low} <= M2 ;
-		526	:{high,med,low} <= M2 ;
-		527	:{high,med,low} <= E0 ;
-		528	:{high,med,low} <= M2 ;
-		529	:{high,med,low} <= M3 ;
-		530	:{high,med,low} <= M3 ;
-		531	:{high,med,low} <= M3 ;
-		532	:{high,med,low} <= M4 ;
-		533	:{high,med,low} <= M5 ;
-		534	:{high,med,low} <= M5 ;
-		535	:{high,med,low} <= M2 ;
-		536	:{high,med,low} <= M2 ;
-		537	:{high,med,low} <= M2 ;
-		538	:{high,med,low} <= M2 ;
-		539	:{high,med,low} <= M2 ;
-		540	:{high,med,low} <= M2 ;
-		541	:{high,med,low} <= M2 ;
-		542	:{high,med,low} <= M2 ;
-		543	:{high,med,low} <= M2 ;
-		544	:{high,med,low} <= M2 ;
-		545	:{high,med,low} <= M5 ;
-		546	:{high,med,low} <= M5 ;
-		547	:{high,med,low} <= E0 ;
-		548	:{high,med,low} <= M5 ;
-		549	:{high,med,low} <= M4 ;
-		550	:{high,med,low} <= M4 ;
-		551	:{high,med,low} <= M3 ;
-		552	:{high,med,low} <= M3 ;
-		553	:{high,med,low} <= M2 ;
-		554	:{high,med,low} <= M2 ;
-		555	:{high,med,low} <= M1 ;
-		556	:{high,med,low} <= M1 ;
-		557	:{high,med,low} <= L7 ;
-		558	:{high,med,low} <= L7 ;
-		559	:{high,med,low} <= L6 ;
-		560	:{high,med,low} <= L6 ;
-		561	:{high,med,low} <= M2 ;
-		562	:{high,med,low} <= M2 ;
-		563	:{high,med,low} <= L4 ;
-		564	:{high,med,low} <= L4 ;
-		565	:{high,med,low} <= L5 ;
-		566	:{high,med,low} <= L5 ;
-		567	:{high,med,low} <= L5 ;
-		568	:{high,med,low} <= E0 ;
-		569	:{high,med,low} <= L5 ;
-		570	:{high,med,low} <= L5 ;
-		571	:{high,med,low} <= E0 ;
-		572	:{high,med,low} <= L5 ;
-		573	:{high,med,low} <= E0 ;
-		574	:{high,med,low} <= L5 ;
-		575	:{high,med,low} <= L5 ;
-		576	:{high,med,low} <= L5 ;
-		577	:{high,med,low} <= E0 ;
-		578	:{high,med,low} <= L5 ;
-		579	:{high,med,low} <= L7 ;
-		580	:{high,med,low} <= L7 ;
-		581	:{high,med,low} <= M2 ;
-		582	:{high,med,low} <= M2 ;
-		583	:{high,med,low} <= M2 ;
-		584	:{high,med,low} <= E0 ;
-		585	:{high,med,low} <= M2 ;
-		586	:{high,med,low} <= M2 ;
-		587	:{high,med,low} <= M2 ;
-		588	:{high,med,low} <= E0 ;
-		589	:{high,med,low} <= M1 ;
-		590	:{high,med,low} <= M1 ;
-		591	:{high,med,low} <= M1 ;
-		592	:{high,med,low} <= L7 ;
-		593	:{high,med,low} <= L6 ;
-		594	:{high,med,low} <= L6 ;
-		595	:{high,med,low} <= L5 ;
-		596	:{high,med,low} <= L5 ;
-		597	:{high,med,low} <= M1 ;
-		598	:{high,med,low} <= M1 ;
-		599	:{high,med,low} <= M1 ;
-		600	:{high,med,low} <= M1 ;
-		601	:{high,med,low} <= M1 ;
-		602	:{high,med,low} <= M1 ;
-		603	:{high,med,low} <= M1 ;
-		604	:{high,med,low} <= M1 ;
-		605	:{high,med,low} <= M1 ;
-		606	:{high,med,low} <= M1 ;
-		607	:{high,med,low} <= M1 ;
-		608	:{high,med,low} <= M1 ;
-		609	:{high,med,low} <= E0 ;
-		610	:{high,med,low} <= M1 ;
-		611	:{high,med,low} <= M1 ;
-		612	:{high,med,low} <= M2 ;
-		613	:{high,med,low} <= M3 ;
-		614	:{high,med,low} <= M3 ;
-		615	:{high,med,low} <= M3 ;
-		616	:{high,med,low} <= E0 ;
-		617	:{high,med,low} <= M3 ;
-		618	:{high,med,low} <= M3 ;
-		619	:{high,med,low} <= M3 ;
-		620	:{high,med,low} <= E0 ;
-		621	:{high,med,low} <= M4 ;
-		622	:{high,med,low} <= M4 ;
-		623	:{high,med,low} <= M4 ;
-		624	:{high,med,low} <= M3 ;
-		625	:{high,med,low} <= M2 ;
-		626	:{high,med,low} <= M2 ;
-		627	:{high,med,low} <= M1 ;
-		628	:{high,med,low} <= M1 ;
-		629	:{high,med,low} <= M2 ;
-		630	:{high,med,low} <= M2 ;
-		631	:{high,med,low} <= M2 ;
-		632	:{high,med,low} <= M2 ;
-		633	:{high,med,low} <= M2 ;
-		634	:{high,med,low} <= M2 ;
-		635	:{high,med,low} <= M2 ;
-		636	:{high,med,low} <= E0 ;
-		637	:{high,med,low} <= M2 ;
-		638	:{high,med,low} <= M2 ;
-		639	:{high,med,low} <= M2 ;
-		640	:{high,med,low} <= M2 ;
-		641	:{high,med,low} <= M3 ;
-		642	:{high,med,low} <= M3 ;
-		643	:{high,med,low} <= M3 ;
-		644	:{high,med,low} <= M4 ;
-		645	:{high,med,low} <= M5 ;
-		646	:{high,med,low} <= M5 ;
-		647	:{high,med,low} <= M5 ;
-		648	:{high,med,low} <= E0 ;
-		649	:{high,med,low} <= M5 ;
-		650	:{high,med,low} <= M5 ;
-		651	:{high,med,low} <= E0 ;
-		652	:{high,med,low} <= M5 ;
-		653	:{high,med,low} <= M4 ;
-		654	:{high,med,low} <= M4 ;
-		655	:{high,med,low} <= M3 ;
-		656	:{high,med,low} <= M3 ;
-		657	:{high,med,low} <= M2 ;
-		658	:{high,med,low} <= M2 ;
-		659	:{high,med,low} <= M1 ;
-		660	:{high,med,low} <= M1 ;
-		661	:{high,med,low} <= L7 ;
-		662	:{high,med,low} <= L7 ;
-		663	:{high,med,low} <= L6 ;
-		664	:{high,med,low} <= L6 ;
-		665	:{high,med,low} <= L6 ;
-		666	:{high,med,low} <= L6 ;
-		667	:{high,med,low} <= L6 ;
-		668	:{high,med,low} <= L6 ;
-		669	:{high,med,low} <= L6 ;
-		670	:{high,med,low} <= L6 ;
-		671	:{high,med,low} <= L6 ;
-		672	:{high,med,low} <= L6 ;
-		673	:{high,med,low} <= E0 ;
-		674	:{high,med,low} <= L6 ;
-		675	:{high,med,low} <= L6 ;
-		676	:{high,med,low} <= M5 ;
-		677	:{high,med,low} <= M4 ;
-		678	:{high,med,low} <= M4 ;
-		679	:{high,med,low} <= M3 ;
-		680	:{high,med,low} <= M3 ;
-		681	:{high,med,low} <= M2 ;
-		682	:{high,med,low} <= M2 ;
-		683	:{high,med,low} <= M1 ;
-		684	:{high,med,low} <= M1 ;
-		685	:{high,med,low} <= L7 ;
-		686	:{high,med,low} <= L7 ;
-		687	:{high,med,low} <= L7 ;
-		688	:{high,med,low} <= L7 ;
-		689	:{high,med,low} <= L6 ;
-		690	:{high,med,low} <= L6 ;
-		691	:{high,med,low} <= L6 ;
-		692	:{high,med,low} <= L7 ;
-		693	:{high,med,low} <= M1 ;
-		694	:{high,med,low} <= M1 ;
-		695	:{high,med,low} <= M1 ;
-		696	:{high,med,low} <= M1 ;
-endcase
-	end
-
-
-
-
-/*	
-always @(posedge clk_4Hz)
-	begin 
-		case({high,med,low})
-		L1:origin<=4933;
-		L2:origin<=6179;
-		L3:origin<=7292;
-		L4:origin<=7787;
-		L5:origin<=8730;
-		L6:origin<=9565;
-		L7:origin<=10310;
-		M1:origin<=10647;
-		M2:origin<=11272;
-		M3:origin<=11831;
-		M4:origin<=12085;
-		M5:origin<=12556;
-		M6:origin<=12974;
-		M7:origin<=13347;
-		H1:origin<=13515;
-		H2:origin<=13830;
-		H3:origin<=14107;
-		H4:origin<=14236;
-		H5:origin<=14470;
-		H6:origin<=14678;
-		H7:origin<=14858;
-		E0:origin<=16383;
 		endcase
-end
-always @(posedge clk_4Hz)
-	begin
-		if(counter==167)counter<=0;
-		else counter<=counter+1;
-		case(counter)
-		0: {high,med,low}<=M6;
-		1: {high,med,low}<=M7;
-		2: {high,med,low}<=M1;
-		3: {high,med,low}<=M7;
-		4: {high,med,low}<=M1;
-		5: {high,med,low}<=H3;
-		6: {high,med,low}<=M7;
-		7: {high,med,low}<=L7;///
-		8: {high,med,low}<=L3;
-		9: {high,med,low}<=M6;
-		10:{high,med,low}<=M5;
-		11:{high,med,low}<=M6;
-		12:{high,med,low}<=H1;
-		13:{high,med,low}<=M5;
-		14:{high,med,low}<=M5;
-		15:{high,med,low}<=E0;///
-		16:{high,med,low}<=M3;
-		17:{high,med,low}<=M4;
-		18:{high,med,low}<=M3;
-		19:{high,med,low}<=M3;//
-		20:{high,med,low}<=H1;
-		21:{high,med,low}<=M3;
-		22:{high,med,low}<=L3;
-		23:{high,med,low}<=E0;///
-		24:{high,med,low}<=H1;
-		25:{high,med,low}<=H1;
-		26:{high,med,low}<=H1;
-		27:{high,med,low}<=M7;
-		28:{high,med,low}<=M4;
-		29:{high,med,low}<=M7;
-		30:{high,med,low}<=M7;
-		31:{high,med,low}<=E0;///
-		32:{high,med,low}<=M6;
-		33:{high,med,low}<=M7;
-		34:{high,med,low}<=M1;
-		35:{high,med,low}<=M7;
-		36:{high,med,low}<=M1;
-		37:{high,med,low}<=H3;
-		38:{high,med,low}<=M7;
-		39:{high,med,low}<=E0;///
-		40:{high,med,low}<=L3;
-		41:{high,med,low}<=H6;
-		42:{high,med,low}<=M5;
-		43:{high,med,low}<=M6;
-		44:{high,med,low}<=H1;
-		45:{high,med,low}<=M5;
-		46:{high,med,low}<=L5;
-		47:{high,med,low}<=E0;///
-		48:{high,med,low}<=M3;
-		49:{high,med,low}<=M4;
-		50: {high,med,low}<=M1;
-		51: {high,med,low}<=M7;
-		52: {high,med,low}<=L1;
-		53: {high,med,low}<=M2;
-		54: {high,med,low}<=M2;
-		55: {high,med,low}<=M3;
-		56: {high,med,low}<=M1;
-		57: {high,med,low}<=E0;///
-		58: {high,med,low}<=H1;
-		59: {high,med,low}<=M7;
-		60:{high,med,low}<=M6;
-		61:{high,med,low}<=M7;
-		62:{high,med,low}<=M5;
-		63:{high,med,low}<=M6;
-		64:{high,med,low}<=E0;///
-		65:{high,med,low}<=M1;
-		66:{high,med,low}<=M2;
-		67:{high,med,low}<=M3;
-		68:{high,med,low}<=M2;
-		69:{high,med,low}<=M3;
-		70:{high,med,low}<=M5;
-		71:{high,med,low}<=M2;
-		72:{high,med,low}<=E0;///
-		73:{high,med,low}<=M5;
-		74:{high,med,low}<=H1;
-		75:{high,med,low}<=M7;
-		76:{high,med,low}<=H1;
-		77:{high,med,low}<=M3;
-		78:{high,med,low}<=M3;
-		79:{high,med,low}<=L3;///
-		80:{high,med,low}<=M6;
-		81:{high,med,low}<=M7;
-		82:{high,med,low}<=M1;
-		83:{high,med,low}<=M7;
-		84:{high,med,low}<=M1;
-		85:{high,med,low}<=M2;
-		86:{high,med,low}<=M1;
-		87:{high,med,low}<=M5;
-		88:{high,med,low}<=M5;
-		89:{high,med,low}<=L5;///
-		90:{high,med,low}<=H4;
-		91:{high,med,low}<=H3;
-		92:{high,med,low}<=H2;
-		93:{high,med,low}<=H1;
-		94:{high,med,low}<=H3;
-		95:{high,med,low}<=M3;//
-		96:{high,med,low}<=M3;
-		97:{high,med,low}<=H6;
-		98:{high,med,low}<=H6;
-		99:{high,med,low}<=M5;
-		100:{high,med,low}<=M5;
-		101:{high,med,low}<=M3;
-		102:{high,med,low}<=M2;
-		103:{high,med,low}<=M1;///
-		104:{high,med,low}<=H1;
-		105:{high,med,low}<=H2;
-		106:{high,med,low}<=H1;
-		107:{high,med,low}<=H2;
-		108:{high,med,low}<=H5;
-		109:{high,med,low}<=H3;
-		110:{high,med,low}<=E0;///
-		111:{high,med,low}<=M3;
-		112:{high,med,low}<=H6;
-		113:{high,med,low}<=H6;  
-		114:{high,med,low}<=H5;
-		115:{high,med,low}<=H5;
-		116:{high,med,low}<=H3;  
-		117:{high,med,low}<=H2;
-		118:{high,med,low}<=H1;///
-		119:{high,med,low}<=H1;  
-		120:{high,med,low}<=H2;
-		121:{high,med,low}<=H1;
-		122:{high,med,low}<=H2; 
-		123:{high,med,low}<=H5;
-		124:{high,med,low}<=H3;///
-		125:{high,med,low}<=M3;  
-		126:{high,med,low}<=M6;
-		127:{high,med,low}<=M6;
-		128:{high,med,low}<=M5;  
-		129:{high,med,low}<=M5;
-		130:{high,med,low}<=M3;
-		131:{high,med,low}<=M2;   
-		132:{high,med,low}<=M1;///
-		133:{high,med,low}<=M1;
-		134:{high,med,low}<=M2;  
-		135:{high,med,low}<=M1;
-		136:{high,med,low}<=M2;
-		137:{high,med,low}<=M7;
-		138:{high,med,low}<=M6;  ///
-		139:{high,med,low}<=M6;
-		140:{high,med,low}<=M7;
-		141:{high,med,low}<=M1;  
-		142:{high,med,low}<=M7;
-		143:{high,med,low}<=M1;
-		144:{high,med,low}<=H3;
-		145:{high,med,low}<=M7;///
-		146:{high,med,low}<=M3; 
-		147:{high,med,low}<=M6;
-		148:{high,med,low}<=M5;
-		149:{high,med,low}<=M6;
-		150:{high,med,low}<=H1;
-		151:{high,med,low}<=M5;///
-		152:{high,med,low}<=M3;
-	    153:{high,med,low}<=M4;
-		154:{high,med,low}<=M1;
-		155:{high,med,low}<=M7;
-		156:{high,med,low}<=M1;
-		157:{high,med,low}<=M2;
-		158:{high,med,low}<=M3;
-	 	159:{high,med,low}<=M1;///
-		160:{high,med,low}<=M1;
-		161:{high,med,low}<=M7;
-		162:{high,med,low}<=M6;
-		163:{high,med,low}<=M7;
-		164:{high,med,low}<=M5; 
-		165:{high,med,low}<=M6;
-		166:{high,med,low}<=L6;
-		167:{high,med,low}<=E0;  //      
-endcase
 	end
-*/
+	if (enable_music2 == 1'b1 )
+	begin
+	if(start_flag == 1'b0)
+	begin
+		start_flag <= 1'b1;
+		if(counter_2 >= 59)
+				counter_2 <= 0;
+			else counter_2 <= counter_2+1;
+			case(counter_2)
+			1	:{high,med,low} <= M1 ;
+			2	:{high,med,low} <= M1 ;
+			3	:{high,med,low} <= M2 ;
+			4	:{high,med,low} <= M2 ;
+			5	:{high,med,low} <= M3 ;
+			6	:{high,med,low} <= M3 ;
+			7	:{high,med,low} <= M1 ;
+			8	:{high,med,low} <= M1 ;
+			9	:{high,med,low} <= M2 ;
+			10	:{high,med,low} <= M2 ;
+			11	:{high,med,low} <= M3 ;
+			12	:{high,med,low} <= M3 ;
+			13	:{high,med,low} <= E0 ;
+			14	:{high,med,low} <= M3 ;
+			15	:{high,med,low} <= M3 ;
+			16	:{high,med,low} <= M4 ;
+			17	:{high,med,low} <= M4 ;
+			18	:{high,med,low} <= M5 ;
+			19	:{high,med,low} <= M5 ;
+			20	:{high,med,low} <= M3 ;
+			21	:{high,med,low} <= M3 ;
+			22	:{high,med,low} <= M4 ;
+			23	:{high,med,low} <= M4 ;
+			24	:{high,med,low} <= M5 ;
+			25	:{high,med,low} <= M5 ;
+			26	:{high,med,low} <= M4 ;
+			27	:{high,med,low} <= M4 ;
+			28	:{high,med,low} <= M5 ;
+			29	:{high,med,low} <= M5 ;
+			30	:{high,med,low} <= M6 ;
+			31	:{high,med,low} <= M6 ;
+			32	:{high,med,low} <= M4 ;
+			33	:{high,med,low} <= M4 ;
+			34	:{high,med,low} <= M5 ;
+			35	:{high,med,low} <= M5 ;
+			36	:{high,med,low} <= M6 ;
+			37	:{high,med,low} <= M6 ;
+			38	:{high,med,low} <= E0 ;
+			39	:{high,med,low} <= M6 ;
+			40	:{high,med,low} <= M6 ;
+			41	:{high,med,low} <= M7 ;
+			42	:{high,med,low} <= M7 ;
+			43	:{high,med,low} <= H1 ;
+			44	:{high,med,low} <= H1 ;
+			45	:{high,med,low} <= E0 ;
+			46	:{high,med,low} <= H1 ;
+			47	:{high,med,low} <= H1 ;
+			48	:{high,med,low} <= H1 ;
+			49	:{high,med,low} <= E0 ;
+			50	:{high,med,low} <= H1 ;
+			51	:{high,med,low} <= E0 ;
+			52	:{high,med,low} <= H1 ;
+			53	:{high,med,low} <= E0 ;
+			54	:{high,med,low} <= H1 ;
+			55	:{high,med,low} <= E0 ;
+			56	:{high,med,low} <= H1 ;
+			57	:{high,med,low} <= H1 ;
+			58	:{high,med,low} <= E0 ;
+			endcase
+		end
+	end
+	else
+		begin
+		start_flag <= 1'b0;
+		end
+		
+end
 
 endmodule
 
