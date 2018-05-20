@@ -29,6 +29,7 @@ module game_top
 	input 					bt_d,
 	input 					bt_st,
 	input		[4:0]		sw,	
+	input					fpga_rxd,
 	output					Hsync,
 	output					Vsync,
 	output		[3:0]		vgaRed,
@@ -37,7 +38,8 @@ module game_top
 	output		[3:0]		an,
 	output		[6:0]		seg,
 	output					dp,
-	output		[15:0]		led
+	output		[15:0]		led,
+	output					fpga_txd
 );
 
 //----------------------------------------
@@ -179,6 +181,25 @@ wire	[15:0]		led_infinity;
 wire	[5:0]		score_classic;
 wire	[5:0]		score_infinity;
 
+wire			btn_wireless_w;
+wire			btn_wireless_s;
+wire			btn_wireless_a;
+wire			btn_wireless_d;
+wire			btn_wireless_st;
+
+reg			btn_w ;
+reg			btn_s ;
+reg			btn_a ;
+reg			btn_d ;
+reg			btn_st;
+
+/*
+assign 		btn_w = bt_w | btn_wireless_w;
+assign 		btn_s = bt_s | btn_wireless_s;
+assign 		btn_a = bt_a | btn_wireless_a;
+assign 		btn_d = bt_d | btn_wireless_d;
+assign 		btn_st = bt_st | btn_wireless_st;
+*/
 assign 			bul1_x 			= 		bul1_x_feedback;
 assign 			bul2_x 			= 		bul2_x_feedback;
 assign 			bul3_x 			= 		bul3_x_feedback;
@@ -192,6 +213,32 @@ assign			mybul_ypos 		= 		mybul_ypos_feedback;
 assign			mytank_xpos 	= 		mytank_xpos_feedback;
 assign			mytank_ypos 	= 		mytank_ypos_feedback;
 
+
+always@(posedge clk_100M)
+begin
+	if(bt_w == 1 || btn_wireless_w == 1)
+		btn_w <= 1;
+	else
+		btn_w <= 0;
+	if(bt_s == 1 || btn_wireless_s == 1)
+		btn_s <= 1;
+	else
+		btn_s <= 0;
+	if(bt_a == 1 || btn_wireless_a == 1)
+		btn_a <= 1;
+	else
+		btn_a <= 0;
+	if(bt_d == 1 || btn_wireless_d == 1)
+		btn_d <= 1;
+	else
+		btn_d <= 0;
+	if(bt_st == 1 || btn_wireless_st == 1)
+		btn_st <= 1;
+	else
+		btn_st <= 0;
+
+
+end
 
 
 clk_wiz_0 u_VGA_clock
@@ -217,7 +264,7 @@ game_mode_v2  u_game_mode_v2
 (
 	.clk				(clk_100M),
 	.sw					(sw),	
-	.bt_st				(bt_st),
+	.bt_st				(btn_st),
 	.gameover_classic	(gameover_classic),
 	.gameover_infinity	(gameover_infinity),
 	.enable_bul1		(enable_bul1),
@@ -301,7 +348,8 @@ game_SegAndLed 	u_game_SegAndLed
 	.enable_game_infinity	(enable_game_infinity),
 	.an						(an),
 	.seg					(seg),
-	.led					(led)
+	//.led					(led)
+	.led					()
 );
 
 
@@ -317,6 +365,19 @@ game_interface  u_game_interface
 );
 
 
+uart_controller  u_uart_controller
+( 
+	.clk			(clk_100M),		
+	.fpga_rxd		(fpga_rxd),		//pc 2 fpga uart receiver
+	.fpga_txd		(fpga_txd),		//fpga 2 pc uart transfer
+	.bt_w			(btn_wireless_w),
+	.bt_s			(btn_wireless_s),
+	.bt_a			(btn_wireless_a),
+	.bt_d			(btn_wireless_d),
+	.bt_st			(btn_wireless_st),
+	.led			(led)
+);
+
 mytank_app u_mytank_app
 (
 	.clk			(clk_100M),
@@ -325,11 +386,11 @@ mytank_app u_mytank_app
 	.tank_en		(1'b1),	//enable  
 	
 	// input button direction (w,a,s,d)
-	.bt_w			(bt_w),
-	.bt_a			(bt_a),
-	.bt_s			(bt_s),
-	.bt_d			(bt_d),
-	.bt_st			(bt_st), // shoot button
+	.bt_w			(btn_w),
+	.bt_a			(btn_a),
+	.bt_s			(btn_s),
+	.bt_d			(btn_d),
+	.bt_st			(btn_st), // shoot button
 	
 	//input the position of each bullet
 	.bul1_x			(bul1_x),
