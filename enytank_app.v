@@ -22,10 +22,10 @@ Date		By			Version		Description
 module enytank_app
 (
 	input 			clk,
-	input			enable,
+	input			enable,			//全局使能信号，由游戏模式决定
 	input 			clk_4Hz,
 	input 			clk_8Hz,
-	input 			tank_en,
+	input 			tank_en,		//复活使能信号
 	
 	input	[1:0]	tank_num,	
 	
@@ -38,7 +38,7 @@ module enytank_app
 	input 			enybul_state_feedback,
 	
 	output  reg			enybul_state,
-	output	reg			tank_state,
+	output	reg			tank_state,		//坦克状态信号，送生成模块，经tank_en复活
 	output	reg	[4:0] 	enytank_xpos,
 	output	reg	[4:0]	enytank_ypos,
 	output 	reg	[4:0]	score,
@@ -140,6 +140,37 @@ begin
 	end
 end
 
+reg		flag;
+initial flag <= 0;
+
+
+always@(posedge clk)
+begin
+if(enable)
+begin
+	if (tank_state_reg == 1'b0  && tank_en == 1'b1)
+	begin
+		tank_state <= 1'b1;
+		flag <= 0;
+	end
+	if ((tank_state_reg == 1'b1) && (((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))
+									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y ))) 
+								 && flag == 0)
+	begin
+		tank_state <= 1'b0;	
+		score <= score + 1'b1;
+		flag <= 1;
+	end
+end
+else
+	score <= 0;
+end
+
+
+
+
+
+
 //---------------------------------------------------
 //generate and move to my tank by steps and check whether it was hit
 always@(posedge clk_4Hz)
@@ -149,7 +180,6 @@ begin
 	//enemy tank's generation and initialization
 	if (tank_state_reg == 1'b0  && tank_en == 1'b1)
 	begin
-		tank_state <= 1'b1;
 		tank_state_reg <= 1'b1;
 		if(tank_num == 2'b00)
 		begin
@@ -172,7 +202,8 @@ begin
 			enytank_ypos <= 12;
 		end
 	end
-	
+	if(tank_state == 0)
+			tank_state_reg <= 0;
 	//move
 	if (tank_state_reg == 1'b1)
 	begin
@@ -248,23 +279,9 @@ begin
 					end
 				end
 			end
-//	check whether the tank was hit
-	if ((tank_state_reg == 1'b1) && (((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))
-									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y + 1))
-									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y - 1))
-									||((enytank_xpos == mybul_x + 1) && (enytank_ypos == mybul_y))
-									||((enytank_xpos == mybul_x - 1) && (enytank_ypos == mybul_y))
-									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y))
-									))
-	begin
-		tank_state_reg <= 1'b0;
-		tank_state <= 1'b0;	
-		score <= score + 1'b1;
-	end
 end
 else
 	begin
-	score <= 0;
 	tank_state_reg <= 0;
 	end
 end
