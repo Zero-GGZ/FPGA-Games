@@ -187,19 +187,19 @@ wire			btn_wireless_a;
 wire			btn_wireless_d;
 wire			btn_wireless_st;
 
-reg			btn_w ;
-reg			btn_s ;
-reg			btn_a ;
-reg			btn_d ;
-reg			btn_st;
+wire				btn_w ;
+wire				btn_s ;
+wire				btn_a ;
+wire				btn_d ;
+wire				btn_st;
 
-/*
+
 assign 		btn_w = bt_w | btn_wireless_w;
 assign 		btn_s = bt_s | btn_wireless_s;
 assign 		btn_a = bt_a | btn_wireless_a;
 assign 		btn_d = bt_d | btn_wireless_d;
 assign 		btn_st = bt_st | btn_wireless_st;
-*/
+
 assign 			bul1_x 			= 		bul1_x_feedback;
 assign 			bul2_x 			= 		bul2_x_feedback;
 assign 			bul3_x 			= 		bul3_x_feedback;
@@ -214,31 +214,6 @@ assign			mytank_xpos 	= 		mytank_xpos_feedback;
 assign			mytank_ypos 	= 		mytank_ypos_feedback;
 
 
-always@(posedge clk_100M)
-begin
-	if(bt_w == 1 || btn_wireless_w == 1)
-		btn_w <= 1;
-	else
-		btn_w <= 0;
-	if(bt_s == 1 || btn_wireless_s == 1)
-		btn_s <= 1;
-	else
-		btn_s <= 0;
-	if(bt_a == 1 || btn_wireless_a == 1)
-		btn_a <= 1;
-	else
-		btn_a <= 0;
-	if(bt_d == 1 || btn_wireless_d == 1)
-		btn_d <= 1;
-	else
-		btn_d <= 0;
-	if(bt_st == 1 || btn_wireless_st == 1)
-		btn_st <= 1;
-	else
-		btn_st <= 0;
-
-
-end
 
 
 clk_wiz_0 u_VGA_clock
@@ -348,8 +323,7 @@ game_SegAndLed 	u_game_SegAndLed
 	.enable_game_infinity	(enable_game_infinity),
 	.an						(an),
 	.seg					(seg),
-	//.led					(led)
-	.led					()
+	.led					(led)
 );
 
 
@@ -374,8 +348,7 @@ uart_controller  u_uart_controller
 	.bt_s			(btn_wireless_s),
 	.bt_a			(btn_wireless_a),
 	.bt_d			(btn_wireless_d),
-	.bt_st			(btn_wireless_st),
-	.led			(led)
+	.bt_st			(btn_wireless_st)
 );
 
 mytank_app u_mytank_app
