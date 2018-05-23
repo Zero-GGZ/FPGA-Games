@@ -68,7 +68,7 @@ if(enable_game_infinity)
 			score == 25 || score == 30 || score == 35 || score == 40 ||
 			score == 45 || score == 50 || score == 55 || score == 60 || score == 65)
 		begin
-			if(add_flag == 0)
+			if(add_flag == 0 && timer > 0 && timer < 16)
 			begin
 			timer <= timer + 1;
 			add_flag <= 1;
@@ -79,11 +79,21 @@ if(enable_game_infinity)
 		
 		if(reward_addtime == 1 || reward_test == 1)
 		begin
-			if(reward_flag == 0)
-			begin
-			timer <= timer + 1;
-			reward_flag <= 1;
-			end
+			if(reward_flag == 0 && timer > 0 && timer < 16)
+				begin
+					if (timer == 15)
+						timer <= timer + 1;
+					else if(timer == 14)
+						timer <= timer + 2;
+					else 
+						timer <= timer + 3;
+					reward_flag <= 1;
+				end
+			else
+				begin
+				timer <= timer;
+				reward_flag <= 1;
+				end
 		end
 		else
 			reward_flag <= 0;
