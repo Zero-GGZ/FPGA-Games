@@ -15,7 +15,7 @@ module game_SegAndLed
 (
 	input					clk,
 	input		[2:0]		mode,
-	input		[4:0]		sw,
+	input		[15:0]		sw,
 	input		[15:0]		led_classic,
 	input		[15:0]		led_infinity,
 	input		[15:0]		seg_classic,
