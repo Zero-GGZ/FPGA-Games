@@ -9,17 +9,20 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180513		QiiNn		1.0			Initial version
+180523		QiiNn		1.2			Add invincible function
 ========================================================*/
 module game_logic_classic
 (	
 	input					clk,
-	input	[4:0]			sw,
+	input	[15:0]			sw,
 	input					enable_game_classic,
 	input 					mytank_state,
 	input	[4:0]			scorea,
 	input	[4:0]			scoreb,
 	input	[4:0]			scorec,
 	input	[4:0]			scored,
+	input					reward_invincible,
+	input					reward_test,
 	output	reg	[4:0]		HP_value,
 	output	reg [15:0]		seg_classic,
 	output	reg	[15:0]		led_classic,
@@ -43,7 +46,10 @@ end
 
 always@(negedge enable_game_classic or negedge mytank_state)
 begin
-	HP_value <= HP_value - 1;
+	if(reward_invincible == 0 && reward_test == 0)
+		HP_value <= HP_value - 1;
+	else
+		HP_value <= HP_value;
 	if(enable_game_classic == 1'b0)
 	begin
 	HP_value <= 8;

@@ -9,17 +9,20 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180513		QiiNn		1.0			Initial version
+180523		QiiNn		1.2			Add addtime function
 ========================================================*/
 
 module game_logic_infinity
 (
 	input					clk,
-	input		[4:0]		sw,
+	input		[15:0]		sw,
 	input					enable_game_infinity,
 	input		[4:0]		scorea,
 	input		[4:0]		scoreb,
 	input		[4:0]		scorec,
 	input		[4:0]		scored,
+	input					reward_addtime,
+	input					reward_test,
 	output	reg [15:0]		seg_infinity,
 	output	reg	[15:0]		led_infinity,
 	output	reg	[5:0]		timer,
@@ -43,6 +46,8 @@ end
 	
 reg 	add_flag;
 initial add_flag <= 0;
+reg		reward_flag;
+initial	reward_flag <= 0;
 	
 always@(posedge clk)
 begin
@@ -58,6 +63,7 @@ if(enable_game_infinity)
 		begin
 		score_infinity <= 0;
 		score <= scorea + scoreb + scorec + scored;
+		
 		if(score == 5 || score == 10 || score == 15 || score == 20 ||
 			score == 25 || score == 30 || score == 35 || score == 40 ||
 			score == 45 || score == 50 || score == 55 || score == 60 || score == 65)
@@ -69,7 +75,19 @@ if(enable_game_infinity)
 			end
 		end
 		else
-			add_flag <= 0;	
+			add_flag <= 0;
+		
+		if(reward_addtime == 1 || reward_test == 1)
+		begin
+			if(reward_flag == 0)
+			begin
+			timer <= timer + 1;
+			reward_flag <= 1;
+			end
+		end
+		else
+			reward_flag <= 0;
+			
 		seg_infinity <= score;
 		cnt <= cnt + 1;
 		if(cnt == 500000000)
