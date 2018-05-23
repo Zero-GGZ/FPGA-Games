@@ -93,16 +93,16 @@ always@(posedge clk)
 begin
 	if(enable_game_classic || enable_game_infinity )
 	begin
-		if	( (VGA_xpos == 320 && VGA_ypos >= 52 && VGA_ypos <= 68) 
-			||(VGA_xpos == 500 && VGA_ypos >= 52 && VGA_ypos <= 68)	
-			||(VGA_ypos == 52 && VGA_xpos >= 320 && VGA_xpos <= 500)
-			||(VGA_ypos == 68 && VGA_xpos >= 320 && VGA_xpos <= 500) )
+		if	( (VGA_xpos == 320 && VGA_ypos >= 55 && VGA_ypos <= 65) 
+			||(VGA_xpos == 500 && VGA_ypos >= 55 && VGA_ypos <= 65)	
+			||(VGA_ypos == 55 && VGA_xpos >= 320 && VGA_xpos <= 500)
+			||(VGA_ypos == 65 && VGA_xpos >= 320 && VGA_xpos <= 500) )
 			VGA_data_2 <= `RED;
 		else
 			VGA_data_2 <= `BLACK;
 		if(enable_game_classic)
 		begin
-			if (VGA_ypos >= 52 && VGA_ypos <= 68 && VGA_xpos >= 320 && (VGA_xpos <= 320 + HP_print * 20))
+			if (VGA_ypos >= 55 && VGA_ypos <= 65 && VGA_xpos >= 320 && (VGA_xpos <= 320 + HP_print * 20))
 			begin
 				if (VGA_xpos == 340 || VGA_xpos == 360 || VGA_xpos == 380 || VGA_xpos == 400
 					|| VGA_xpos == 420 || VGA_xpos == 440 || VGA_xpos == 460 || VGA_xpos == 480 )
@@ -115,7 +115,7 @@ begin
 		end
 		else
 		begin
-			if (VGA_ypos >= 52 && VGA_ypos <= 68 && VGA_xpos >= 320 && (VGA_xpos <= 320 + time_print * 10))
+			if (VGA_ypos >= 55 && VGA_ypos <= 65 && VGA_xpos >= 320 && (VGA_xpos <= 320 + time_print * 10))
 			begin
 				if (VGA_xpos == 330 || VGA_xpos == 340 || VGA_xpos == 350 || VGA_xpos == 360
 					|| VGA_xpos == 370 || VGA_xpos == 380 || VGA_xpos == 390 || VGA_xpos == 400
