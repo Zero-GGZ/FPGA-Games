@@ -15,6 +15,8 @@ Date		By			Version		Description
 180510		QiiNn		1.6			Add the score counter function
 180512		QiiNn		1.6			1. Change the coordinate
 									2. Add enable interface (need to link it!)
+180521		QiiNn		1.8			Fixed the "Cannot hit" bug
+180523		QiiNn		1.9			Add freezing fuction
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -37,6 +39,9 @@ module enytank_app
 	
 	input 			enybul_state_feedback,
 	
+	input			reward_frozen,
+	input			reward_test,
+	
 	output  reg			enybul_state,
 	output	reg			tank_state,		//坦克状态信号，送生成模块，经tank_en复活
 	output	reg	[4:0] 	enytank_xpos,
@@ -45,8 +50,7 @@ module enytank_app
 	output	reg	[1:0]	tank_dir_out	
 );
 
-reg 	tank_state_reg;
-initial tank_state_reg <= 1'b0;
+
 initial tank_state <= 1'b0;
 reg 	btn_sht;
 
@@ -141,19 +145,30 @@ begin
 end
 
 reg		flag;
-initial flag <= 0;
+reg		restart; 	
+reg		restart_fb;
+
+initial flag 		<= 0;
+initial restart 	<= 1;
+initial restart_fb 	<= 0;
+
 
 
 always@(posedge clk)
 begin
 if(enable)
 begin
-	if (tank_state_reg == 1'b0  && tank_en == 1'b1)
+	if (tank_state == 1'b0  && tank_en == 1'b1)
 	begin
-		tank_state <= 1'b1;
-		flag <= 0;
+		restart <= 1;
+		if (restart_fb == 1)
+		begin
+			tank_state <= 1'b1;
+			flag <= 0;
+			restart <= 0;
+		end
 	end
-	if ((tank_state_reg == 1'b1) && (((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))
+	if ((tank_state == 1'b1) && (((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))
 									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y ))) 
 								 && flag == 0)
 	begin
@@ -178,9 +193,8 @@ begin
 if(enable)
 begin
 	//enemy tank's generation and initialization
-	if (tank_state_reg == 1'b0  && tank_en == 1'b1)
+	if (restart == 1)
 	begin
-		tank_state_reg <= 1'b1;
 		if(tank_num == 2'b00)
 		begin
 			enytank_xpos <= 0;
@@ -201,11 +215,12 @@ begin
 			enytank_xpos <= 24;
 			enytank_ypos <= 12;
 		end
+		restart_fb <= 1;
 	end
-	if(tank_state == 0)
-			tank_state_reg <= 0;
+	else
+		restart_fb <= 0;
 	//move
-	if (tank_state_reg == 1'b1)
+	if (tank_state == 1 && (reward_frozen == 0 && reward_test == 0))
 	begin
 		if (eql)
 			tank_dir_out <= tank_dir_out;
@@ -280,10 +295,7 @@ begin
 				end
 			end
 end
-else
-	begin
-	tank_state_reg <= 0;
-	end
+
 end
 
 //---------------------------------------------------
@@ -294,7 +306,7 @@ if(enable)
 begin
 	if (enybul_state_feedback == 1'b0)
 	begin
-		if ((tank_state_reg == 1'b1) && (btn_sht == 1'b1))
+		if ((tank_state == 1'b1) && (btn_sht == 1'b1))
 			enybul_state <= 1'b1;
 		else
 			enybul_state <= 1'b0;	
