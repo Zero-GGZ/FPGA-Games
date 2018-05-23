@@ -25,8 +25,6 @@ module uart_controller
 );
 
 
-
-
 //------------------------------------
 //Precise clk divider
 wire	divide_clken;
@@ -57,7 +55,8 @@ wire	clken_16bps = divide_clken;
 //Data receive for PC to FPGA.
 
 wire			rxd_flag;
-wire	[7:0]	rxd_data;
+wire		[7:0]	rxd_data;
+
 uart_receiver	u_uart_receiver
 (
 	//gobal clock
