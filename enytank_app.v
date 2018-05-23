@@ -36,11 +36,14 @@ module enytank_app
 	
 	input 	[4:0]	mytank_xpos,
 	input	[4:0]	mytank_ypos,
+	input	[1:0]	mytank_dir,
 	
 	input 			enybul_state_feedback,
 	
 	input			reward_frozen,
-	input			reward_test,
+	input			reward_laser,
+	input			reward_test_frozen,
+	input			reward_test_laser,
 	
 	output  reg			enybul_state,
 	output	reg			tank_state,		//坦克状态信号，送生成模块，经tank_en复活
@@ -147,6 +150,7 @@ end
 reg		flag;
 reg		restart; 	
 reg		restart_fb;
+reg		laser_flag;
 
 initial flag 		<= 0;
 initial restart 	<= 1;
@@ -176,6 +180,62 @@ begin
 		score <= score + 1'b1;
 		flag <= 1;
 	end
+
+	if(tank_state == 1 &&(reward_laser == 1 || reward_test_laser == 1))
+	begin
+		if(eql)
+			tank_state <= 1'b0;
+		else
+			begin
+			if(h_dis == 0 && v_dis != 0 && laser_flag ==0)
+				begin
+				if(mytank_ypos <= enytank_ypos && mytank_dir == 2'b01)
+					begin
+					tank_state <= 1'b0;
+					score <= score + 1'b1;
+					laser_flag <= 1;
+					end
+				else if(mytank_ypos >= enytank_ypos && mytank_dir == 2'b00)
+					begin
+					tank_state <= 1'b0;
+					score <= score + 1'b1;
+					laser_flag <= 1;
+					end
+				else
+					begin
+					tank_state <= 1'b1;
+					laser_flag <= 0;
+					end
+				end
+			else if(h_dis != 0 && v_dis == 0)
+				begin
+				if(mytank_xpos <= enytank_xpos && mytank_dir == 2'b11)
+					begin
+					tank_state <= 1'b0;
+					score <= score + 1'b1;
+					laser_flag <= 1;
+					end
+				else if(mytank_xpos >= enytank_xpos && mytank_dir == 2'b10)
+					begin
+					tank_state <= 1'b0;
+					score <= score + 1'b1;
+					laser_flag <= 1;
+					end
+				else
+					begin
+					tank_state <= 1'b1;
+					laser_flag <= 0;
+					end
+				end
+			else
+				begin
+				tank_state <= 1'b1;
+				laser_flag <= 0;
+				end
+			end
+	end	
+
+	
 end
 else
 	score <= 0;
@@ -220,7 +280,7 @@ begin
 	else
 		restart_fb <= 0;
 	//move
-	if (tank_state == 1 && (reward_frozen == 0 && reward_test == 0))
+	if (tank_state == 1 && (reward_frozen == 0 && reward_test_frozen == 0))
 	begin
 		if (eql)
 			tank_dir_out <= tank_dir_out;
