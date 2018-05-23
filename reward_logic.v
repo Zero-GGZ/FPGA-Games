@@ -30,22 +30,25 @@ module reward_logic
 	output	reg 		reward_frozen,
 	output	reg 		reward_laser,
 	output	 [11:0]		VGA_data_reward,
-	
+
 	output				set_finish_test,
-	output				set_require_test,
-	output				display_test
+	output				set_require_test
 );
 
 assign	set_finish_test = set_finish;
 assign	set_require_test = set_require;
 
-
 wire	[2:0]	reward_type;
 wire	[4:0] 		random_xpos;
 wire	[4:0]		random_ypos;
-reg	[31:0]		cnt;
+reg	[9:0]		cnt;
 wire			set_require;
 reg				set_finish;
+wire	[11:0]	VGA_data_icon;
+wire	[11:0]	VGA_data_information;
+
+assign			VGA_data_reward = VGA_data_icon | VGA_data_information;
+
 
 always@(posedge clk_4Hz)
 begin
@@ -82,15 +85,15 @@ begin
 	else
 		set_finish <= 1'b0;
 	
-	if(reward_invincible)
-	begin
+//	if(reward_invincible)
+	//begin
 		cnt <= cnt + 1;
 		if (cnt >= 20)
 			begin
 			reward_invincible <= 1'b0;
 			cnt <= 0;
 			end
-	end
+//	end
 	
 	if(reward_faster)
 	begin
@@ -147,10 +150,23 @@ reward_display		u_reward_display
 	.reward_type		(reward_type),
 	.VGA_xpos			(VGA_xpos),
 	.VGA_ypos			(VGA_ypos),
-	.VGA_data			(VGA_data_reward),
+	.VGA_data			(VGA_data_icon),
 	
 	// test interface
-	.display_test				(display_test)
+	.display_test				()
+);
+
+reward_information	u_reward_information
+(
+	.clk				(clk),
+	.reward_cnt			(cnt),
+	.reward_invincible	(reward_invincible),
+	.reward_frozen		(reward_frozen),
+	.reward_faster		(reward_faster),
+	.reward_laser		(reward_laser),
+	.VGA_xpos			(VGA_xpos),
+	.VGA_ypos			(VGA_ypos),
+	.VGA_data			(VGA_data_information)
 );
 
 

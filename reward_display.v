@@ -40,12 +40,6 @@ reg		[9:0]	addr_faster;
 reg		[9:0]	addr_frozen;
 reg		[9:0]	addr_protect;
 
-reg				en_addtime;
-reg				en_faster;
-reg				en_frozen;
-reg				en_protect;
-reg				en_laser;
-
 wire			dout_addtime;
 wire			dout_faster;
 wire			dout_frozen;
