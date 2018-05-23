@@ -10,10 +10,13 @@ Date		By			Version		Description
 ----------------------------------------------------------
 180508		QiiNn		1.0			Initial coding completed(unverified)
 180510		QiiNn		1.0			Add the 2Hz clock for enemy tanks
+180522		QiiNn		1.2			Add "Faster" function
 ========================================================*/
 module clock
 (
 	input				clk,
+	input				reward_faster,
+	input				reward_test,		//test interface
 	output 	reg			clk_4Hz,
 	output 	reg			clk_8Hz,
 	output	reg			clk_2Hz
@@ -22,6 +25,8 @@ module clock
 reg	[25:0]	cnt_2Hz;
 reg [25:0]	cnt_4Hz;
 reg	[27:0]	cnt_8Hz;
+
+reg	[25:0]	ending_4Hz;
 
 initial cnt_4Hz <= 26'b0;
 initial cnt_8Hz <= 26'b0;
@@ -44,14 +49,22 @@ end
 
 always@(posedge clk)
 begin
+	if(reward_faster == 1'b1 || reward_test == 1'b1)
+		ending_4Hz <= 6250000;
+	else
+		ending_4Hz <= 12500000;
+end
+
+always@(posedge clk)
+begin
 	cnt_4Hz <= cnt_4Hz + 26'b1;
-	if (cnt_4Hz >= 12500000)		
+	if (cnt_4Hz >= ending_4Hz)		
 	begin
 		clk_4Hz <= 1;
 		
 	end
 	else clk_4Hz <= 0;
-	if	(cnt_4Hz >= 25000000)
+	if	(cnt_4Hz >= (ending_4Hz * 2) )
 	begin	
 		cnt_4Hz <= 26'b0;
 	end
