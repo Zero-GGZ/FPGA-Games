@@ -28,7 +28,7 @@ module game_top
 	input 					bt_s,
 	input 					bt_d,
 	input 					bt_st,
-	input		[4:0]		sw,	
+	input		[15:0]		sw,	
 	input					fpga_rxd,
 	output					Hsync,
 	output					Vsync,
@@ -133,6 +133,7 @@ wire	[11:0]	VGA_data_enytank2;
 wire	[11:0]	VGA_data_enytank3;
 wire	[11:0]	VGA_data_enytank4;
 wire	[11:0]	VGA_data_info;
+wire	[11:0]	VGA_data_reward;
 wire 	[10:0]	VGA_xpos;
 wire 	[10:0]	VGA_ypos;
 wire 	[11:0]	VGA_data;
@@ -153,6 +154,7 @@ wire		enable_enytank3_phy;
 wire		enable_enytank4_app;
 wire		enable_enytank4_phy;
 wire		enable_gamelogic;
+wire		enable_reward;
 
 wire		[4:0]		HP_value;
 wire		[5:0]		timer;
@@ -193,6 +195,11 @@ wire				btn_a ;
 wire				btn_d ;
 wire				btn_st;
 
+wire				reward_addtime;
+wire				reward_faster;
+wire				reward_frozen;
+wire				reward_invincible;
+wire				reward_laser;
 
 assign 		btn_w = bt_w | btn_wireless_w;
 assign 		btn_s = bt_s | btn_wireless_s;
@@ -229,6 +236,8 @@ clk_wiz_0 u_VGA_clock
 clock u_clock
 (
 	.clk			(clk_100M),
+	.reward_faster	(reward_faster),
+	.reward_test	(sw[3]),
 	.clk_4Hz		(clk_4Hz),
 	.clk_8Hz		(clk_8Hz),
 	.clk_2Hz		(clk_2Hz)
@@ -259,6 +268,7 @@ game_mode_v2  u_game_mode_v2
 	.enable_enytank4_phy(enable_enytank4_phy),
 	.enable_game_classic(enable_game_classic),
 	.enable_game_infinity(enable_game_infinity),
+	.enable_reward		(enable_reward),
 	.mode				(mode)
 );   
 
@@ -272,6 +282,8 @@ game_logic_classic u_game_logic_classic
 	.scoreb				(score2),
 	.scorec				(score3),
 	.scored				(score4),
+	.reward_invincible	(reward_invincible),
+	.reward_test		(sw[5]),
 	.HP_value			(HP_value),
 	.seg_classic		(seg_classic),
 	.led_classic		(led_classic),
@@ -288,6 +300,8 @@ game_logic_infinity u_game_logic_infinity
 	.scoreb				(score2),
 	.scorec				(score3),
 	.scored				(score4),
+	.reward_addtime		(reward_addtime),
+	.reward_test		(sw[4]),
 	.timer				(timer),
 	.seg_infinity		(seg_infinity),
 	.led_infinity		(led_infinity),
@@ -351,6 +365,30 @@ uart_controller  u_uart_controller
 	.bt_st			(btn_wireless_st)
 );
 
+reward_logic	u_reward_logic
+(
+	.clk					(clk_100M),
+	.clk_4Hz				(clk_4Hz),
+	.enable_reward			(enable_reward),
+	.enable_game_classic	(enable_game_classic),
+	.enable_game_infinity	(enable_game_infinity),
+	.mytank_xpos			(mytank_xpos), 
+	.mytank_ypos			(mytank_ypos),
+	.VGA_xpos				(VGA_xpos),
+	.VGA_ypos				(VGA_ypos),
+	.reward_invincible		(reward_invincible),
+	.reward_addtime			(reward_addtime),
+	.reward_faster			(reward_faster),
+	.reward_frozen			(reward_frozen),
+	.reward_laser			(reward_laser),
+	.VGA_data_reward		(VGA_data_reward),
+	
+	//test interface
+	.random_out				(),
+	.set_finish_test		(),
+	.set_require_test		()
+);
+
 mytank_app u_mytank_app
 (
 	.clk			(clk_100M),
@@ -403,6 +441,8 @@ enytank_app u_enytank1_app
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
+	.reward_frozen	(reward_frozen),
+	.reward_test	(sw[2]),
 	
 	.score				(score1),
 	
@@ -429,6 +469,8 @@ enytank_app u_enytank2_app
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
+	.reward_frozen	(reward_frozen),
+	.reward_test	(sw[2]),
 	
 	.score				(score2),
 	
@@ -453,6 +495,8 @@ enytank_app u_enytank3_app
 	.tank_num		(2'b10),
 	.mybul_x		(mybul_xpos),
 	.mybul_y		(mybul_ypos),
+	.reward_frozen	(reward_frozen),
+	.reward_test	(sw[2]),
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
@@ -480,6 +524,8 @@ enytank_app u_enytank4_app
 	.tank_num		(2'b11),
 	.mybul_x		(mybul_xpos),
 	.mybul_y		(mybul_ypos),
+	.reward_frozen	(reward_frozen),
+	.reward_test	(sw[2]),
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
@@ -765,7 +811,7 @@ VGA_data_selector u_VGA_data_selector
 	.in10	(VGA_data_mytank),
 	.in11	(VGA_data_interface),
 	.in12	(VGA_data_info),
-	.in13	(0),
+	.in13	(VGA_data_reward),
 	.in14	(0),
 	.in15	(0),
 	.in16	(0),
