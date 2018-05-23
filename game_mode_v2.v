@@ -8,13 +8,14 @@ Description			:
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180515		QiiNn		1.0			
+180515		QiiNn		1.0			Initial version
+180523		QiiNn		1.2			Add reward function enable interface
 ========================================================*/
 
 module  game_mode_v2
 (
 	input 				clk,
-	input	[4:0]		sw,	
+	input	[15:0]		sw,	
 	input				bt_st,
 	input				gameover_classic,
 	input				gameover_infinity,
@@ -35,6 +36,7 @@ module  game_mode_v2
 	output		reg		enable_enytank4_phy,
 	output		reg		enable_game_classic,
 	output		reg		enable_game_infinity,
+	output		reg		enable_reward,
 	output 		reg		[2:0] mode
 );              
                 
@@ -62,9 +64,10 @@ begin
 	enable_enytank4_phy <= 1'b0;
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b0;
+	enable_reward		<= 1'b0;
 	if(bt_st == 1)
 	begin
-		if(sw[4])
+		if(sw[15])
 			mode <= 2;
 		else
 			mode <= 1;
@@ -91,6 +94,7 @@ begin
 	enable_enytank4_phy <= 1'b1;
 	enable_game_classic	<= 1'b1;
 	enable_game_infinity<= 1'b0;
+	enable_reward		<= 1'b1;
 	if( gameover_classic == 1)
 		mode <= 3;
 	else
@@ -115,6 +119,7 @@ begin
 	enable_enytank4_phy <= 1'b1;
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b1;
+	enable_reward		<= 1'b1;
 	if( gameover_infinity == 1)
 		mode <= 3;
 	else
@@ -139,6 +144,7 @@ begin
 	enable_enytank4_phy <= 1'b0;
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b0;
+	enable_reward		<= 1'b0;
 	if(sw[0] == 1)
 		mode <= 0;
 	else
