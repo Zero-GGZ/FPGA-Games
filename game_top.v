@@ -134,6 +134,7 @@ wire	[11:0]	VGA_data_enytank3;
 wire	[11:0]	VGA_data_enytank4;
 wire	[11:0]	VGA_data_info;
 wire	[11:0]	VGA_data_reward;
+wire	[11:0]	VGA_data_reward_laser;
 wire 	[10:0]	VGA_xpos;
 wire 	[10:0]	VGA_ypos;
 wire 	[11:0]	VGA_data;
@@ -389,6 +390,20 @@ reward_logic	u_reward_logic
 	.set_require_test		()
 );
 
+
+reward_laser	u_reward_laser
+(
+	.clk			(clk_100M),
+	.reward_laser	(reward_laser),
+	.mytank_xpos	(mytank_xpos),
+	.mytank_ypos	(mytank_ypos),
+	.mytank_dir		(mytank_dir),
+	.VGA_xpos		(VGA_xpos),
+	.VGA_ypos		(VGA_ypos),
+	.reward_test	(sw[1]),
+	.VGA_data		(VGA_data_reward_laser)
+);
+
 mytank_app u_mytank_app
 (
 	.clk			(clk_100M),
@@ -442,7 +457,11 @@ enytank_app u_enytank1_app
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
 	.reward_frozen	(reward_frozen),
-	.reward_test	(sw[2]),
+	.reward_laser	(reward_laser),
+	.reward_test_frozen	(sw[2]),
+	.reward_test_laser	(sw[1]),
+	.mytank_dir			(mytank_dir),
+	
 	
 	.score				(score1),
 	
@@ -470,7 +489,10 @@ enytank_app u_enytank2_app
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
 	.reward_frozen	(reward_frozen),
-	.reward_test	(sw[2]),
+	.reward_laser	(reward_laser),
+	.reward_test_frozen	(sw[2]),
+	.reward_test_laser	(sw[1]),
+	.mytank_dir			(mytank_dir),
 	
 	.score				(score2),
 	
@@ -496,7 +518,10 @@ enytank_app u_enytank3_app
 	.mybul_x		(mybul_xpos),
 	.mybul_y		(mybul_ypos),
 	.reward_frozen	(reward_frozen),
-	.reward_test	(sw[2]),
+	.reward_laser	(reward_laser),
+	.reward_test_frozen	(sw[2]),
+	.reward_test_laser	(sw[1]),
+	.mytank_dir			(mytank_dir),
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
@@ -525,7 +550,10 @@ enytank_app u_enytank4_app
 	.mybul_x		(mybul_xpos),
 	.mybul_y		(mybul_ypos),
 	.reward_frozen	(reward_frozen),
-	.reward_test	(sw[2]),
+	.reward_laser	(reward_laser),
+	.reward_test_frozen	(sw[2]),
+	.reward_test_laser	(sw[1]),
+	.mytank_dir			(mytank_dir),
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
@@ -812,7 +840,7 @@ VGA_data_selector u_VGA_data_selector
 	.in11	(VGA_data_interface),
 	.in12	(VGA_data_info),
 	.in13	(VGA_data_reward),
-	.in14	(0),
+	.in14	(VGA_data_reward_laser),
 	.in15	(0),
 	.in16	(0),
 	.in17	(0),
