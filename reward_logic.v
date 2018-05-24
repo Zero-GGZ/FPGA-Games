@@ -56,36 +56,54 @@ always@(posedge clk_4Hz)
 begin
 if(enable_reward)
 begin
-	if(random_xpos != 0 && random_ypos != 0)
-	begin
-			if(set_require == 1'b1 &&(random_xpos == mytank_xpos)&& (random_ypos == mytank_ypos))
-				begin
-				case(reward_type)
-				1 : 
-					begin
-					if(enable_game_classic)
-						reward_invincible <= 1'b1;
-					if(enable_game_infinity)
-						reward_addtime <= 1'b1;
-					end
-				2 :	reward_faster <= 1'b1;
-				3 :	reward_frozen <= 1'b1;		
-				4 :	reward_laser <= 1'b1;
-				default :
-				begin
-					reward_invincible	<= 1'b0;
-					reward_addtime		<= 1'b0;
-					reward_faster		<= 1'b0;
-					reward_frozen		<= 1'b0;
-					reward_laser		<= 1'b0;
-				end
-				endcase
-				set_finish <= 1'b1;
-				end
+
+	if(	(set_require == 1'b1 &&(random_xpos == mytank_xpos)&& (random_ypos == mytank_ypos)) 
+		|| sw[5] == 1 || sw[4] == 1 || sw[3] == 1 || sw[2] == 1 || sw[1] == 1)
+		begin
+		if(sw[5] == 1 || sw[4] == 1 || sw[3] == 1 || sw[2] == 1 || sw[1] == 1)
+			begin
+			if (sw[5])
+				reward_invincible <= 1'b1;
+			else if(sw[3])
+				reward_faster <= 1'b1;
+			else if(sw[2])
+				reward_frozen <= 1'b1;
+			else if(sw[1])
+				reward_laser <= 1'b1;
 			else
-				set_finish <= 1'b0;
-			
-	end
+				begin
+				reward_invincible	<= 1'b0;
+				reward_addtime		<= 1'b0;
+				reward_faster		<= 1'b0;
+				reward_frozen		<= 1'b0;
+				reward_laser		<= 1'b0;
+				end
+			end
+		else
+			begin
+			case(reward_type)
+			1 : 
+				begin
+				if(enable_game_classic)
+					reward_invincible <= 1'b1;
+				if(enable_game_infinity)
+					reward_addtime <= 1'b1;
+				end
+			2 :	reward_faster <= 1'b1;
+			3 :	reward_frozen <= 1'b1;		
+			4 :	reward_laser <= 1'b1;
+			default :
+			begin
+				reward_invincible	<= 1'b0;
+				reward_addtime		<= 1'b0;
+				reward_faster		<= 1'b0;
+				reward_frozen		<= 1'b0;
+				reward_laser		<= 1'b0;
+			end
+			endcase
+			set_finish <= 1'b1;
+			end
+		end
 	else
 		set_finish <= 1'b0;
 	
@@ -94,7 +112,7 @@ begin
 	if(reward_invincible)
 	begin
 		cnt <= cnt + 1;
-		if (cnt >= 20)
+		if (cnt >= 30)
 			begin
 			reward_invincible <= 1'b0;
 			cnt <= 0;
@@ -104,7 +122,7 @@ begin
 	if(reward_faster)
 	begin
 		cnt <= cnt + 1;
-		if (cnt >= 20)
+		if (cnt >= 30)
 			begin
 			reward_faster <= 1'b0;
 			cnt <= 0;
@@ -114,7 +132,7 @@ begin
 	if(reward_frozen)
 	begin
 		cnt <= cnt + 1;
-		if (cnt >= 20)
+		if (cnt >= 30)
 			begin
 			reward_frozen <= 1'b0;
 			cnt <= 0;
@@ -124,7 +142,7 @@ begin
 	if(reward_laser)
 	begin
 		cnt <= cnt + 1;
-		if (cnt >= 20)
+		if (cnt >= 30)
 			begin
 			reward_laser <= 1'b0;
 			cnt <= 0;
