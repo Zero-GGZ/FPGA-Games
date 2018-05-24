@@ -14,7 +14,8 @@ Date		By			Version		Description
 module game_logic_classic
 (	
 	input					clk,
-	input	[15:0]			sw,
+	input					btn_return,
+	input					btn_stop,
 	input					enable_game_classic,
 	input 					mytank_state,
 	input	[4:0]			scorea,
@@ -63,7 +64,7 @@ begin
 	begin
 		gameover_classic <= 0;
 		seg_classic <= score;
-		if(sw[0])
+		if(btn_return)
 			begin
 			score <= 0;
 			seg_classic <= 0;
@@ -75,7 +76,7 @@ begin
 	score <= scorea + scoreb + scorec + scored;
 	seg_classic <= score;
 	led_classic <= HP_value;
-	if(HP_value == 0)
+	if(HP_value == 0 || btn_stop == 1)
 	begin
 		gameover_classic <= 1;
 		score_classic <= score;

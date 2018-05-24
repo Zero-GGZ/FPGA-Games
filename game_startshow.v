@@ -88,6 +88,7 @@ bullet show1_bul
 	.bul_dir	(show1_dir_out),	//the direction of bullet
 	.bul_state	(show1_sht_auto),	//the state of my bullet
 	
+	.bul_ide	(1'b1),
 	.tank_xpos	(show1_x),
 	.tank_ypos	(show1_y),
 	//input and output the position of my bullet
@@ -153,7 +154,7 @@ bullet show2_bul
 	.clk_8Hz	(clk_8Hz),
 	.enable		(show_en),
 
-	
+	.bul_ide	(1'b0),
 	.bul_dir	(show2_dir_out),	//the direction of bullet
 	.bul_state	(show2_sht_auto),	//the state of my bullet
 	

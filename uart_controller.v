@@ -8,7 +8,8 @@ Description			:				the uart top module
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180518		QiiNn		1.0		
+180518		QiiNn		1.0			Initial version
+180524		QiiNn		1.5			Add functional buttons
 ========================================================*/
 
 module uart_controller
@@ -20,7 +21,11 @@ module uart_controller
 	output	reg			bt_s,
 	output	reg			bt_a,
 	output	reg			bt_d,
-	output	reg			bt_st,
+	output	reg			bt_st, 
+	output 	reg			bt_tri,
+	output	reg			bt_sqr,
+	output	reg			bt_cir,
+	output	reg			bt_cro,
 	output	reg		[15:0] led
 );
 
@@ -140,6 +145,54 @@ begin
 	begin
 		bt_st <= 1'b0;
 		led[11] <= 1'b0;
+	end
+end
+
+always@(posedge clk)
+begin
+	if(rxd_data == 8'h49)
+	begin
+		bt_tri <= 1'b1;
+	end
+	else
+	begin
+		bt_tri <= 1'b0;
+	end
+end
+
+always@(posedge clk)
+begin
+	if(rxd_data == 8'h4B)
+	begin
+		bt_sqr <= 1'b1;
+	end
+	else
+	begin
+		bt_sqr <= 1'b0;
+	end
+end
+
+always@(posedge clk)
+begin
+	if(rxd_data == 8'h4C)
+	begin
+		bt_cir <= 1'b1;
+	end
+	else
+	begin
+		bt_cir <= 1'b0;
+	end
+end
+
+always@(posedge clk)
+begin
+	if(rxd_data == 8'h4A)
+	begin
+		bt_cro <= 1'b1;
+	end
+	else
+	begin
+		bt_cro <= 1'b0;
 	end
 end
 

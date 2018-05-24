@@ -15,7 +15,8 @@ Date		By			Version		Description
 module game_logic_infinity
 (
 	input					clk,
-	input		[15:0]		sw,
+	input					btn_return,
+	input					btn_stop,
 	input					enable_game_infinity,
 	input		[4:0]		scorea,
 	input		[4:0]		scoreb,
@@ -53,7 +54,7 @@ always@(posedge clk)
 begin
 if(enable_game_infinity)
 	begin
-	if(timer == 0)		
+	if(timer == 0 || btn_stop == 1)		
 		begin
 		timer <= 16;
 		score_infinity <= score;
@@ -75,7 +76,7 @@ if(enable_game_infinity)
 			end
 		end
 		else
-			add_flag <= 0;
+			add_flag <= 0;		
 		
 		if(reward_addtime == 1 || reward_test == 1)
 		begin
@@ -114,7 +115,7 @@ else
 	gameover_infinity <= 0;
 	cnt <= 0;
 	timer <= 16;
-	if(sw[0])
+	if(btn_return)
 		begin
 		seg_infinity <= 0;
 		score <= 0;

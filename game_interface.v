@@ -10,6 +10,7 @@ Date		By			Version		Description
 ----------------------------------------------------------
 180512		QiiNn		1.0			Initial Version
 180514		QiiNn		1.1			Change the size of background picture (16bit -> 8bit)
+180524		QiiNn		1.2			Add cursor display
 ========================================================*/
 
 module game_interface 
@@ -17,6 +18,7 @@ module game_interface
 	input					clk,
 	input					clk_4Hz,
 	input					clk_8Hz,
+	input					btn_mode_sel,
 	input	[2:0]			mode,
 	input 	[10:0]			VGA_xpos,
 	input	[10:0]			VGA_ypos,
@@ -34,6 +36,7 @@ reg		[2:0]	start_reg;
 wire	[2:0]	gameover_pic;
 reg 	[2:0]	gameover_reg;
 wire	[11:0]	VGA_data_show;
+reg		[11:0]	VGA_data_cursor;
 
 always @(posedge clk)
 begin
@@ -85,6 +88,33 @@ begin
 		start_reg <= 0;
 end
 
+//-----------------------------------------------------------------------
+// cursor display
+// x:  95 + (134 ~ 138) = 229 ~ 233
+// y1: 90 + (143 ~ 147) = 233 ~ 237
+// y2: 90 + (162 ~ 166) = 252 ~ 256
+
+always@(posedge clk)
+begin
+	if(btn_mode_sel)
+	begin
+		if(VGA_xpos >= 229 && VGA_xpos <= 233 && VGA_ypos >= 233 && VGA_ypos <= 237)
+			VGA_data_cursor <= 12'hFF0;
+		else
+			VGA_data_cursor <= 12'h0;
+	end
+	else
+	begin
+		if(VGA_xpos >= 229 && VGA_xpos <= 233 && VGA_ypos >= 252 && VGA_ypos <= 256)
+			VGA_data_cursor <= 12'hFF0;
+		else
+			VGA_data_cursor <= 12'h0;
+	end
+
+end
+
+
+
 
 start_pic u_start_pic (
   .clka(clk),    // input wire clka
@@ -111,18 +141,18 @@ always@(posedge clk)
 case	(mode)
 	0 :
 		begin
-			VGA_data[0] 	= 	background_pic[0]	|	VGA_data_show[0]	|	start_reg[0];
-			VGA_data[1] 	=	background_pic[0]	|	VGA_data_show[1]	|	start_reg[0];
-			VGA_data[2] 	=	background_pic[1]	|	VGA_data_show[2]	|	start_reg[0];
-			VGA_data[3] 	=	background_pic[1]	|	VGA_data_show[3]	|	start_reg[0];
-			VGA_data[4] 	= 	background_pic[2]	|	VGA_data_show[4]	|	start_reg[1];
-			VGA_data[5] 	= 	background_pic[2]	|	VGA_data_show[5]	|	start_reg[1];
-			VGA_data[6] 	= 	background_pic[3]	|	VGA_data_show[6]	|	start_reg[1];
-			VGA_data[7] 	= 	background_pic[4]	|	VGA_data_show[7]	|	start_reg[1];
-			VGA_data[8] 	= 	background_pic[5]	|	VGA_data_show[8]	|	start_reg[2];
-			VGA_data[9] 	= 	background_pic[5]	|	VGA_data_show[9]	|	start_reg[2];
-			VGA_data[10] 	= 	background_pic[6]	|	VGA_data_show[10]	|	start_reg[2];
-			VGA_data[11] 	= 	background_pic[7]	|	VGA_data_show[11]	|	start_reg[2];
+			VGA_data[0] 	= 	background_pic[0]	|	VGA_data_show[0]	|	start_reg[0]	|	VGA_data_cursor[0];
+			VGA_data[1] 	=	background_pic[0]	|	VGA_data_show[1]	|	start_reg[0]	|	VGA_data_cursor[1];
+			VGA_data[2] 	=	background_pic[1]	|	VGA_data_show[2]	|	start_reg[0]	|	VGA_data_cursor[2];
+			VGA_data[3] 	=	background_pic[1]	|	VGA_data_show[3]	|	start_reg[0]	|	VGA_data_cursor[3];
+			VGA_data[4] 	= 	background_pic[2]	|	VGA_data_show[4]	|	start_reg[1]	|	VGA_data_cursor[4];
+			VGA_data[5] 	= 	background_pic[2]	|	VGA_data_show[5]	|	start_reg[1]	|	VGA_data_cursor[5];
+			VGA_data[6] 	= 	background_pic[3]	|	VGA_data_show[6]	|	start_reg[1]	|	VGA_data_cursor[6];
+			VGA_data[7] 	= 	background_pic[4]	|	VGA_data_show[7]	|	start_reg[1]	|	VGA_data_cursor[7];
+			VGA_data[8] 	= 	background_pic[5]	|	VGA_data_show[8]	|	start_reg[2]	|	VGA_data_cursor[8];
+			VGA_data[9] 	= 	background_pic[5]	|	VGA_data_show[9]	|	start_reg[2]	|	VGA_data_cursor[9];
+			VGA_data[10] 	= 	background_pic[6]	|	VGA_data_show[10]	|	start_reg[2]	|	VGA_data_cursor[10];
+			VGA_data[11] 	= 	background_pic[7]	|	VGA_data_show[11]	|	start_reg[2]	|	VGA_data_cursor[11];
 		end
 	1:
 		begin

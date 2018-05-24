@@ -15,8 +15,9 @@ Date		By			Version		Description
 module  game_mode_v2
 (
 	input 				clk,
-	input	[15:0]		sw,	
 	input				bt_st,
+	input				btn_mode_sel,
+	input				btn_return,
 	input				gameover_classic,
 	input				gameover_infinity,
 	output		reg		enable_bul1,
@@ -67,10 +68,10 @@ begin
 	enable_reward		<= 1'b0;
 	if(bt_st == 1)
 	begin
-		if(sw[15])
-			mode <= 2;
-		else
+		if(btn_mode_sel)
 			mode <= 1;
+		else
+			mode <= 2;
 	end
 	else
 		mode <= 0;
@@ -145,7 +146,7 @@ begin
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b0;
 	enable_reward		<= 1'b0;
-	if(sw[0] == 1)
+	if(btn_return)
 		mode <= 0;
 	else
 		mode <= 3;

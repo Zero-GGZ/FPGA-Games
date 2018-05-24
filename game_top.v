@@ -184,17 +184,23 @@ wire	[15:0]		led_infinity;
 wire	[5:0]		score_classic;
 wire	[5:0]		score_infinity;
 
-wire			btn_wireless_w;
-wire			btn_wireless_s;
-wire			btn_wireless_a;
-wire			btn_wireless_d;
-wire			btn_wireless_st;
-
+wire				btn_wireless_w;
+wire				btn_wireless_s;
+wire				btn_wireless_a;
+wire				btn_wireless_d;
+wire				btn_wireless_st;
+wire				btn_wireless_tri;
+wire				btn_wireless_sqr;
+wire				btn_wireless_cir;
+wire				btn_wireless_cro;
 wire				btn_w ;
 wire				btn_s ;
 wire				btn_a ;
 wire				btn_d ;
 wire				btn_st;
+wire				btn_mode_sel;
+wire				btn_return;
+wire				btn_stop;
 
 wire				reward_addtime;
 wire				reward_faster;
@@ -202,11 +208,6 @@ wire				reward_frozen;
 wire				reward_invincible;
 wire				reward_laser;
 
-assign 		btn_w = bt_w | btn_wireless_w;
-assign 		btn_s = bt_s | btn_wireless_s;
-assign 		btn_a = bt_a | btn_wireless_a;
-assign 		btn_d = bt_d | btn_wireless_d;
-assign 		btn_st = bt_st | btn_wireless_st;
 
 assign 			bul1_x 			= 		bul1_x_feedback;
 assign 			bul2_x 			= 		bul2_x_feedback;
@@ -234,6 +235,7 @@ clk_wiz_0 u_VGA_clock
 	);		
 
 
+	
 clock u_clock
 (
 	.clk			(clk_100M),
@@ -247,9 +249,10 @@ clock u_clock
 
 game_mode_v2  u_game_mode_v2
 (
-	.clk				(clk_100M),
-	.sw					(sw),	
+	.clk				(clk_100M),	
 	.bt_st				(btn_st),
+	.btn_mode_sel		(btn_mode_sel),
+	.btn_return			(btn_return),
 	.gameover_classic	(gameover_classic),
 	.gameover_infinity	(gameover_infinity),
 	.enable_bul1		(enable_bul1),
@@ -276,7 +279,8 @@ game_mode_v2  u_game_mode_v2
 game_logic_classic u_game_logic_classic
 (	
 	.clk				(clk_100M),
-	.sw					(sw),
+	.btn_return			(btn_return),
+	.btn_stop			(btn_stop),
 	.enable_game_classic(enable_game_classic),
 	.mytank_state		(mytank_state),
 	.scorea				(score1),
@@ -295,7 +299,8 @@ game_logic_classic u_game_logic_classic
 game_logic_infinity u_game_logic_infinity
 (
 	.clk				(clk_100M),
-	.sw					(sw),
+	.btn_return			(btn_return),
+	.btn_stop			(btn_stop),
 	.enable_game_infinity(enable_game_infinity),
 	.scorea				(score1),
 	.scoreb				(score2),
@@ -347,6 +352,7 @@ game_interface  u_game_interface
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_4Hz),
 	.clk_8Hz		(clk_8Hz),
+	.btn_mode_sel	(btn_mode_sel),
 	.mode			(mode),
 	.VGA_xpos		(VGA_xpos),
 	.VGA_ypos		(VGA_ypos),
@@ -363,7 +369,12 @@ uart_controller  u_uart_controller
 	.bt_s			(btn_wireless_s),
 	.bt_a			(btn_wireless_a),
 	.bt_d			(btn_wireless_d),
-	.bt_st			(btn_wireless_st)
+	.bt_st			(btn_wireless_st),
+	.bt_tri			(btn_wireless_tri),
+	.bt_sqr			(btn_wireless_sqr),
+	.bt_cir			(btn_wireless_cir),
+	.bt_cro			(btn_wireless_cro),
+	.led			()
 );
 
 reward_logic	u_reward_logic
@@ -377,6 +388,7 @@ reward_logic	u_reward_logic
 	.mytank_ypos			(mytank_ypos),
 	.VGA_xpos				(VGA_xpos),
 	.VGA_ypos				(VGA_ypos),
+	.sw						(sw),
 	.reward_invincible		(reward_invincible),
 	.reward_addtime			(reward_addtime),
 	.reward_faster			(reward_faster),
@@ -394,6 +406,7 @@ reward_logic	u_reward_logic
 reward_laser	u_reward_laser
 (
 	.clk			(clk_100M),
+	.enable_reward	(enable_reward),
 	.reward_laser	(reward_laser),
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
@@ -403,6 +416,39 @@ reward_laser	u_reward_laser
 	.reward_test	(sw[1]),
 	.VGA_data		(VGA_data_reward_laser)
 );
+
+
+button_logic	u_button_logic
+(
+	.clk				(clk_100M),
+	.sw					(sw),
+	.bt_w				(bt_w),
+	.bt_s				(bt_s),
+	.bt_a				(bt_a),
+	.bt_d				(bt_d),
+	.bt_st				(bt_st),
+	.btn_wireless_w		(btn_wireless_w),
+	.btn_wireless_s		(btn_wireless_s),
+	.btn_wireless_a		(btn_wireless_a),
+	.btn_wireless_d		(btn_wireless_d),
+	.btn_wireless_st	(btn_wireless_st),
+	.btn_wireless_tri	(btn_wireless_tri),
+	.btn_wireless_sqr	(btn_wireless_sqr),
+	.btn_wireless_cir	(btn_wireless_cir),
+	.btn_wireless_cro	(btn_wireless_cro),
+	.btn_w				(btn_w),
+	.btn_s  			(btn_s),
+	.btn_a  			(btn_a),
+	.btn_d  			(btn_d),
+	.btn_st 			(btn_st),
+	.btn_mode_sel		(btn_mode_sel),
+	.btn_stop			(btn_stop),
+	.btn_return			(btn_return)
+);
+
+
+
+
 
 mytank_app u_mytank_app
 (
