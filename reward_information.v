@@ -9,12 +9,14 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180523		QiiNn		1.0			Initial Version
+180524		QiiNn		1.2			Add enable interface
 ========================================================*/
 
 module reward_information
 (
 	input 				clk,
 	input	[9:0]		reward_cnt,
+	input				enable_reward,
 	input				reward_invincible,
 	input				reward_frozen,
 	input				reward_faster,
@@ -48,6 +50,8 @@ reg		[9:0]	addr_protect;
 
 always@(posedge clk)
 begin
+if(enable_reward)
+begin
 	if(reward_laser == 1 || reward_faster == 1 
 		|| reward_frozen == 1 || reward_invincible == 1)		
 	begin
@@ -79,6 +83,9 @@ begin
 			VGA_data <= 0;
 		
 		end
+end
+else
+	VGA_data <= 0;
 end
 
 

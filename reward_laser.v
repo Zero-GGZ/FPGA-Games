@@ -9,11 +9,13 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180523		QiiNn		1.0			Initial Version
+180524		QiiNn		1.2			Add enable interface
 ========================================================*/
 
 module	reward_laser
 (
 	input				clk,
+	input				enable_reward,
 	input				reward_laser,
 	input	[4:0]		mytank_xpos,
 	input	[4:0]		mytank_ypos,
@@ -25,6 +27,8 @@ module	reward_laser
 );
 
 always@(posedge clk)
+begin
+if(enable_reward)
 begin
 	if(reward_laser == 1'b1 || reward_test == 1'b1)
 	begin
@@ -72,8 +76,10 @@ begin
 	endcase	
 	end
 	else
-		VGA_data <= 1'b0;
-
+		VGA_data <= 0;
+end
+else
+	VGA_data <= 0;
 end
 
 

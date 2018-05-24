@@ -9,6 +9,7 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180522		QiiNn		1.0			Initial Version
+180524		QiiNn		1.2			Add enable interface
 ========================================================*/
 `define	RED			12'hF00
 `define	GREEN		12'h0F0
@@ -23,6 +24,7 @@ module	reward_display
 (
 	input					clk,
 	input					set_require,
+	input					enable_reward,
 	input		[4:0]		random_xpos,
 	input		[4:0]		random_ypos,
 	input		[2:0]		reward_type,
@@ -49,7 +51,7 @@ wire			dout_protect;
 
 always@(posedge clk)
 begin
-	if(set_require)
+	if(set_require == 1 && enable_reward == 1)
 	begin
 		if( (VGA_xpos > random_xpos * 20 + 80 - 12)
 		&&(VGA_xpos <= random_xpos * 20 + 80 + 12)

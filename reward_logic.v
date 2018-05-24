@@ -9,6 +9,7 @@ Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
 180522		QiiNn		1.0			Initial Version
+180524		QiiNn		1.2			Add enable interface
 ========================================================*/
 `timescale 1ns/1ns
 
@@ -23,6 +24,7 @@ module reward_logic
 	input 	[4:0]		mytank_ypos,
 	input	[10:0]		VGA_xpos,
 	input	[10:0]		VGA_ypos,
+	input	[15:0]		sw,
 	output				random_out,
 	output	reg 		reward_invincible,
 	output	reg 		reward_addtime,
@@ -51,6 +53,8 @@ assign			VGA_data_reward = VGA_data_icon | VGA_data_information;
 
 
 always@(posedge clk_4Hz)
+begin
+if(enable_reward)
 begin
 	if(random_xpos != 0 && random_ypos != 0)
 	begin
@@ -85,15 +89,17 @@ begin
 	else
 		set_finish <= 1'b0;
 	
-//	if(reward_invincible)
-	//begin
+		
+	
+	if(reward_invincible)
+	begin
 		cnt <= cnt + 1;
 		if (cnt >= 20)
 			begin
 			reward_invincible <= 1'b0;
 			cnt <= 0;
 			end
-//	end
+	end
 	
 	if(reward_faster)
 	begin
@@ -125,6 +131,7 @@ begin
 			end
 	end
 end
+end
 
 reward_random_generator		u_reward_random_generator
 (
@@ -143,6 +150,7 @@ reward_display		u_reward_display
 (
 	.clk				(clk),
 	.set_require		(set_require),
+	.enable_reward		(enable_reward),
 	.enable_game_classic(enable_game_classic),
 	.enable_game_infinity(enable_game_infinity),
 	.random_xpos		(random_xpos),
@@ -160,6 +168,7 @@ reward_information	u_reward_information
 (
 	.clk				(clk),
 	.reward_cnt			(cnt),
+	.enable_reward		(enable_reward),
 	.reward_invincible	(reward_invincible),
 	.reward_frozen		(reward_frozen),
 	.reward_faster		(reward_faster),
