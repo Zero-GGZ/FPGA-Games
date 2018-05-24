@@ -20,7 +20,7 @@ module	game_information
 	input				enable_game_infinity,
 	input	[2:0]		mode,
 	input	[4:0]		HP_print,
-	input	[4:0]		time_print,
+	input	[5:0]		time_print,
 	input	[10:0]		VGA_xpos,
 	input	[10:0]		VGA_ypos,
 	output	reg	[11:0]	VGA_data

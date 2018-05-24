@@ -22,8 +22,8 @@ module game_SegAndLed
 	input		[15:0]		seg_infinity,
 	input					enable_game_classic,
 	input					enable_game_infinity,
-	input		[4:0]		score_classic,
-	input		[4:0]		score_infinity,
+	input		[5:0]		score_classic,
+	input		[5:0]		score_infinity,
 	output		[3:0]		an,
 	output		[6:0]		seg,
 	output	reg	[15:0]		led
