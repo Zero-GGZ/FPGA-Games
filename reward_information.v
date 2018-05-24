@@ -56,7 +56,7 @@ begin
 		|| reward_frozen == 1 || reward_invincible == 1)		
 	begin
 		if(VGA_ypos >= 55 && VGA_ypos <= 65 
-			&& VGA_xpos >= 520 && VGA_xpos <= (520 + (20 - reward_cnt) * 3))
+			&& VGA_xpos >= 520 && VGA_xpos <= (520 + (30 - reward_cnt) * 2))
 			VGA_data <= `BLUE;
 		else
 			VGA_data <= `BLACK;

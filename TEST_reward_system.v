@@ -84,11 +84,12 @@ reward_logic	u_reward_logic
 	.mytank_ypos			(mytank_ypos),
 	.VGA_xpos				(VGA_xpos),
 	.VGA_ypos				(VGA_ypos),
-	.reward_invincible		(),
-	.reward_addtime			(),
-	.reward_faster			(),
-	.reward_frozen			(),
-	.reward_laser			(),
+	.sw						(sw),
+	.reward_invincible		(led[15]),
+	.reward_addtime			(led[14]),
+	.reward_faster			(led[13]),
+	.reward_frozen			(led[12]),
+	.reward_laser			(led[11]),
 	.VGA_data_reward		(VGA_data_reward),
 	
 	//test interface

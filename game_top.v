@@ -39,7 +39,8 @@ module game_top
 	output		[6:0]		seg,
 	output					dp,
 	output		[15:0]		led,
-	output					fpga_txd
+	output					fpga_txd,
+	output					audio
 );
 
 //----------------------------------------
@@ -156,6 +157,9 @@ wire		enable_enytank4_app;
 wire		enable_enytank4_phy;
 wire		enable_gamelogic;
 wire		enable_reward;
+wire		enable_startmusic;	
+wire        enable_gamemusic;	
+wire		enable_shootmusic;
 
 wire		[4:0]		HP_value;
 wire		[5:0]		timer;
@@ -240,7 +244,7 @@ clock u_clock
 (
 	.clk			(clk_100M),
 	.reward_faster	(reward_faster),
-	.reward_test	(sw[3]),
+	.reward_test	(),
 	.clk_4Hz		(clk_4Hz),
 	.clk_8Hz		(clk_8Hz),
 	.clk_2Hz		(clk_2Hz)
@@ -273,6 +277,9 @@ game_mode_v2  u_game_mode_v2
 	.enable_game_classic(enable_game_classic),
 	.enable_game_infinity(enable_game_infinity),
 	.enable_reward		(enable_reward),
+	.enable_startmusic	(enable_startmusic),
+	.enable_gamemusic	(enable_gamemusic),
+	.enable_shootmusic	(enable_shootmusic),
 	.mode				(mode)
 );   
 
@@ -288,7 +295,7 @@ game_logic_classic u_game_logic_classic
 	.scorec				(score3),
 	.scored				(score4),
 	.reward_invincible	(reward_invincible),
-	.reward_test		(sw[5]),
+	.reward_test		(),
 	.HP_value			(HP_value),
 	.seg_classic		(seg_classic),
 	.led_classic		(led_classic),
@@ -377,6 +384,16 @@ uart_controller  u_uart_controller
 	.led			()
 );
 
+music_controller	u_music_controller
+(
+	.clk				(clk_100M),
+	.sw1				(enable_startmusic),
+	.sw2				(enable_gamemusic),
+	.btnC				(btn_st),
+	.enable_shootmusic	(enable_shootmusic),
+	.audio				(audio)
+);
+
 reward_logic	u_reward_logic
 (
 	.clk					(clk_100M),
@@ -413,7 +430,7 @@ reward_laser	u_reward_laser
 	.mytank_dir		(mytank_dir),
 	.VGA_xpos		(VGA_xpos),
 	.VGA_ypos		(VGA_ypos),
-	.reward_test	(sw[1]),
+	.reward_test	(),
 	.VGA_data		(VGA_data_reward_laser)
 );
 
@@ -504,8 +521,8 @@ enytank_app u_enytank1_app
 	.mytank_ypos	(mytank_ypos),
 	.reward_frozen	(reward_frozen),
 	.reward_laser	(reward_laser),
-	.reward_test_frozen	(sw[2]),
-	.reward_test_laser	(sw[1]),
+	.reward_test_frozen	(),
+	.reward_test_laser	(),
 	.mytank_dir			(mytank_dir),
 	
 	
@@ -536,8 +553,8 @@ enytank_app u_enytank2_app
 	.mytank_ypos	(mytank_ypos),
 	.reward_frozen	(reward_frozen),
 	.reward_laser	(reward_laser),
-	.reward_test_frozen	(sw[2]),
-	.reward_test_laser	(sw[1]),
+	.reward_test_frozen	(),
+	.reward_test_laser	(),
 	.mytank_dir			(mytank_dir),
 	
 	.score				(score2),
@@ -565,8 +582,8 @@ enytank_app u_enytank3_app
 	.mybul_y		(mybul_ypos),
 	.reward_frozen	(reward_frozen),
 	.reward_laser	(reward_laser),
-	.reward_test_frozen	(sw[2]),
-	.reward_test_laser	(sw[1]),
+	.reward_test_frozen	(),
+	.reward_test_laser	(),
 	.mytank_dir			(mytank_dir),
 	
 	.mytank_xpos	(mytank_xpos),
@@ -597,8 +614,8 @@ enytank_app u_enytank4_app
 	.mybul_y		(mybul_ypos),
 	.reward_frozen	(reward_frozen),
 	.reward_laser	(reward_laser),
-	.reward_test_frozen	(sw[2]),
-	.reward_test_laser	(sw[1]),
+	.reward_test_frozen	(),
+	.reward_test_laser	(),
 	.mytank_dir			(mytank_dir),
 	
 	.mytank_xpos	(mytank_xpos),

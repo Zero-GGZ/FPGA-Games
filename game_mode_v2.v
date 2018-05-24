@@ -38,6 +38,9 @@ module  game_mode_v2
 	output		reg		enable_game_classic,
 	output		reg		enable_game_infinity,
 	output		reg		enable_reward,
+	output		reg		enable_startmusic,
+	output		reg		enable_gamemusic,
+	output		reg		enable_shootmusic,
 	output 		reg		[2:0] mode
 );              
                 
@@ -66,6 +69,9 @@ begin
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b0;
 	enable_reward		<= 1'b0;
+	enable_startmusic	<= 1'b1;
+	enable_gamemusic	<= 1'b0;
+	enable_shootmusic	<= 1'b0;
 	if(bt_st == 1)
 	begin
 		if(btn_mode_sel)
@@ -96,6 +102,9 @@ begin
 	enable_game_classic	<= 1'b1;
 	enable_game_infinity<= 1'b0;
 	enable_reward		<= 1'b1;
+	enable_startmusic	<= 1'b0;
+	enable_gamemusic	<= 1'b0;
+	enable_shootmusic	<= 1'b1;
 	if( gameover_classic == 1)
 		mode <= 3;
 	else
@@ -121,6 +130,9 @@ begin
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b1;
 	enable_reward		<= 1'b1;
+	enable_startmusic	<= 1'b0;
+	enable_gamemusic	<= 1'b0;
+	enable_shootmusic	<= 1'b1;
 	if( gameover_infinity == 1)
 		mode <= 3;
 	else
@@ -146,6 +158,9 @@ begin
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b0;
 	enable_reward		<= 1'b0;
+	enable_startmusic	<= 1'b0;
+	enable_gamemusic	<= 1'b1;
+	enable_shootmusic	<= 1'b0;
 	if(btn_return)
 		mode <= 0;
 	else
