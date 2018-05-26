@@ -1,15 +1,16 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				uart_controller.v
 Date				:				2018-05-18
-Description			:				the uart top module
+Description			:				the uart top controller module
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180518		QiiNn		1.0			Initial version
-180524		QiiNn		1.5			Add functional buttons
+180518		ctlvie		1.0			Initial version
+180524		ctlvie		1.5			Add functional buttons
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module uart_controller
@@ -21,12 +22,11 @@ module uart_controller
 	output	reg			bt_s,
 	output	reg			bt_a,
 	output	reg			bt_d,
-	output	reg			bt_st, 
-	output 	reg			bt_tri,
-	output	reg			bt_sqr,
-	output	reg			bt_cir,
-	output	reg			bt_cro,
-	output	reg		[15:0] led
+	output	reg			bt_st, 			//Fire button on PS2 handle
+	output 	reg			bt_tri,			//Triangle button on PS2 handle
+	output	reg			bt_sqr,			//Square button on PS2 handle
+	output	reg			bt_cir,			//Circle button on PS2 handle
+	output	reg			bt_cro			//Cross button on PS2 handle
 );
 
 
@@ -59,7 +59,7 @@ wire	clken_16bps = divide_clken;
 //---------------------------------
 //Data receive for PC to FPGA.
 
-wire			rxd_flag;
+wire				rxd_flag;
 wire		[7:0]	rxd_data;
 
 uart_receiver	u_uart_receiver
@@ -83,12 +83,10 @@ begin
 	if(rxd_data == 8'h41)
 	begin
 		bt_w <= 1'b1;
-		led[15] <= 1'b1;
 	end
 	else
 	begin
 		bt_w <= 1'b0;
-		led[15] <= 1'b0;
 	end
 end
 
@@ -97,12 +95,10 @@ begin
 	if(rxd_data == 8'h42)
 	begin
 		bt_s <= 1'b1;
-		led[14] <= 1'b1;
 	end
 	else
 	begin
 		bt_s <= 1'b0;
-		led[14] <= 1'b0;
 	end
 end
 
@@ -111,12 +107,10 @@ begin
 	if(rxd_data == 8'h43)
 	begin
 		bt_a <= 1'b1;
-		led[13] <= 1'b1;
 	end
 	else
 	begin
 		bt_a <= 1'b0;
-		led[13] <= 1'b0;
 	end
 end
 
@@ -125,12 +119,10 @@ begin
 	if(rxd_data == 8'h44)
 	begin
 		bt_d <= 1'b1;
-		led[12] <= 1'b1;
 	end
 	else
 	begin
 		bt_d <= 1'b0;
-		led[12] <= 1'b0;
 	end
 end
 
@@ -139,12 +131,10 @@ begin
 	if(rxd_data == 8'h46 || rxd_data == 8'h4E)
 	begin
 		bt_st <= 1'b1;
-		led[11] <= 1'b1;
 	end
 	else
 	begin
 		bt_st <= 1'b0;
-		led[11] <= 1'b0;
 	end
 end
 
@@ -196,23 +186,6 @@ begin
 	end
 end
 
-//---------------------------------
-//Data receive for PC to FPGA.
-uart_transfer	u_uart_transfer
-(
-	//gobal clock
-	.clk			(clk),
-	.rst_n			(1'b1),
-	
-	//uaer interface
-	.clken_16bps	(clken_16bps),	//clk_bps * 16
-	.txd			(fpga_txd),  	//uart txd interface
-           
-	//user interface   
-	.txd_en			(),		//uart data transfer enable
-	.txd_data		(), 	//uart transfer data	
-	.txd_flag		() 			//uart data transfer done
-);
 
 
 endmodule

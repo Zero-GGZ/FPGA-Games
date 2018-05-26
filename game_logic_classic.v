@@ -1,15 +1,16 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				game_logic_classic.v
 Date				:				2018-05-13
-Description			:				
+Description			:				the game logic controller in classic mode
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180513		QiiNn		1.0			Initial version
-180523		QiiNn		1.2			Add invincible function
+180513		ctlvie		1.0			Initial version
+180523		ctlvie		1.2			Add invincible function
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 module game_logic_classic
 (	
@@ -18,21 +19,20 @@ module game_logic_classic
 	input					btn_stop,
 	input					enable_game_classic,
 	input 					mytank_state,
-	input	[4:0]			scorea,
-	input	[4:0]			scoreb,
-	input	[4:0]			scorec,
-	input	[4:0]			scored,
+	input	[6:0]			scorea,
+	input	[6:0]			scoreb,
+	input	[6:0]			scorec,
+	input	[6:0]			scored,
 	input					reward_invincible,
-	input					reward_test,
 	output	reg	[4:0]		HP_value,
 	output	reg [15:0]		seg_classic,
 	output	reg	[15:0]		led_classic,
 	output	reg				gameover_classic,
-	output	reg	[5:0]		score_classic
+	output	reg	[6:0]		score_classic
 );
 
 
-reg	[5:0]	score;
+reg	[6:0]	score;
 reg	[2:0]	HP_add;
 
 initial
@@ -47,7 +47,7 @@ end
 
 always@(negedge enable_game_classic or negedge mytank_state)
 begin
-	if(reward_invincible == 0 && reward_test == 0)
+	if(reward_invincible == 0 )
 		HP_value <= HP_value - 1;
 	else
 		HP_value <= HP_value;

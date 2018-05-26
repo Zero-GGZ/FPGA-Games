@@ -1,5 +1,5 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				game_information.v
 Date				:				2018-05-11
@@ -8,7 +8,8 @@ Description			:				To print information of mode and your HP_value or time on the
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180515		QiiNn		1.0			Initial Version
+180515		ctlvie		1.0			Initial Version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 

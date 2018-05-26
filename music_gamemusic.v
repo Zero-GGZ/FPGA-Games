@@ -1,14 +1,15 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				music_gamemusic.v
 Date				:				2018-05-18
-Description			:				the music during game playing
+Description			:				the music after game playing
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180518		QiiNn		1.0		
+180518		ctlvie		1.0			Initial Version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module music_gamemusic
@@ -128,7 +129,9 @@ always @(posedge clk_4Hz)
 begin
 	if(enable_gamemusic)
 	begin
-		counter <= counter+1;
+		counter <= counter + 1;
+		if(counter > 34)
+			counter <= 0;
 		case(counter)
 		1:{high,med,low} <= M1;
 		2:{high,med,low} <= M2;

@@ -1,5 +1,5 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				VGA_data_selector.v
 Date				:				2018-05-08
@@ -8,9 +8,10 @@ Description			:				the VGA data signal selector
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180508		QiiNn		1.0			Initial coding completed(unverified)
-180508		QiiNn		1.1			Corrected the reg conflict error(unverified)
-180509		QiiNn		1.2			Update to \assign\ rather than \if-else\
+180508		ctlvie		1.0			Initial coding completed(unverified)
+180508		ctlvie		1.1			Corrected the reg conflict error(unverified)
+180509		ctlvie		1.2			Update to \assign\ rather than \if-else\
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module VGA_data_selector

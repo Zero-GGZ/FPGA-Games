@@ -1,22 +1,24 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				enytank_app.v
 Date				:				2018-05-05
-Description			:				the application module of enemy's tank 
+Description			:				the controller module of enemy's tank 
+									(Similar to the application layer)
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180505		QiiNn		0.5			Module interface definition
-180508		QiiNn		1.0			Initial coding complete (unverified)
-180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
-180510		QiiNn		1.5			Full Version!
-180510		QiiNn		1.6			Add the score counter function
-180512		QiiNn		1.6			1. Change the coordinate
+180505		ctlvie		0.5			Module interface definition
+180508		ctlvie		1.0			Initial coding complete (unverified)
+180509		ctlvie		1.1			Corrected the reg conflict error(unverified)
+180510		ctlvie		1.5			Full Version!
+180510		ctlvie		1.6			Add the score counter function
+180512		ctlvie		1.6			1. Change the coordinate
 									2. Add enable interface (need to link it!)
-180521		QiiNn		1.8			Fixed the "Cannot hit" bug
-180523		QiiNn		1.9			Add freezing fuction
+180521		ctlvie		1.8			Fixed the "Cannot hit" bug
+180523		ctlvie		1.9			Add freezing fuction
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -24,10 +26,10 @@ Date		By			Version		Description
 module enytank_app
 (
 	input 			clk,
-	input			enable,			//全局使能信号，由游戏模式决定
+	input			enable,			//global enable signal, determined by game mode
 	input 			clk_4Hz,
 	input 			clk_8Hz,
-	input 			tank_en,		//复活使能信号
+	input 			tank_en,		//resurrection enable signal
 	
 	input	[1:0]	tank_num,	
 	
@@ -42,14 +44,12 @@ module enytank_app
 	
 	input			reward_frozen,
 	input			reward_laser,
-	input			reward_test_frozen,
-	input			reward_test_laser,
-	
+	output	reg			kill,
 	output  reg			enybul_state,
 	output	reg			tank_state,		//坦克状态信号，送生成模块，经tank_en复活
 	output	reg	[4:0] 	enytank_xpos,
 	output	reg	[4:0]	enytank_ypos,
-	output 	reg	[4:0]	score,
+	output 	reg	[6:0]	score,
 	output	reg	[1:0]	tank_dir_out	
 );
 
@@ -155,8 +155,10 @@ reg		laser_flag;
 initial flag 		<= 0;
 initial restart 	<= 1;
 initial restart_fb 	<= 0;
-
-
+reg			kill_flag;
+reg	[63:0]	cnt_kill ;
+initial		cnt_kill <= 0;
+initial		kill_flag <= 0;
 
 always@(posedge clk)
 begin
@@ -171,17 +173,42 @@ begin
 			flag <= 0;
 			restart <= 0;
 		end
+		else
+			tank_state <= 1'b0;
 	end
 	if ((tank_state == 1'b1) && (((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))
 									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y ))) 
 								 && flag == 0)
 	begin
 		tank_state <= 1'b0;	
-		score <= score + 1'b1;
+		if	((enytank_xpos == 0 && enytank_ypos == 0) 
+				||(enytank_xpos == 24 && enytank_ypos == 0) 
+				||(enytank_xpos == 0 && enytank_ypos == 12) 
+				||(enytank_xpos == 24 && enytank_ypos == 12) )
+			score <= score;
+		else
+			begin
+			score <= score + 1'b1;
+			kill_flag <= 1;
+			end
 		flag <= 1;
 	end
-
-	if(tank_state == 1 &&(reward_laser == 1 || reward_test_laser == 1))
+	
+	if(kill_flag)
+		begin
+		kill <= 1;
+		cnt_kill <= cnt_kill + 1;
+		if(cnt_kill >= 5000000)
+		kill_flag <= 0;
+		end
+	else
+		begin
+		cnt_kill <= 0;
+		kill <= 0;
+		end
+	
+	
+	if(tank_state == 1 && reward_laser == 1 )
 	begin
 		if(eql)
 			tank_state <= 1'b0;
@@ -192,13 +219,31 @@ begin
 				if(mytank_ypos <= enytank_ypos && mytank_dir == 2'b01)
 					begin
 					tank_state <= 1'b0;
-					score <= score + 1'b1;
+					if	((enytank_xpos == 0 && enytank_ypos == 0) 
+						||(enytank_xpos == 24 && enytank_ypos == 0) 
+						||(enytank_xpos == 0 && enytank_ypos == 12) 
+						||(enytank_xpos == 24 && enytank_ypos == 12) )
+						score <= score;
+					else
+						begin
+						score <= score + 1'b1;
+						kill_flag <= 1;
+						end
 					laser_flag <= 1;
 					end
 				else if(mytank_ypos >= enytank_ypos && mytank_dir == 2'b00)
 					begin
 					tank_state <= 1'b0;
-					score <= score + 1'b1;
+					if	((enytank_xpos == 0 && enytank_ypos == 0) 
+						||(enytank_xpos == 24 && enytank_ypos == 0) 
+						||(enytank_xpos == 0 && enytank_ypos == 12) 
+						||(enytank_xpos == 24 && enytank_ypos == 12) )
+						score <= score;
+					else
+						begin
+						score <= score + 1'b1;
+						kill_flag <= 1;
+						end
 					laser_flag <= 1;
 					end
 				else
@@ -212,13 +257,31 @@ begin
 				if(mytank_xpos <= enytank_xpos && mytank_dir == 2'b11)
 					begin
 					tank_state <= 1'b0;
-					score <= score + 1'b1;
+					if	((enytank_xpos == 0 && enytank_ypos == 0) 
+						||(enytank_xpos == 24 && enytank_ypos == 0) 
+						||(enytank_xpos == 0 && enytank_ypos == 12) 
+						||(enytank_xpos == 24 && enytank_ypos == 12) )
+						score <= score;
+					else
+						begin
+						score <= score + 1'b1;
+						kill_flag <= 1;
+						end
 					laser_flag <= 1;
 					end
 				else if(mytank_xpos >= enytank_xpos && mytank_dir == 2'b10)
 					begin
 					tank_state <= 1'b0;
-					score <= score + 1'b1;
+					if	((enytank_xpos == 0 && enytank_ypos == 0) 
+						||(enytank_xpos == 24 && enytank_ypos == 0) 
+						||(enytank_xpos == 0 && enytank_ypos == 12) 
+						||(enytank_xpos == 24 && enytank_ypos == 12) )
+						score <= score;
+					else
+						begin
+						score <= score + 1'b1;
+						kill_flag <= 1;
+						end
 					laser_flag <= 1;
 					end
 				else
@@ -280,7 +343,7 @@ begin
 	else
 		restart_fb <= 0;
 	//move
-	if (tank_state == 1 && (reward_frozen == 0 && reward_test_frozen == 0))
+	if (tank_state == 1 && reward_frozen == 0 )
 	begin
 		if (eql)
 			tank_dir_out <= tank_dir_out;

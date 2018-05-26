@@ -1,14 +1,15 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				game_SegAndLed.v
 Date				:				2018-05-13
-Description			:				
+Description			:				the segments and LED controller
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180515		QiiNn		1.0			Initial version
+180515		ctlvie		1.0			Initial version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module game_SegAndLed
@@ -22,8 +23,8 @@ module game_SegAndLed
 	input		[15:0]		seg_infinity,
 	input					enable_game_classic,
 	input					enable_game_infinity,
-	input		[5:0]		score_classic,
-	input		[5:0]		score_infinity,
+	input		[6:0]		score_classic,
+	input		[6:0]		score_infinity,
 	output		[3:0]		an,
 	output		[6:0]		seg,
 	output	reg	[15:0]		led

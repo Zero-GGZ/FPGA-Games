@@ -1,16 +1,17 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				game_interface.v
 Date				:				2018-05-11
-Description			:				
+Description			:				the game major playing interface
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180512		QiiNn		1.0			Initial Version
-180514		QiiNn		1.1			Change the size of background picture (16bit -> 8bit)
-180524		QiiNn		1.2			Add cursor display
+180512		ctlvie		1.0			Initial Version
+180514		ctlvie		1.1			Change the size of background picture (16bit -> 8bit)
+180524		ctlvie		1.2			Add cursor display
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module game_interface 

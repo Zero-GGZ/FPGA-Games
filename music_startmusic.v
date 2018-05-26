@@ -1,14 +1,15 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				music_startmusic.v
 Date				:				2018-05-18
-Description			:				the music during game playing
+Description			:				the music before game playing
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180518		QiiNn		1.0		
+180518		ctlvie		1.0			Initial Version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module music_startmusic

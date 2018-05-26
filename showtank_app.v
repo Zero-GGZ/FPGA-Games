@@ -1,5 +1,5 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				showtank_app.v
 Date				:				2018-05-13
@@ -8,7 +8,8 @@ Description			:				the function of show tank
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180515		QiiNn		1.0			Initial version
+180515		ctlvie		1.0			Initial version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 `timescale 1ns/1ns

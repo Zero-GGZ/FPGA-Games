@@ -1,5 +1,5 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				game_top.v
 Date				:				2018-05-06
@@ -8,13 +8,14 @@ Description			:				the top module
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180506		QiiNn		0.5			Module interface definition and modules links
-180507		QiiNn		0.6			Update some modules' interfaces
-180510		QiiNn		0.8			Bugs fixed:
+180506		ctlvie		0.5			Module interface definition and modules links
+180507		ctlvie		0.6			Update some modules' interfaces
+180510		ctlvie		0.8			Bugs fixed:
 									1. change enemy tanks' speed to clk_2Hz
 									2. cancel the VGA enable signal
-180510		QiiNn		1.5			Full Version!
-180515		QiiNn		2.0			Updated Version!
+180510		ctlvie		1.5			Full Version!
+180515		ctlvie		1.8			Updated Version!
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -45,7 +46,6 @@ module game_top
 
 //----------------------------------------
 //wires definition
-
 //clocks
 wire			clk_2Hz;
 wire			clk_4Hz;
@@ -163,15 +163,20 @@ wire		enable_shootmusic;
 
 wire		[4:0]		HP_value;
 wire		[5:0]		timer;
-wire		[4:0]		score;
+wire		[6:0]		score;
 wire		[11:0]		VGA_data_interface;
 wire		[2:0]		mode;
+wire				kill1;
+wire				kill2;
+wire				kill3;
+wire				kill4;
+wire				kill;
+assign				kill = kill1 | kill2 | kill3 | kill4;
 
-
-wire	[4:0]		score1;
-wire	[4:0]		score2;
-wire	[4:0]		score3;
-wire	[4:0]		score4;
+wire	[6:0]		score1;
+wire	[6:0]		score2;
+wire	[6:0]		score3;
+wire	[6:0]		score4;
 wire				gameover;
 
 
@@ -185,8 +190,8 @@ wire	[15:0]		led_classic;
 wire	[3:0]		an_infinity;
 wire	[15:0]		seg_infinity;
 wire	[15:0]		led_infinity;
-wire	[5:0]		score_classic;
-wire	[5:0]		score_infinity;
+wire	[6:0]		score_classic;
+wire	[6:0]		score_infinity;
 
 wire				btn_wireless_w;
 wire				btn_wireless_s;
@@ -211,6 +216,7 @@ wire				reward_faster;
 wire				reward_frozen;
 wire				reward_invincible;
 wire				reward_laser;
+wire				start_protect;
 
 
 assign 			bul1_x 			= 		bul1_x_feedback;
@@ -244,7 +250,6 @@ clock u_clock
 (
 	.clk			(clk_100M),
 	.reward_faster	(reward_faster),
-	.reward_test	(),
 	.clk_4Hz		(clk_4Hz),
 	.clk_8Hz		(clk_8Hz),
 	.clk_2Hz		(clk_2Hz)
@@ -279,7 +284,8 @@ game_mode_v2  u_game_mode_v2
 	.enable_reward		(enable_reward),
 	.enable_startmusic	(enable_startmusic),
 	.enable_gamemusic	(enable_gamemusic),
-	.enable_shootmusic	(enable_shootmusic),
+	.start_protect		(start_protect),
+//	.enable_shootmusic	(enable_shootmusic),
 	.mode				(mode)
 );   
 
@@ -295,7 +301,6 @@ game_logic_classic u_game_logic_classic
 	.scorec				(score3),
 	.scored				(score4),
 	.reward_invincible	(reward_invincible),
-	.reward_test		(),
 	.HP_value			(HP_value),
 	.seg_classic		(seg_classic),
 	.led_classic		(led_classic),
@@ -380,8 +385,7 @@ uart_controller  u_uart_controller
 	.bt_tri			(btn_wireless_tri),
 	.bt_sqr			(btn_wireless_sqr),
 	.bt_cir			(btn_wireless_cir),
-	.bt_cro			(btn_wireless_cro),
-	.led			()
+	.bt_cro			(btn_wireless_cro)
 );
 
 music_controller	u_music_controller
@@ -390,7 +394,7 @@ music_controller	u_music_controller
 	.sw1				(enable_startmusic),
 	.sw2				(enable_gamemusic),
 	.btnC				(btn_st),
-	.enable_shootmusic	(enable_shootmusic),
+	.kill				(kill),
 	.audio				(audio)
 );
 
@@ -406,17 +410,13 @@ reward_logic	u_reward_logic
 	.VGA_xpos				(VGA_xpos),
 	.VGA_ypos				(VGA_ypos),
 	.sw						(sw),
+	.start_protect			(start_protect),
 	.reward_invincible		(reward_invincible),
 	.reward_addtime			(reward_addtime),
 	.reward_faster			(reward_faster),
 	.reward_frozen			(reward_frozen),
 	.reward_laser			(reward_laser),
-	.VGA_data_reward		(VGA_data_reward),
-	
-	//test interface
-	.random_out				(),
-	.set_finish_test		(),
-	.set_require_test		()
+	.VGA_data_reward		(VGA_data_reward)
 );
 
 
@@ -430,7 +430,6 @@ reward_laser	u_reward_laser
 	.mytank_dir		(mytank_dir),
 	.VGA_xpos		(VGA_xpos),
 	.VGA_ypos		(VGA_ypos),
-	.reward_test	(),
 	.VGA_data		(VGA_data_reward_laser)
 );
 
@@ -521,11 +520,9 @@ enytank_app u_enytank1_app
 	.mytank_ypos	(mytank_ypos),
 	.reward_frozen	(reward_frozen),
 	.reward_laser	(reward_laser),
-	.reward_test_frozen	(),
-	.reward_test_laser	(),
 	.mytank_dir			(mytank_dir),
 	
-	
+	.kill				(kill1),
 	.score				(score1),
 	
 	.enybul_state_feedback	(enybul1_state_fb),
@@ -553,10 +550,8 @@ enytank_app u_enytank2_app
 	.mytank_ypos	(mytank_ypos),
 	.reward_frozen	(reward_frozen),
 	.reward_laser	(reward_laser),
-	.reward_test_frozen	(),
-	.reward_test_laser	(),
 	.mytank_dir			(mytank_dir),
-	
+	.kill				(kill2),
 	.score				(score2),
 	
 	.enybul_state_feedback	(enybul2_state_fb),
@@ -582,13 +577,11 @@ enytank_app u_enytank3_app
 	.mybul_y		(mybul_ypos),
 	.reward_frozen	(reward_frozen),
 	.reward_laser	(reward_laser),
-	.reward_test_frozen	(),
-	.reward_test_laser	(),
 	.mytank_dir			(mytank_dir),
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
-	
+	.kill				(kill3),
 	.score				(score3),
 	
 	.enybul_state_feedback	(enybul3_state_fb),
@@ -614,13 +607,11 @@ enytank_app u_enytank4_app
 	.mybul_y		(mybul_ypos),
 	.reward_frozen	(reward_frozen),
 	.reward_laser	(reward_laser),
-	.reward_test_frozen	(),
-	.reward_test_laser	(),
 	.mytank_dir			(mytank_dir),
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
-	
+	.kill				(kill4),
 	.score			(score4),
 	
 	.enybul_state_feedback	(enybul4_state_fb),
@@ -646,8 +637,6 @@ bullet u_mybullet
 	.tank_xpos	(mytank_xpos),
 	.tank_ypos	(mytank_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(),	
-	.y_bul_pos_in	(),
 	.x_bul_pos_out	(mybul_xpos_feedback),
 	.y_bul_pos_out	(mybul_ypos_feedback),
 	
@@ -676,8 +665,6 @@ bullet u_bul1
 	.tank_xpos	(enytank1_xpos),
 	.tank_ypos	(enytank1_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(),	
-	.y_bul_pos_in	(),
 	.x_bul_pos_out	(bul1_x_feedback),
 	.y_bul_pos_out	(bul1_y_feedback),
 	
@@ -707,8 +694,6 @@ bullet u_bul2
 	.tank_xpos	(enytank2_xpos),
 	.tank_ypos	(enytank2_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(),	
-	.y_bul_pos_in	(),
 	.x_bul_pos_out	(bul2_x_feedback),
 	.y_bul_pos_out	(bul2_y_feedback),
 	
@@ -738,8 +723,6 @@ bullet u_bul3
 	.tank_xpos	(enytank3_xpos),
 	.tank_ypos	(enytank3_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(),	
-	.y_bul_pos_in	(),
 	.x_bul_pos_out	(bul3_x_feedback),
 	.y_bul_pos_out	(bul3_y_feedback),
 	
@@ -769,8 +752,6 @@ bullet u_bul4
 	.tank_xpos	(enytank4_xpos),
 	.tank_ypos	(enytank4_ypos),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(),	
-	.y_bul_pos_in	(),
 	.x_bul_pos_out	(bul4_x_feedback),
 	.y_bul_pos_out	(bul4_y_feedback),
 	

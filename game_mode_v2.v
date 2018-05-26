@@ -1,15 +1,16 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				game_mode_v2.v
 Date				:				2018-05-13
-Description			:				
+Description			:				the game mode switches module
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180515		QiiNn		1.0			Initial version
-180523		QiiNn		1.2			Add reward function enable interface
+180515		ctlvie		1.0			Initial version
+180523		ctlvie		1.2			Add reward function enable interface
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module  game_mode_v2
@@ -40,11 +41,16 @@ module  game_mode_v2
 	output		reg		enable_reward,
 	output		reg		enable_startmusic,
 	output		reg		enable_gamemusic,
-	output		reg		enable_shootmusic,
+	output		reg		start_protect,
+//	output		reg		enable_shootmusic,
 	output 		reg		[2:0] mode
 );              
                 
 initial 	mode <= 0;
+reg			[63:0]	start_protect_cnt;
+reg			start_protect_flag;
+initial		start_protect_cnt <= 0;
+initial		start_protect_flag <= 0;
 
 always@(posedge clk )
 begin
@@ -71,7 +77,9 @@ begin
 	enable_reward		<= 1'b0;
 	enable_startmusic	<= 1'b1;
 	enable_gamemusic	<= 1'b0;
-	enable_shootmusic	<= 1'b0;
+	start_protect_flag 	<= 1'b0;
+	start_protect		<= 1'b0;
+	//enable_shootmusic	<= 1'b0;
 	if(bt_st == 1)
 	begin
 		if(btn_mode_sel)
@@ -104,7 +112,19 @@ begin
 	enable_reward		<= 1'b1;
 	enable_startmusic	<= 1'b0;
 	enable_gamemusic	<= 1'b0;
-	enable_shootmusic	<= 1'b1;
+	if(start_protect_flag == 0)
+	begin
+		start_protect_cnt <= start_protect_cnt + 1;
+		start_protect <= 1;
+		if(start_protect_cnt >= 300000000)
+		begin
+		start_protect_flag <= 1'b1;
+		start_protect <= 0;
+		start_protect_cnt <= 0;
+		end
+	end
+	
+//	enable_shootmusic	<= 1'b1;
 	if( gameover_classic == 1)
 		mode <= 3;
 	else
@@ -132,7 +152,9 @@ begin
 	enable_reward		<= 1'b1;
 	enable_startmusic	<= 1'b0;
 	enable_gamemusic	<= 1'b0;
-	enable_shootmusic	<= 1'b1;
+	start_protect_flag 	<= 1'b0;
+	start_protect		<= 1'b0;
+	//enable_shootmusic	<= 1'b1;
 	if( gameover_infinity == 1)
 		mode <= 3;
 	else
@@ -160,7 +182,9 @@ begin
 	enable_reward		<= 1'b0;
 	enable_startmusic	<= 1'b0;
 	enable_gamemusic	<= 1'b1;
-	enable_shootmusic	<= 1'b0;
+	start_protect_flag 	<= 1'b0;
+	start_protect		<= 1'b0;
+	//enable_shootmusic	<= 1'b0;
 	if(btn_return)
 		mode <= 0;
 	else

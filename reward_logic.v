@@ -1,15 +1,16 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				reward_logic.v
 Date				:				2018-05-22
-Description			:				
+Description			:				The logical module of the reward mechanism
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180522		QiiNn		1.0			Initial Version
-180524		QiiNn		1.2			Add enable interface
+180522		ctlvie		1.0			Initial Version
+180524		ctlvie		1.2			Add enable interface
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 `timescale 1ns/1ns
 
@@ -25,31 +26,26 @@ module reward_logic
 	input	[10:0]		VGA_xpos,
 	input	[10:0]		VGA_ypos,
 	input	[15:0]		sw,
-	output				random_out,
+	input				start_protect,
 	output	reg 		reward_invincible,
 	output	reg 		reward_addtime,
 	output	reg 		reward_faster,
 	output	reg 		reward_frozen,
 	output	reg 		reward_laser,
-	output	 [11:0]		VGA_data_reward,
-
-	output				set_finish_test,
-	output				set_require_test
+	output	 [11:0]		VGA_data_reward
 );
 
-assign	set_finish_test = set_finish;
-assign	set_require_test = set_require;
 
-wire	[2:0]	reward_type;
+wire	[2:0]		reward_type;
 wire	[4:0] 		random_xpos;
 wire	[4:0]		random_ypos;
-reg	[9:0]		cnt;
-wire			set_require;
-reg				set_finish;
-wire	[11:0]	VGA_data_icon;
-wire	[11:0]	VGA_data_information;
-
-assign			VGA_data_reward = VGA_data_icon | VGA_data_information;
+reg		[9:0]		cnt;
+wire				set_require;
+reg					set_finish;
+wire	[11:0]		VGA_data_icon;
+wire	[11:0]		VGA_data_information;
+	
+assign				VGA_data_reward = VGA_data_icon | VGA_data_information;
 
 
 always@(posedge clk_4Hz)
@@ -58,11 +54,11 @@ if(enable_reward)
 begin
 
 	if(	(set_require == 1'b1 &&(random_xpos == mytank_xpos)&& (random_ypos == mytank_ypos)) 
-		|| sw[5] == 1 || sw[4] == 1 || sw[3] == 1 || sw[2] == 1 || sw[1] == 1)
+		|| sw[5] == 1 || sw[4] == 1 || sw[3] == 1 || sw[2] == 1 || sw[1] == 1 || start_protect == 1)
 		begin
-		if(sw[5] == 1 || sw[4] == 1 || sw[3] == 1 || sw[2] == 1 || sw[1] == 1)
+		if(sw[5] == 1 || sw[4] == 1 || sw[3] == 1 || sw[2] == 1 || sw[1] == 1 || start_protect == 1)
 			begin
-			if (sw[5])
+			if (sw[5] == 1 || start_protect == 1)
 				reward_invincible <= 1'b1;
 			else if(sw[3])
 				reward_faster <= 1'b1;
@@ -176,10 +172,7 @@ reward_display		u_reward_display
 	.reward_type		(reward_type),
 	.VGA_xpos			(VGA_xpos),
 	.VGA_ypos			(VGA_ypos),
-	.VGA_data			(VGA_data_icon),
-	
-	// test interface
-	.display_test				()
+	.VGA_data			(VGA_data_icon)
 );
 
 reward_information	u_reward_information

@@ -1,5 +1,5 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				music_shootmusic.v
 Date				:				2018-05-18
@@ -8,19 +8,21 @@ Description			:				the shoot music
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180518		QiiNn		1.0		
+180518		ctlvie		1.0			Initial Version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module music_shootmusic
 (
 	input				clk,
 	input				sht,
+	input				kill,
 	input				enable_shoot,
 	output reg			audio_out
 );
 
 reg			audio;
-parameter 	cnt_end = 600000;
+reg	[31:0]	cnt_end;
 reg			[19:0]	cnt;
 reg			[19:0]	cnt_once;
 reg			[31:0]	cnt_delay;
@@ -28,15 +30,20 @@ reg			flag;
 
 initial cnt_delay <= 0;
 initial flag <= 0;
+initial cnt_end = 600000;
 
 always@(posedge clk)
 begin
 if(enable_shoot)
 begin
-	if(sht)
+	if(sht == 1 || kill == 1)
 	begin
+		if(kill)
+			cnt_end <= 400000;
+		else
+			cnt_end <= 600000;
 		cnt <= cnt + 1;
-		if(cnt >= cnt_end/2)
+		if(cnt >= cnt_end/2 && cnt < cnt_end)
 		begin
 			audio <= 1;
 		end
@@ -49,7 +56,7 @@ begin
 	else
 		flag <= 0;
 	
-	if(sht == 1 && flag == 0)
+	if( (sht == 1 && flag == 0) || (kill == 1 && flag == 0) )
 	begin
 		cnt_delay <= cnt_delay + 1;
 		audio_out <= audio;

@@ -1,19 +1,20 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				bullet.v
 Date				:				2018-05-05
-Description			:				the bullet module 
+Description			:				the bullet controller and display module 
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180505		QiiNn		0.5			Module interface definition
-180508		QiiNn		1.0			Initial coding complete (unverified)
-180509		QiiNn		1.1			Corrected the reg conflict error(unverified)
-180510		QiiNn		1.5			Full Version!
-180512		QiiNn		1.6			1. Change the coordinate
+180505		ctlvie		0.5			Module interface definition
+180508		ctlvie		1.0			Initial coding complete (unverified)
+180509		ctlvie		1.1			Corrected the reg conflict error(unverified)
+180510		ctlvie		1.5			Full Version!
+180512		ctlvie		1.6			1. Change the coordinate
 									2. Add enable interface
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 `timescale 1ns/1ns
@@ -31,8 +32,6 @@ module bullet
 	//input and output the position of bullet
 	input		[4:0]	tank_xpos,
 	input		[4:0]	tank_ypos,
-	input		[4:0]	x_bul_pos_in,	
-	input		[4:0]	y_bul_pos_in,
 	output	reg	[4:0]	x_bul_pos_out,
 	output	reg	[4:0]	y_bul_pos_out,
 	
@@ -76,8 +75,8 @@ begin
 	begin
 		if(sample_flag == 1'b0)
 		begin
-			x_bul_pos_out <= tank_xpos;//x_bul_pos_init;
-			y_bul_pos_out <= tank_ypos;//y_bul_pos_init;
+			x_bul_pos_out <= tank_xpos;
+			y_bul_pos_out <= tank_ypos;
 			sample_flag <= 1'b1;
 		end
 		if(sample_flag == 1'b1)

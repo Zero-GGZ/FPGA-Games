@@ -1,17 +1,18 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				VGA_driver.v
 Date				:				2018-04-16
-Description			:				The driver test of VGA display
+Description			:				The driver module of VGA display
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180416		QiiNn		1.0			Origin (without Modelsim simulation)
-180420		QiiNn		1.1			First successful simulation and add parameters which only use in simulation
-180507		QiiNn		1.2			Bug fixed - change the VGA_en output property to input 
-180507		QiiNn		1.2			Bug fixed - correct the colors interfaces 
+180416		ctlvie		1.0			Origin (without Modelsim simulation)
+180420		ctlvie		1.1			First successful simulation and add parameters which only use in simulation
+180507		ctlvie		1.2			Bug fixed - change the VGA_en output property to input 
+180507		ctlvie		1.2			Bug fixed - correct the colors interfaces
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 `timescale 1ns/1ns

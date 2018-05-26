@@ -1,15 +1,16 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				reward_laser.v
 Date				:				2018-05-23
-Description			:				
+Description			:				Display the laser reward
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180523		QiiNn		1.0			Initial Version
-180524		QiiNn		1.2			Add enable interface
+180523		ctlvie		1.0			Initial Version
+180524		ctlvie		1.2			Add enable interface
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module	reward_laser
@@ -22,7 +23,6 @@ module	reward_laser
 	input	[1:0]		mytank_dir,
 	input	[10:0]		VGA_xpos,
 	input	[10:0]		VGA_ypos,
-	input				reward_test,
 	output	reg [11:0]	VGA_data
 );
 
@@ -30,7 +30,7 @@ always@(posedge clk)
 begin
 if(enable_reward)
 begin
-	if(reward_laser == 1'b1 || reward_test == 1'b1)
+	if(reward_laser == 1'b1 )
 	begin
 	case(mytank_dir)
 	2'b00:

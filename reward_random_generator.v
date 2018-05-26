@@ -1,14 +1,15 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				reward_random_generator.v
 Date				:				2018-05-22
-Description			:				
+Description			:				the random numbers generator for reward mechanism
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------  ------
-180522		QiiNn		1.0			Initial Version
+180522		ctlvie		1.0			Initial Version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 `timescale 1ns/1ns
 module reward_random_generator

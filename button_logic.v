@@ -1,14 +1,15 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				button_logic.v
 Date				:				2018-05-24
-Description			:				
+Description			:				The buttons controller between wired and wireless buttons
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180523		QiiNn		1.0			Initial version
+180523		ctlvie		1.0			Initial version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module	button_logic

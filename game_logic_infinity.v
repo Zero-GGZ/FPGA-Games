@@ -1,15 +1,16 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				game_logic_infinity.v
 Date				:				2018-05-13
-Description			:				
+Description			:				the game logic controller in infinity mode
 
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180513		QiiNn		1.0			Initial version
-180523		QiiNn		1.2			Add addtime function
+180513		ctlvie		1.0			Initial version
+180523		ctlvie		1.2			Add addtime function
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 module game_logic_infinity
@@ -18,22 +19,22 @@ module game_logic_infinity
 	input					btn_return,
 	input					btn_stop,
 	input					enable_game_infinity,
-	input		[4:0]		scorea,
-	input		[4:0]		scoreb,
-	input		[4:0]		scorec,
-	input		[4:0]		scored,
+	input		[6:0]		scorea,
+	input		[6:0]		scoreb,
+	input		[6:0]		scorec,
+	input		[6:0]		scored,
 	input					reward_addtime,
 	input					reward_test,
 	output	reg [15:0]		seg_infinity,
 	output	reg	[15:0]		led_infinity,
 	output	reg	[5:0]		timer,
 	output	reg				gameover_infinity,
-	output	reg	[5:0]		score_infinity
+	output	reg	[6:0]		score_infinity
 	 
 );
 
 reg		[31:0]	cnt;
-reg		[5:0]	score;
+reg		[6:0]	score;
 
 initial
 begin

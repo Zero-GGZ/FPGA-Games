@@ -1,5 +1,5 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				tank_generate.v
 Date				:				2018-05-05
@@ -7,11 +7,12 @@ Description			:				the generate module of four enemy's tanks
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180505		QiiNn		0.5			Module interface definition
-180507		QiiNn		0.6			Add tank_state interfaces
-180508		QiiNn		1.0			Initial coding completed(unverified)
-180508		QiiNn		1.1			Corrected the reg conflict error(unverified)
-180510		QiiNn		1.5			Full Version!
+180505		ctlvie		0.5			Module interface definition
+180507		ctlvie		0.6			Add tank_state interfaces
+180508		ctlvie		1.0			Initial coding completed(unverified)
+180508		ctlvie		1.1			Corrected the reg conflict error(unverified)
+180510		ctlvie		1.5			Full Version!
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 `timescale 1ns/1ns

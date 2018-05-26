@@ -1,5 +1,5 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				game_startshow.v
 Date				:				2018-05-11
@@ -8,7 +8,8 @@ Description			:				the start show for the game
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180512		QiiNn		1.0			Initial Version
+180512		ctlvie		1.0			Initial Version
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 
 `define	RED			12'hF00
@@ -92,8 +93,6 @@ bullet show1_bul
 	.tank_xpos	(show1_x),
 	.tank_ypos	(show1_y),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(),	
-	.y_bul_pos_in	(),
 	.x_bul_pos_out	(),
 	.y_bul_pos_out	(),
 	//input VGA scan coordinate
@@ -161,8 +160,6 @@ bullet show2_bul
 	.tank_xpos	(show2_x),
 	.tank_ypos	(show2_y),
 	//input and output the position of my bullet
-	.x_bul_pos_in	(),	
-	.y_bul_pos_in	(),
 	.x_bul_pos_out	(),
 	.y_bul_pos_out	(),
 	//input VGA scan coordinate

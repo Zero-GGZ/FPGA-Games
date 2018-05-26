@@ -1,5 +1,5 @@
 /*=======================================================
-Author				:				QiiNn
+Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
 Filename			:				clock.v
 Date				:				2018-05-08
@@ -8,15 +8,15 @@ Description			:				Clock signal divider
 Modification History:
 Date		By			Version		Description
 ----------------------------------------------------------
-180508		QiiNn		1.0			Initial coding completed(unverified)
-180510		QiiNn		1.0			Add the 2Hz clock for enemy tanks
-180522		QiiNn		1.2			Add "Faster" function
+180508		ctlvie		1.0			Initial coding completed(unverified)
+180510		ctlvie		1.0			Add the 2Hz clock for enemy tanks
+180522		ctlvie		1.2			Add "Faster" function
+180525		ctlvie		2.0			Final Version
 ========================================================*/
 module clock
 (
 	input				clk,
 	input				reward_faster,
-	input				reward_test,		//test interface
 	output 	reg			clk_4Hz,
 	output 	reg			clk_8Hz,
 	output	reg			clk_2Hz
@@ -49,7 +49,7 @@ end
 
 always@(posedge clk)
 begin
-	if(reward_faster == 1'b1 || reward_test == 1'b1)
+	if(reward_faster == 1'b1 )
 		ending_4Hz <= 6250000;
 	else
 		ending_4Hz <= 12500000;
