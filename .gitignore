@@ -2,3 +2,7 @@
 game_monitor.v
 tone_generate.v
 Discarded modules/game_interface_v2.v
+/SnakeGame/SnakeGame.cache/
+/SnakeGame/SnakeGame.hw/
+/SnakeGame/SnakeGame.ip_user_files/
+/SnakeGame/SnakeGame.sim/
