@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2017.4 (64-bit)
+# SW Build 2086221 on Fri Dec 15 20:55:39 MST 2017
+# IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
+# Start of session at: Tue May  7 23:11:36 2019
+# Process ID: 13352
+# Current directory: E:/WorkSpace/Xilinx_Workspace/Basys3/SnakeGame
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent13740 E:\WorkSpace\Xilinx_Workspace\Basys3\SnakeGame\SnakeGame.xpr
+# Log file: E:/WorkSpace/Xilinx_Workspace/Basys3/SnakeGame/vivado.log
+# Journal file: E:/WorkSpace/Xilinx_Workspace/Basys3/SnakeGame\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project E:/WorkSpace/Xilinx_Workspace/Basys3/SnakeGame/SnakeGame.xpr
+update_compile_order -fileset sources_1
