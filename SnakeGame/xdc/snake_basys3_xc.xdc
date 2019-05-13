@@ -28,9 +28,10 @@ set_property IOSTANDARD LVCMOS33 [get_ports hsync]
 set_property PACKAGE_PIN R19 [get_ports vsync]
 set_property PACKAGE_PIN P19 [get_ports hsync]
 set_property PACKAGE_PIN U18 [get_ports rst]
-set_property PACKAGE_PIN W5 [get_ports clk]							
-	set_property IOSTANDARD LVCMOS33 [get_ports clk]
-    create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports clk]
+
+set_property PACKAGE_PIN W5 [get_ports clk]
+set_property IOSTANDARD LVCMOS33 [get_ports clk]
+create_clock -period 10.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_ports clk]
 
 set_property PACKAGE_PIN W4 [get_ports {sel[0]}]
 set_property PACKAGE_PIN V4 [get_ports {sel[1]}]

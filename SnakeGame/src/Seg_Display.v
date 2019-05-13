@@ -1,5 +1,11 @@
-//数码管计分模块
-module Seg_Display
+/*
+ * @Discription:  数码管计分模块
+ * @Author: Qin Boyu
+ * @Date: 2019-05-07 23:17:17
+ * @LastEditTime: 2019-05-13 16:36:44
+ */
+
+module seg_display
 (
 	input clk,
 	input rst,

@@ -1,8 +1,13 @@
-//按键检测模块 延时消抖
-	module Key
+/*
+ * @Discription: buttons scan function
+ * @Author: Qin Boyu
+ * @Date: 2019-05-07 23:17:17
+ * @LastEditTime: 2019-05-13 16:36:28
+ */
+
+	module buttons
 (	input clk,
 	input rst,
-	
 	input left,
 	input right,
 	input up,

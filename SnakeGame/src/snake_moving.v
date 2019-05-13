@@ -1,31 +1,37 @@
-//蛇运动情况控制模块
-module Snake
+/*
+ * @Discription:  蛇运动情况控制模块
+ * @Author: Qin Boyu
+ * @Date: 2019-05-07 23:17:17
+ * @LastEditTime: 2019-05-13 16:34:46
+ */
+
+module snake_moving
 (
-	input clk,
-	input rst,
+	input clk,			//输入时钟信号
+	input rst,			//输入复位信号
 	
-	input left_press,
+	input left_press,	//输入四种按键信号
 	input right_press,
 	input up_press,
 	input down_press,
 	
-	output reg [1:0]snake,//用于表示当前扫描扫描的部件 四种状态 00：无 01：头 10：身体 11：墙
+	output reg [1:0]snake,//输出当前像素点的信息，分为四种状态 00：无 01：头 10：身体 11：墙
 	
-	input [9:0]x_pos,
-	input [9:0]y_pos,//扫描坐标  单位："像素点"
+	input [9:0]x_pos,	//输入当前扫描坐标  单位："像素点"
+	input [9:0]y_pos,
+
+	output [5:0]head_x,	//输出蛇头位置坐标（给apple_generator模块判断是否吃到苹果）
+	output [5:0]head_y,
 	
-	output [5:0]head_x,	
-	output [5:0]head_y,//头部格坐标
+	input add_cube,		//输入增加体长信号
 	
-	input add_cube,//增加体长信号
+	input [1:0]game_status,//输入四种游戏状态
 	
-	input [1:0]game_status,//四种游戏状态
+	output reg [6:0]cube_num,	//输出当前的体长
 	
-	output reg [6:0]cube_num,
-	
-	output reg hit_body,   //撞到身子信号
-	output reg hit_wall,   //撞到墙信号
-	input die_flash        //闪动信号
+	output reg hit_body,   //输出撞到身子信号
+	output reg hit_wall,   //输出撞到墙信号
+	input die_flash        //输入游戏结束的闪动信号
 );
 	
 	localparam UP = 2'b00;
@@ -53,12 +59,14 @@ module Snake
 	reg change_to_up;
 	reg change_to_down;
 	
+	//使用数组的方法来控制身长，身长最大为16，x数组和y数组每个值分别存放身长为下标处对应的坐标（格子坐标），并用is_exist表示是否存在
 	reg [5:0]cube_x[15:0];
 	reg [5:0]cube_y[15:0];//体长坐标 单位："格子" 
 	reg [15:0]is_exist;    //用于控制身子的亮灭，即控制身子长度
 	
 	reg addcube_state;
 	
+	//身长为零处的x、y坐标也就是蛇头的x、y坐标
 	assign head_x = cube_x[0];
 	assign head_y = cube_y[0]; 
 	
@@ -73,6 +81,7 @@ module Snake
 
     
 	always @(posedge clk or negedge rst) begin
+		//初始时，长度为三，且位置是恒定的
 		if(!rst) begin
 			cnt <= 0;
 								
@@ -127,6 +136,7 @@ module Snake
 			hit_wall <= 0;
 			hit_body <= 0;//初始长度3  限长16 初始化时只显示3个长度-
 		end		
+
 		else if(game_status == RESTART) begin
                     cnt <= 0;
                                                     
@@ -183,11 +193,15 @@ module Snake
         end
 		else begin
 			cnt <= cnt + 1;
+			//每0.25秒（12500000个clk）可以移动一次（碰撞检测是每250000检测一次）
 			if(cnt == 12_500_000) begin   //0.02us*12'500'000=0.25s   每秒移动四次
 				cnt <= 0;
+				//状态确认为PLAY
 				if(game_status == PLAY) begin
+					//撞墙检测
 					if((direct == UP && cube_y[0] == 1)|(direct == DOWN && cube_y[0] == 28)|(direct == LEFT && cube_x[0] == 1)|(direct == RIGHT && cube_x[0] == 38))
 					   hit_wall <= 1; //撞到墙壁
+					//身体碰撞检测
 					else if((cube_y[0] == cube_y[1] && cube_x[0] == cube_x[1] && is_exist[1] == 1)|
 							(cube_y[0] == cube_y[2] && cube_x[0] == cube_x[2] && is_exist[2] == 1)|
 							(cube_y[0] == cube_y[3] && cube_x[0] == cube_x[3] && is_exist[3] == 1)|
@@ -205,6 +219,7 @@ module Snake
 							(cube_y[0] == cube_y[15] && cube_x[0] == cube_x[15] && is_exist[15] == 1))
 							hit_body <= 1;//头的Y坐标=任一位身体的Y坐标 且 头的X坐标=任一位身体的X坐标 且 身体的该长度位存在  碰到身体
 					else begin
+					//身体运动算法：本长度位移动的下个坐标为下一个长度位当前坐标 运动节拍按分频后的节奏
 						cube_x[1] <= cube_x[0];
 						cube_y[1] <= cube_y[0];
 										
@@ -249,7 +264,7 @@ module Snake
 										
 						cube_x[15] <= cube_x[14];
 						cube_y[15] <= cube_y[14];
-						//身体运动算法 本长度位移动的下个坐标为下一个长度位当前坐标 运动节拍按分频后的节奏
+					// 头部运动算法	
 						case(direct)							
 							UP: begin
 							    if(cube_y[0] == 1)

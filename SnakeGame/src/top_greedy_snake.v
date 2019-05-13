@@ -1,4 +1,10 @@
-//∂•≤„ƒ£øÈ
+/*
+ * @Discription:  È°∂Â±ÇÊ®°Âùó
+ * @Author: Qin Boyu
+ * @Date: 2019-05-07 23:17:17
+ * @LastEditTime: 2019-05-13 16:37:39
+ */
+
 
 module top_greedy_snake
 (
@@ -40,7 +46,7 @@ module top_greedy_snake
 	wire rst_n;
 	assign rst_n = ~rst;
 
-    Game_Ctrl_Unit U1 (
+    game_status_control u_game_status_control (
         .clk(clk),
 	    .rst(rst_n),
 	    .key1_press(left_key_press),
@@ -54,7 +60,7 @@ module top_greedy_snake
 		.restart(restart)		
 	);
 	
-	Snake_Eatting_Apple U2 (
+	apple_generator u_apple_generator (
         .clk(clk),
 		.rst(rst_n),
 		.apple_x(apple_x),
@@ -64,7 +70,7 @@ module top_greedy_snake
 		.add_cube(add_cube)	
 	);
 	
-	Snake U3 (
+	snake_moving u_snake_moving (
 	    .clk(clk),
 		.rst(rst_n),
 		.left_press(left_key_press),
@@ -84,7 +90,7 @@ module top_greedy_snake
 		.die_flash(die_flash)
 	);
 
-	VGA_top U4 (
+	vga_control u_vga_control (
 		.clk(clk),
 		.rst(rst),
 		.hsync(hsync),
@@ -97,7 +103,7 @@ module top_greedy_snake
 		.apple_y(apple_y)
 	);
 	
-	Key U5 (
+	buttons u_buttons (
 		.clk(clk),
 		.rst(rst_n),
 		.left(left),
@@ -110,7 +116,7 @@ module top_greedy_snake
 		.down_key_press(down_key_press)		
 	);
 	
-	Seg_Display U6 (
+	seg_display u_seg_display (
 		.clk(clk),
 		.rst(rst_n),	
 		.add_cube(add_cube),
