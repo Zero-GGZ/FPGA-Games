@@ -2,7 +2,7 @@
  * @Discription:  苹果生成模块，在蛇吃到苹果后随机生成一个新的苹果坐标
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 12:12:46
+ * @LastEditTime: 2019-05-18 18:53:18
  */
 
 
@@ -44,7 +44,7 @@ module apple_generator
 				if(apple_x == head_x && apple_y == head_y) 
 				begin
 					add_cube <= 1;
-					apple_x <= {1'b0, random_num[9:5]};
+					apple_x <= {1'b0, (random_num[9:5] == 0 ? 2 : random_num[9:5])};
 					/*
 					apple_x <= (random_num[10:5] > 30) ? (random_num[10:5] - 25) : (random_num[10:5] == 0) ? 1 : random_num[10:5];
 					*/
