@@ -2,7 +2,7 @@
  * @Discription:  顶层模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-13 16:37:39
+ * @LastEditTime: 2019-05-18 10:32:28
  */
 
 
@@ -45,6 +45,17 @@ module top_greedy_snake
 	
 	wire rst_n;
 	assign rst_n = ~rst;
+
+	wire clk_4Hz;
+	wire [11:0]		VGA_reward;
+
+	clock u_clock
+	(
+		.clk		(clk),
+		.clk_4Hz	(clk_4Hz),
+		.clk_8Hz	(),
+		.clk_2Hz	()
+	);
 
     game_status_control u_game_status_control (
         .clk(clk),
@@ -100,7 +111,8 @@ module top_greedy_snake
 		.x_pos(x_pos),
 		.y_pos(y_pos),
 		.apple_x(apple_x),
-		.apple_y(apple_y)
+		.apple_y(apple_y),
+		.VGA_reward(VGA_reward)
 	);
 	
 	buttons u_buttons (
@@ -124,4 +136,21 @@ module top_greedy_snake
 		.seg_out(seg_out),
 		.sel(sel)	
 	);
+	
+	reward_logic u_reward_logic
+	(
+		.clk			(clk),
+		.clk_4Hz		(clk_4Hz),
+		.game_status	(game_status),
+		.head_x			(head_x),
+		.head_y			(head_y),
+		.VGA_xpos		({1'b0,x_pos}),
+		.VGA_ypos		({1'b0,y_pos}),
+		.reward_protected	(),
+		.reward_grade		(),
+		.reward_slowly		(),
+		.VGA_data_reward	(VGA_reward)
+	);
+
+	
 endmodule

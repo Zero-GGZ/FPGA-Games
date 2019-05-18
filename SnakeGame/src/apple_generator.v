@@ -2,7 +2,7 @@
  * @Discription:  苹果生成模块，在蛇吃到苹果后随机生成一个新的苹果坐标
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-13 16:27:45
+ * @LastEditTime: 2019-05-18 10:25:14
  */
 
 
@@ -14,7 +14,7 @@ module apple_generator
 	input [5:0]head_x,	//输入蛇头的x坐标和y坐标
 	input [5:0]head_y,
 	
-	output reg [5:0]apple_x, //输出苹果的x坐标和y坐标
+	output reg [5:0]apple_x, //输出苹果的x坐标和y坐标(0~38, 0~28)
 	output reg [4:0]apple_y,
 
 	output reg add_cube	//输出增加身长的信号
@@ -24,7 +24,7 @@ module apple_generator
 	reg [10:0]random_num;  //随机数寄存器
 	
 	always@(posedge clk)
-		//用加法产生随机数（高五位为苹果的x坐标，低五位为y坐标）
+		//用加法产生随机数（高6位为苹果的x坐标，低5位为y坐标）
 		random_num <= random_num + 999; 
 	
 	always@(posedge clk or negedge rst) begin

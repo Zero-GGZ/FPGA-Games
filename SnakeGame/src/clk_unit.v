@@ -1,7 +1,7 @@
 module clk_unit(
 	input clk,
 	input rst,
-	output clk_n
+	output reg clk_n
 	);
 	
     reg clk_n;

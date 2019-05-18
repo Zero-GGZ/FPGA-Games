@@ -1,8 +1,8 @@
 /*
- * @Discription:  VGA控制模块  根据当前扫描到的点是哪一部分输出相应颜色
+ * @Discription:  VGA显示模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-13 16:31:43
+ * @LastEditTime: 2019-05-18 09:59:56
  */
 
 module vga_display
@@ -13,6 +13,7 @@ module vga_display
 	input [1:0]snake,
 	input [5:0]apple_x,
 	input [4:0]apple_y,
+	input   	[11:0]	VGA_reward,
 	output reg[9:0]x_pos,
 	output reg[9:0]y_pos,	
 	output reg hsync,
@@ -23,6 +24,8 @@ module vga_display
 	reg [19:0]clk_cnt;
 	reg [9:0]line_cnt;
 	reg clk_25M;
+
+	wire [11:0]   VGA_data_interface;
 	
 	localparam NONE = 2'b00;
 	localparam HEAD = 2'b01;
@@ -70,27 +73,38 @@ module vga_display
 				vsync <= 0;
 			end
 			
-			if(x_pos >= 0 && x_pos < 640 && y_pos >= 0 && y_pos < 480) begin
-			    lox = x_pos[3:0];
-				loy = y_pos[3:0];						
-				if(x_pos[9:4] == apple_x && y_pos[9:4] == apple_y)
-					case({loy,lox})
-						8'b0000_0000:color_out = 12'b0000_0000_0000;
-						default:color_out = 12'b0000_0000_1111;
-					endcase						
-				else if(snake == NONE)
-					color_out = 12'b0000_0000_0000;
-				else if(snake == WALL)
-					color_out = 3'b101;
-				else if(snake == HEAD|snake == BODY) begin   //根据当前扫描到的点是哪一部分输出相应颜色
-					case({lox,loy})
-						8'b0000_0000:color_out = 12'b0000_0000_0000;
-						default:color_out = (snake == HEAD) ?  HEAD_COLOR : BODY_COLOR;
-					endcase
-				end
+			if(x_pos >= 0 && x_pos < 640 && y_pos >= 0 && y_pos < 480) 
+			begin
+				color_out[ 0] = VGA_data_interface[ 0] | VGA_reward[ 0];
+				color_out[ 1] = VGA_data_interface[ 1] | VGA_reward[ 1];
+				color_out[ 2] = VGA_data_interface[ 2] | VGA_reward[ 2];
+				color_out[ 3] = VGA_data_interface[ 3] | VGA_reward[ 3];
+				color_out[ 4] = VGA_data_interface[ 4] | VGA_reward[ 4];
+				color_out[ 5] = VGA_data_interface[ 5] | VGA_reward[ 5];
+				color_out[ 6] = VGA_data_interface[ 6] | VGA_reward[ 6];
+				color_out[ 7] = VGA_data_interface[ 7] | VGA_reward[ 7];
+				color_out[ 8] = VGA_data_interface[ 8] | VGA_reward[ 8];
+				color_out[ 9] = VGA_data_interface[ 9] | VGA_reward[ 9];
+				color_out[10] = VGA_data_interface[10] | VGA_reward[10];
+				color_out[11] = VGA_data_interface[11] | VGA_reward[11];
+
 			end
 		    else
 			    color_out = 12'b0000_0000_0000;
 		end
     end
+
+	interface_display u_interface_display
+	(
+		.clk	(clk),
+		.x_pos	(x_pos),
+		.y_pos	(y_pos),
+		.apple_x(apple_x),
+		.apple_y(apple_y),
+		.snake	(snake),
+		.VGA_data_interface(VGA_data_interface)
+	);
+
+
+	
 endmodule
