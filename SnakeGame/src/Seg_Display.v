@@ -2,7 +2,7 @@
  * @Discription:  数码管计分模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-13 16:36:44
+ * @LastEditTime: 2019-05-18 16:58:38
  */
 
 module seg_display
@@ -11,12 +11,14 @@ module seg_display
 	input rst,
 	
 	input add_cube,
+	input	reward_grade,
 	inout [1:0]game_status,
 	
 	output reg[7:0]seg_out,
 	output reg[3:0]sel
 );
 
+	reg addPointActive;
     localparam RESTART = 2'b00;
     
 	reg[15:0]point;
@@ -129,11 +131,13 @@ module seg_display
 			if(!rst)
 				begin
 					point <= 0;
-					addcube_state <= 0;					
+					addcube_state <= 0;	
+					addPointActive <= 1;				
 				end
 			else if (game_status == RESTART) begin
                 point <= 0;
-                addcube_state <= 0;              
+                addcube_state <= 0;
+				addPointActive <= 1;              
             end
 			else begin
 				case(addcube_state)				
@@ -162,7 +166,33 @@ module seg_display
 				        if(!add_cube)
 					        addcube_state <= 0;
 				    end				
-				endcase			
+				endcase
+
+				if(reward_grade == 1)
+				begin
+					if(addPointActive == 1)
+					begin
+						addPointActive <= 0;
+						if(point[3:0] < 9)
+							point[3:0] <= point[3:0] + 1;
+						else begin
+							point[3:0] <= 0;
+							if(point[7:4] < 9)
+								point[7:4] <= point[7:4] + 1;
+							else begin
+								point[7:4] <= 0;
+								if(point[11:8] < 9)
+									point[11:8] <= point[11:8] + 1;
+								else begin
+									point[11:8] <= 0;
+									point[15:12] <= point[15:12] + 1;
+								end
+							end
+						end
+					end
+				end
+				else
+					addPointActive <= 1;	
 			end										
 	end								
 endmodule

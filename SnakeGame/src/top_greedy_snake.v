@@ -2,7 +2,7 @@
  * @Discription:  顶层模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 13:49:53
+ * @LastEditTime: 2019-05-18 16:44:34
  */
 
 
@@ -46,6 +46,10 @@ module top_greedy_snake
 	wire [6:0]cube_num;
 
 	wire reward_protected;
+	wire reward_slowly;
+	wire reward_grade;
+	wire speedRecover;
+
 	
 	wire rst_n;
 	assign rst_n = ~rst;
@@ -95,11 +99,13 @@ module top_greedy_snake
 		.snake(snake),
 		.x_pos(x_pos),
 		.reward_protected(reward_protected),
+		.reward_slowly(reward_slowly),
 		.y_pos(y_pos),
 		.head_x(head_x),
 		.head_y(head_y),
 		.add_cube(add_cube),
 		.game_status(game_status),
+		.speedRecover(speedRecover),
 		.cube_num(cube_num),
 		.hit_body(hit_body),
 		.hit_wall(hit_wall),
@@ -138,6 +144,7 @@ module top_greedy_snake
 		.rst(rst_n),	
 		.add_cube(add_cube),
 		.game_status(game_status),
+		.reward_grade(reward_grade),
 		.seg_out(seg_out),
 		.sel(sel)	
 	);
@@ -153,9 +160,10 @@ module top_greedy_snake
 		.led			(led),
 		.VGA_xpos		({1'b0,x_pos}),
 		.VGA_ypos		({1'b0,y_pos}),
+		.speedRecover(speedRecover),
 		.reward_protected	(reward_protected),
-		.reward_grade		(),
-		.reward_slowly		(),
+		.reward_grade		(reward_grade),
+		.reward_slowly		(reward_slowly),
 		.VGA_data_reward	(VGA_reward)
 	);
 

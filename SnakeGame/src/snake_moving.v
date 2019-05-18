@@ -2,7 +2,7 @@
  * @Discription:  蛇运动情况控制模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 13:51:50
+ * @LastEditTime: 2019-05-18 17:48:43
  */
 
 module snake_moving
@@ -24,9 +24,11 @@ module snake_moving
 	output [5:0]head_y,
 	
 	input add_cube,		//输入增加体长信号
+	input speedRecover,
 	
 	input [1:0]game_status,//输入四种游戏状态
 	input 	reward_protected,
+	input	reward_slowly,
 	
 	output reg [6:0]cube_num,	//输出当前的体长
 	
@@ -46,6 +48,7 @@ module snake_moving
 	localparam WALL = 2'b11;
 	
     localparam RESTART = 2'b00;
+	localparam START = 2'b01;
 	localparam PLAY = 2'b10;
 	
 	reg[31:0]cnt;
@@ -69,7 +72,44 @@ module snake_moving
 	
 	//身长为零处的x、y坐标也就是蛇头的x、y坐标
 	assign head_x = cube_x[0];
-	assign head_y = cube_y[0]; 
+	assign head_y = cube_y[0];
+	
+	reg [31:0]  speedValue; //速度控制 值越小移动速度越快 变化范围为（12_500_000 ~ 500_000）
+	reg     speedSetActive;
+	reg [31:0]  tempSpeed;
+	always @(posedge clk)
+	begin
+		if(game_status == RESTART || game_status == START)
+		begin
+			speedValue <= 12_500_000;
+			speedSetActive <= 1'b1;
+			tempSpeed <= 12_500_000;
+		end
+		if(game_status == PLAY)
+		begin
+			if(speedRecover == 1)
+				begin
+					speedValue <= 12_500_000;
+				end
+
+			if(add_cube ==  1 && reward_slowly == 0)
+			begin
+				if(speedSetActive == 1'b1)
+				begin
+					speedValue <= speedValue - 50000;
+					speedSetActive <= 0;
+				end         
+			end
+			else
+				speedSetActive <= 1;
+			
+			if(reward_slowly)
+			begin
+				tempSpeed <= speedValue;
+				speedValue <= 20_000_000;
+			end
+		end
+	end 
 	
 	always @(posedge clk or negedge rst) begin		
 		if(!rst)
@@ -195,7 +235,7 @@ module snake_moving
 		else begin
 			cnt <= cnt + 1;
 			//每0.25秒（12500000个clk）可以移动一次（碰撞检测是每250000检测一次）
-			if(cnt == 12_500_000) begin   //0.02us*12'500'000=0.25s   每秒移动四次
+			if(cnt >= speedValue) begin   //0.02us*12'500'000=0.25s   每秒移动四次
 				cnt <= 0;
 				//状态确认为PLAY
 				if(game_status == PLAY) begin
