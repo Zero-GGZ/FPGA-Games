@@ -2,7 +2,7 @@
  * @Discription:  奖励机制的逻辑控制模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:21:08
- * @LastEditTime: 2019-05-14 20:37:09
+ * @LastEditTime: 2019-05-18 13:02:11
  */
 
  module reward_logic
@@ -14,6 +14,8 @@
      input      [5:0]   head_y,
      input      [10:0]  VGA_xpos,
      input      [10:0]  VGA_ypos,
+     input      [15:0]  sw,
+     output reg    [15:0]  led,
      output reg         reward_protected,
      output reg         reward_grade,
      output reg         reward_slowly,
@@ -40,20 +42,39 @@ begin
     if(game_status == 2'b10)
     begin
         enable_reward <= 1'b1;
-        if  (set_require == 1'b1 &&(random_xpos == head_x)&& (random_ypos == head_y)) 
+        if  ((set_require == 1'b1 &&(random_xpos == head_x)&& (random_ypos == head_y))|| sw[2] == 1 || sw[1] == 1 || sw[0] == 1) 
         begin
-            case(reward_type)
-                1 : reward_protected <= 1'b1;
-                2 :	reward_slowly <= 1'b1;
-                3 :	reward_grade <= 1'b1;		
+            if(sw[2] == 1 || sw[1] == 1 || sw[0] == 1)
+            begin
+                led = 16'b0000_0000_0000_0000;
+                case(sw[2:0])
+                3'b001 :    reward_protected <= 1'b1;
+                3'b010 :	reward_slowly <= 1'b1;
+                3'b100 :	reward_grade <= 1'b1;		
                 default :
                 begin
                     reward_protected <= 1'b0;
                     reward_grade <= 1'b0;
                     reward_slowly <= 1'b0;	
                 end
-            endcase
-                set_finish <= 1'b1;
+                endcase
+            end
+            else
+            begin
+                led = 16'b1111_1111_1111_1111;
+                case(reward_type)
+                    1 : reward_protected <= 1'b1;
+                    2 :	reward_slowly <= 1'b1;
+                    3 :	reward_grade <= 1'b1;		
+                    default :
+                    begin
+                        reward_protected <= 1'b0;
+                        reward_grade <= 1'b0;
+                        reward_slowly <= 1'b0;	
+                    end
+                endcase
+                    set_finish <= 1'b1;
+            end
         end
         else
             set_finish <= 1'b0;
@@ -62,6 +83,7 @@ begin
         
         if(reward_protected)
         begin
+            led = 16'b0000_0000_0000_1111;
             cnt <= cnt + 1;
             if (cnt >= 30)
                 begin
@@ -72,6 +94,7 @@ begin
         
         if(reward_slowly)
         begin
+            led = 16'b0000_0000_1111_0000;
             cnt <= cnt + 1;
             if (cnt >= 30)
                 begin
@@ -79,6 +102,18 @@ begin
                 cnt <= 0;
                 end
         end
+        
+        if(reward_grade)
+        begin
+            led = 16'b0000_1111_0000_0000;
+            cnt <= cnt + 1;
+            if (cnt >= 30)
+                begin
+                reward_grade <= 1'b0;
+                cnt <= 0;
+                end
+        end
+
     end
     else
         enable_reward <= 1'b0;

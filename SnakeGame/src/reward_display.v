@@ -2,7 +2,7 @@
  * @Discription:  奖励标志显示模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:45:44
- * @LastEditTime: 2019-05-18 10:02:19
+ * @LastEditTime: 2019-05-18 11:38:30
  */
 
 `define	RED			12'hF00
@@ -41,14 +41,14 @@ always@(posedge clk)
 begin
 	if(set_require == 1 && enable_reward == 1)
 	begin
-		if( (VGA_xpos > random_xpos * 20 + 80 - 12)
-		&&(VGA_xpos <= random_xpos * 20 + 80 + 12)
-		&&(VGA_ypos > random_ypos * 20 + 80 - 12)
-		&&(VGA_ypos <= random_ypos * 20 + 80 + 12) )
+		if( (VGA_xpos > random_xpos * 20 + 0 - 12)
+		&&(VGA_xpos <= random_xpos * 20 + 0 + 12)
+		&&(VGA_ypos > random_ypos * 20 + 0 - 12)
+		&&(VGA_ypos <= random_ypos * 20 + 0 + 12) )
 		begin
-			addr_protected <= ( VGA_xpos - (random_xpos * 20 + 80 - 12)) + 24 *(VGA_ypos - (random_ypos * 20 + 80 - 12));
-			addr_grade	 <= ( VGA_xpos - (random_xpos * 20 + 80 - 12)) + 24 *(VGA_ypos - (random_ypos * 20 + 80 - 12));
-			addr_slowly  <= ( VGA_xpos - (random_xpos * 20 + 80 - 12)) + 24 *(VGA_ypos - (random_ypos * 20 + 80 - 12));
+			addr_protected <= ( VGA_xpos - (random_xpos * 20 + 0 - 12)) + 24 *(VGA_ypos - (random_ypos * 20 + 0 - 12));
+			addr_grade	 <= ( VGA_xpos - (random_xpos * 20 + 0 - 12)) + 24 *(VGA_ypos - (random_ypos * 20 + 0 - 12));
+			addr_slowly  <= ( VGA_xpos - (random_xpos * 20 + 0 - 12)) + 24 *(VGA_ypos - (random_ypos * 20 + 0 - 12));
 			
 			case(reward_type)
 			2'b01 : 	

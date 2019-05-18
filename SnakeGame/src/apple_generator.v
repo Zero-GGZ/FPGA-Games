@@ -2,7 +2,7 @@
  * @Discription:  苹果生成模块，在蛇吃到苹果后随机生成一个新的苹果坐标
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 10:25:14
+ * @LastEditTime: 2019-05-18 12:12:46
  */
 
 
@@ -14,7 +14,7 @@ module apple_generator
 	input [5:0]head_x,	//输入蛇头的x坐标和y坐标
 	input [5:0]head_y,
 	
-	output reg [5:0]apple_x, //输出苹果的x坐标和y坐标(0~38, 0~28)
+	output reg [5:0]apple_x, //输出苹果的x坐标和y坐标(0~34, 0~24)
 	output reg [4:0]apple_y,
 
 	output reg add_cube	//输出增加身长的信号
@@ -44,8 +44,11 @@ module apple_generator
 				if(apple_x == head_x && apple_y == head_y) 
 				begin
 					add_cube <= 1;
-					apple_x <= (random_num[10:5] > 38) ? (random_num[10:5] - 25) : (random_num[10:5] == 0) ? 1 : random_num[10:5];
-					apple_y <= (random_num[4:0] > 28) ? (random_num[4:0] - 3) : (random_num[4:0] == 0) ? 1:random_num[4:0];
+					apple_x <= {1'b0, random_num[9:5]};
+					/*
+					apple_x <= (random_num[10:5] > 30) ? (random_num[10:5] - 25) : (random_num[10:5] == 0) ? 1 : random_num[10:5];
+					*/
+					apple_y <= (random_num[4:0] > 24) ? (random_num[4:0] - 10) : (random_num[4:0] == 0) ? 1:random_num[4:0];
 				end
 				else
 					add_cube <= 0;

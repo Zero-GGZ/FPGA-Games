@@ -2,7 +2,7 @@
  * @Discription:  顶层模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 10:32:28
+ * @LastEditTime: 2019-05-18 12:49:43
  */
 
 
@@ -15,6 +15,8 @@ module top_greedy_snake
 	input right,
 	input up,
 	input down,
+	input	[15:0]	sw,
+	output	[15:0]	led,
 
 	output hsync,
 	output vsync,
@@ -144,6 +146,8 @@ module top_greedy_snake
 		.game_status	(game_status),
 		.head_x			(head_x),
 		.head_y			(head_y),
+		.sw				(sw),
+		.led			(led),
 		.VGA_xpos		({1'b0,x_pos}),
 		.VGA_ypos		({1'b0,y_pos}),
 		.reward_protected	(),
