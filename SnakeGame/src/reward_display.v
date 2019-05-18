@@ -2,7 +2,7 @@
  * @Discription:  奖励标志显示模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:45:44
- * @LastEditTime: 2019-05-18 20:08:14
+ * @LastEditTime: 2019-05-19 01:45:10
  */
 
 `define	RED			12'hF00
@@ -43,7 +43,7 @@ begin
 	flash_cnt <= flash_cnt + 28'b1;
 	if (flash_cnt >= 25000000)		
 	begin
-		FLASH_COLOR <= 12'b1111_0000_0000;
+		FLASH_COLOR <= 12'b0000_1111_1111;
 	end
 	else FLASH_COLOR <= 12'b0000_0000_0000;
 	if	(flash_cnt >= 50000000)

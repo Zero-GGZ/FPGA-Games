@@ -2,7 +2,7 @@
  * @Discription:  顶层模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 16:44:34
+ * @LastEditTime: 2019-05-19 01:00:08
  */
 
 
@@ -119,6 +119,7 @@ module top_greedy_snake
 		.vsync(vsync),
 		.snake(snake),
         .color_out(color_out),
+		.game_status(game_status),
 		.x_pos(x_pos),
 		.y_pos(y_pos),
 		.apple_x(apple_x),

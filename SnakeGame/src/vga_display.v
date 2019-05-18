@@ -2,7 +2,7 @@
  * @Discription:  VGAÏÔÊ¾Ä£¿é
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 09:59:56
+ * @LastEditTime: 2019-05-19 01:01:55
  */
 
 module vga_display
@@ -14,6 +14,7 @@ module vga_display
 	input [5:0]apple_x,
 	input [4:0]apple_y,
 	input   	[11:0]	VGA_reward,
+	input [1:0] game_status,
 	output reg[9:0]x_pos,
 	output reg[9:0]y_pos,	
 	output reg hsync,
@@ -101,6 +102,7 @@ module vga_display
 		.y_pos	(y_pos),
 		.apple_x(apple_x),
 		.apple_y(apple_y),
+		.game_status(game_status),
 		.snake	(snake),
 		.VGA_data_interface(VGA_data_interface)
 	);
