@@ -2,7 +2,7 @@
  * @Discription:  顶层模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 12:49:43
+ * @LastEditTime: 2019-05-18 13:49:53
  */
 
 
@@ -44,6 +44,8 @@ module top_greedy_snake
 	wire die_flash;
 	wire restart;
 	wire [6:0]cube_num;
+
+	wire reward_protected;
 	
 	wire rst_n;
 	assign rst_n = ~rst;
@@ -92,6 +94,7 @@ module top_greedy_snake
 		.down_press(down_key_press),
 		.snake(snake),
 		.x_pos(x_pos),
+		.reward_protected(reward_protected),
 		.y_pos(y_pos),
 		.head_x(head_x),
 		.head_y(head_y),
@@ -150,7 +153,7 @@ module top_greedy_snake
 		.led			(led),
 		.VGA_xpos		({1'b0,x_pos}),
 		.VGA_ypos		({1'b0,y_pos}),
-		.reward_protected	(),
+		.reward_protected	(reward_protected),
 		.reward_grade		(),
 		.reward_slowly		(),
 		.VGA_data_reward	(VGA_reward)

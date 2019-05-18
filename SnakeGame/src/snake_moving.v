@@ -2,7 +2,7 @@
  * @Discription:  蛇运动情况控制模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 11:10:19
+ * @LastEditTime: 2019-05-18 13:51:50
  */
 
 module snake_moving
@@ -26,6 +26,7 @@ module snake_moving
 	input add_cube,		//输入增加体长信号
 	
 	input [1:0]game_status,//输入四种游戏状态
+	input 	reward_protected,
 	
 	output reg [6:0]cube_num,	//输出当前的体长
 	
@@ -199,10 +200,10 @@ module snake_moving
 				//状态确认为PLAY
 				if(game_status == PLAY) begin
 					//撞墙检测
-					if((direct == UP && cube_y[0] == 1)|(direct == DOWN && cube_y[0] == 24)|(direct == LEFT && cube_x[0] == 1)|(direct == RIGHT && cube_x[0] == 34))
+					if(((direct == UP && cube_y[0] == 1)|(direct == DOWN && cube_y[0] == 24)|(direct == LEFT && cube_x[0] == 1)|(direct == RIGHT && cube_x[0] == 34)) && reward_protected == 0)
 					   hit_wall <= 1; //撞到墙壁
 					//身体碰撞检测
-					else if((cube_y[0] == cube_y[1] && cube_x[0] == cube_x[1] && is_exist[1] == 1)|
+					else if( reward_protected == 0 &&((cube_y[0] == cube_y[1] && cube_x[0] == cube_x[1] && is_exist[1] == 1)|
 							(cube_y[0] == cube_y[2] && cube_x[0] == cube_x[2] && is_exist[2] == 1)|
 							(cube_y[0] == cube_y[3] && cube_x[0] == cube_x[3] && is_exist[3] == 1)|
 							(cube_y[0] == cube_y[4] && cube_x[0] == cube_x[4] && is_exist[4] == 1)|
@@ -216,7 +217,7 @@ module snake_moving
 							(cube_y[0] == cube_y[12] && cube_x[0] == cube_x[12] && is_exist[12] == 1)|
 							(cube_y[0] == cube_y[13] && cube_x[0] == cube_x[13] && is_exist[13] == 1)|
 							(cube_y[0] == cube_y[14] && cube_x[0] == cube_x[14] && is_exist[14] == 1)|
-							(cube_y[0] == cube_y[15] && cube_x[0] == cube_x[15] && is_exist[15] == 1))
+							(cube_y[0] == cube_y[15] && cube_x[0] == cube_x[15] && is_exist[15] == 1)))
 							hit_body <= 1;//头的Y坐标=任一位身体的Y坐标 且 头的X坐标=任一位身体的X坐标 且 身体的该长度位存在  碰到身体
 					else begin
 					//身体运动算法：本长度位移动的下个坐标为下一个长度位当前坐标 运动节拍按分频后的节奏
@@ -267,28 +268,28 @@ module snake_moving
 					// 头部运动算法	
 						case(direct)							
 							UP: begin
-							    if(cube_y[0] == 1)
+							    if(cube_y[0] == 1 && reward_protected == 0)
 									hit_wall <= 1;
 								else
 									cube_y[0] <= cube_y[0]-1;
 							end
 									
 							DOWN: begin
-								if(cube_y[0] == 24)
+								if(cube_y[0] == 24 && reward_protected == 0)
 									hit_wall <= 1;
 								else
 									cube_y[0] <= cube_y[0] + 1;
 							end
 										
 							LEFT: begin
-								if(cube_x[0] == 1)
+								if(cube_x[0] == 1 && reward_protected == 0)
 									hit_wall <= 1;
 								else
 									cube_x[0] <= cube_x[0] - 1;											
 							end
 
 							RIGHT: begin
-								if(cube_x[0] == 34)
+								if(cube_x[0] == 34 && reward_protected == 0)
 									hit_wall <= 1;
                                 else
 									cube_x[0] <= cube_x[0] + 1;
