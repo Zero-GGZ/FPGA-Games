@@ -2,7 +2,7 @@
  * @Discription:  奖励机制的逻辑控制模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:21:08
- * @LastEditTime: 2019-05-18 17:36:38
+ * @LastEditTime: 2019-05-18 19:56:42
  */
 
  module reward_logic
@@ -37,8 +37,9 @@ wire	[11:0]		VGA_data_information;
 	
 assign VGA_data_reward = VGA_data_icon | VGA_data_information;
 
+reg [31:0] clk_cnt;
 
-always@(posedge clk_4Hz)
+always@(posedge clk)
 begin
     if(game_status == 2'b10)
     begin
@@ -80,52 +81,58 @@ begin
         else
             set_finish <= 1'b0;
         
-            
-        
-        if(reward_protected)
+        clk_cnt <= clk_cnt + 1;
+        if(clk_cnt >= 20000000)
         begin
-            led = 16'b0000_0000_0000_1111;
-            cnt <= cnt + 1;
-            if (cnt >= 30)
+            clk_cnt <= 0;
+                if(reward_protected)
                 begin
-                reward_protected <= 1'b0;
-                cnt <= 0;
-                end
-        end
-        
-        if(reward_slowly)
-        begin
-            led = 16'b0000_0000_1111_0000;
-            cnt <= cnt + 1;
-            if (cnt >= 30)
-                begin
-                speedRecover <= 1'b1;
-                reward_slowly <= 1'b0;
-                    if(cnt >= 40)
-                    begin
-                        speedRecover <= 1'b0;
+                    led = 16'b0000_0000_0000_1111;
+                    cnt <= cnt + 1;
+                    if (cnt >= 30)
+                        begin
+                        reward_protected <= 1'b0;
                         cnt <= 0;
-                    end
+                        end
+                end
+                
+                if(reward_slowly)
+                begin
+                    led = 16'b0000_0000_1111_0000;
+                    cnt <= cnt + 1;
+                    if (cnt >= 30)
+                        begin
+                        speedRecover <= 1'b1;
+                        reward_slowly <= 1'b0;
+                            if(cnt >= 40)
+                            begin
+                                speedRecover <= 1'b0;
+                                cnt <= 0;
+                            end
+                        end
+                end
+                
+                if(reward_grade)
+                begin
+                    led = 16'b0000_1111_0000_0000;
+                    cnt <= cnt + 5;
+                    if (cnt >= 30)
+                        begin
+                        reward_grade <= 1'b0;
+                        cnt <= 0;
+                        end
                 end
         end
         
-        if(reward_grade)
-        begin
-            led = 16'b0000_1111_0000_0000;
-            cnt <= cnt + 5;
-            if (cnt >= 30)
-                begin
-                reward_grade <= 1'b0;
-                cnt <= 0;
-                end
-        end
+
 
     end
     else
     begin
         enable_reward <= 1'b0;
         speedRecover <= 1'b0;
-        cnt <= 1'b0; 
+        cnt <= 1'b0;
+        clk_cnt <= 0;
         reward_grade <= 1'b0;
         reward_protected <= 1'b0;
         reward_slowly <= 1'b0;

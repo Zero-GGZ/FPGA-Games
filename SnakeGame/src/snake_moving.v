@@ -2,7 +2,7 @@
  * @Discription:  蛇运动情况控制模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 17:48:43
+ * @LastEditTime: 2019-05-18 20:10:48
  */
 
 module snake_moving
@@ -240,7 +240,7 @@ module snake_moving
 				//状态确认为PLAY
 				if(game_status == PLAY) begin
 					//撞墙检测
-					if(((direct == UP && cube_y[0] == 1)|(direct == DOWN && cube_y[0] == 24)|(direct == LEFT && cube_x[0] == 1)|(direct == RIGHT && cube_x[0] == 34)) && reward_protected == 0)
+					if(((direct == UP && cube_y[0] == 1)|(direct == DOWN && cube_y[0] == 28)|(direct == LEFT && cube_x[0] == 1)|(direct == RIGHT && cube_x[0] == 38)) && reward_protected == 0)
 					   hit_wall <= 1; //撞到墙壁
 					//身体碰撞检测
 					else if( reward_protected == 0 &&((cube_y[0] == cube_y[1] && cube_x[0] == cube_x[1] && is_exist[1] == 1)|
@@ -315,7 +315,7 @@ module snake_moving
 							end
 									
 							DOWN: begin
-								if(cube_y[0] == 24 && reward_protected == 0)
+								if(cube_y[0] == 28 && reward_protected == 0)
 									hit_wall <= 1;
 								else
 									cube_y[0] <= cube_y[0] + 1;
@@ -329,7 +329,7 @@ module snake_moving
 							end
 
 							RIGHT: begin
-								if(cube_x[0] == 34 && reward_protected == 0)
+								if(cube_x[0] == 38 && reward_protected == 0)
 									hit_wall <= 1;
                                 else
 									cube_x[0] <= cube_x[0] + 1;
@@ -433,7 +433,7 @@ module snake_moving
 	
 	always @(x_pos or y_pos ) begin				
 		if(x_pos >= 0 && x_pos < 640 && y_pos >= 0 && y_pos < 480) begin
-			if(x_pos[9:4] == 0 | y_pos[9:4] == 0 | x_pos[9:4] == 35 | y_pos[9:4] == 25)
+			if(x_pos[9:4] == 0 | y_pos[9:4] == 0 | x_pos[9:4] == 39 | y_pos[9:4] == 29)
 				snake = WALL;//扫描墙
 			else if(x_pos[9:4] == cube_x[0] && y_pos[9:4] == cube_y[0] && is_exist[0] == 1) 
 				snake = (die_flash == 1) ? HEAD : NONE;//扫描头

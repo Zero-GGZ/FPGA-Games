@@ -2,7 +2,7 @@
  * @Discription:  奖励标志显示模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:45:44
- * @LastEditTime: 2019-05-18 11:38:30
+ * @LastEditTime: 2019-05-18 20:08:14
  */
 
 `define	RED			12'hF00
@@ -35,8 +35,42 @@ wire			dout_protected;
 wire			dout_grade;
 wire			dout_slowly;
 
+reg [27:0]	flash_cnt;
+reg [11:0]	FLASH_COLOR;
+
+always@(posedge clk)
+begin
+	flash_cnt <= flash_cnt + 28'b1;
+	if (flash_cnt >= 25000000)		
+	begin
+		FLASH_COLOR <= 12'b1111_0000_0000;
+	end
+	else FLASH_COLOR <= 12'b0000_0000_0000;
+	if	(flash_cnt >= 50000000)
+	begin	
+		flash_cnt <= 28'b0;
+	end
+end
 
 
+always@(posedge clk)
+begin
+	if(set_require == 1 && enable_reward == 1)
+	begin
+		if((VGA_xpos[9:4] == random_xpos)&&(VGA_ypos[9:4] == random_ypos))
+			VGA_data <= FLASH_COLOR;
+		else
+			VGA_data <= 12'b0000_0000_0000;
+	end
+	else
+		begin
+		VGA_data <= 0;
+		end
+end
+
+
+
+/*
 always@(posedge clk)
 begin
 	if(set_require == 1 && enable_reward == 1)
@@ -107,5 +141,7 @@ pic_grade u_pic_grade (
   .addra(addr_grade),  // input wire [9 : 0] addra
   .douta(dout_grade)  // output wire [0 : 0] douta
 );
+
+*/
 
 endmodule
