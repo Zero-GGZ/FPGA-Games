@@ -2,7 +2,7 @@
  * @Discription:  VGA控制模块 整合时钟并生成坐标和相关显示
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-19 01:01:36
+ * @LastEditTime: 2019-05-19 10:22:18
  */
 `timescale 1ns / 1ps
 

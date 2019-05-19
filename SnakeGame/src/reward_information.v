@@ -2,7 +2,7 @@
  * @Discription:  奖励信息的显示模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:59:57
- * @LastEditTime: 2019-05-14 19:10:54
+ * @LastEditTime: 2019-05-19 10:21:42
  */
 
 module reward_information

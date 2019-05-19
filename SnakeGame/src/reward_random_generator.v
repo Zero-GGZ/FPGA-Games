@@ -2,7 +2,7 @@
  * @Discription: 奖励坐标随机生成模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:09:54
- * @LastEditTime: 2019-05-18 10:00:55
+ * @LastEditTime: 2019-05-19 10:21:53
  */
 module reward_random_generator
 (
@@ -28,13 +28,16 @@ reg		[7:0]	seed;
 reg				lock;
 reg		[3:0]	random_key_xpos;
 reg		[2:0]	random_key_ypos;
+reg		[7:0]	random_seed_cnt;
+
 
 
 initial 		
 	begin
 	load <= 0;
-	seed <= 0;
+	seed <= 3819;
 	cnt <= 0;
+	random_seed_cnt <= 0;
 	rand_num <= 10;
 	rand_num_2 <= 28;
 	random_xpos <= 0;
@@ -45,10 +48,15 @@ initial
 	lock 		<= 0;
 	end
 
+always@(posedge clk)
+begin
+	random_seed_cnt <= random_seed_cnt + 2301;
+end
+
 
 always@(posedge clk)
 begin
-	seed <= seed + 1;
+	seed <= random_seed_cnt;
 	if(!load)
 		rand_num_2 <= rand_num;
 	else

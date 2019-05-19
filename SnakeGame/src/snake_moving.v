@@ -2,7 +2,7 @@
  * @Discription:  蛇运动情况控制模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 20:10:48
+ * @LastEditTime: 2019-05-19 10:22:07
  */
 
 module snake_moving

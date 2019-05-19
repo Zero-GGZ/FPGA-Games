@@ -1,3 +1,9 @@
+/*
+ * @Discription:  clock module for game
+ * @Author: Qin Boyu
+ * @Date: 2019-05-07 23:17:17
+ * @LastEditTime: 2019-05-19 10:20:57
+ */
 module clk_unit(
 	input clk,
 	input rst,

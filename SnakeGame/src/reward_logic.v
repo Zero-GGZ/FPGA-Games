@@ -2,7 +2,7 @@
  * @Discription:  奖励机制的逻辑控制模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:21:08
- * @LastEditTime: 2019-05-18 19:56:42
+ * @LastEditTime: 2019-05-19 10:21:47
  */
 
  module reward_logic
@@ -14,9 +14,8 @@
      input      [5:0]   head_y,
      input      [10:0]  VGA_xpos,
      input      [10:0]  VGA_ypos,
-     input      [15:0]  sw,
+     input      [14:0]  sw,
      output reg         speedRecover,
-     output reg    [15:0]  led,
      output reg         reward_protected,
      output reg         reward_grade,
      output reg         reward_slowly,
@@ -48,7 +47,6 @@ begin
         begin
             if(sw[2] == 1 || sw[1] == 1 || sw[0] == 1)
             begin
-                led = 16'b0000_0000_0000_0000;
                 case(sw[2:0])
                 3'b001 :    reward_protected <= 1'b1;
                 3'b010 :	reward_slowly <= 1'b1;
@@ -63,7 +61,6 @@ begin
             end
             else
             begin
-                led = 16'b1111_1111_1111_1111;
                 case(reward_type)
                     1 : reward_protected <= 1'b1;
                     2 :	reward_slowly <= 1'b1;
@@ -87,7 +84,6 @@ begin
             clk_cnt <= 0;
                 if(reward_protected)
                 begin
-                    led = 16'b0000_0000_0000_1111;
                     cnt <= cnt + 1;
                     if (cnt >= 30)
                         begin
@@ -98,7 +94,6 @@ begin
                 
                 if(reward_slowly)
                 begin
-                    led = 16'b0000_0000_1111_0000;
                     cnt <= cnt + 1;
                     if (cnt >= 30)
                         begin
@@ -114,7 +109,6 @@ begin
                 
                 if(reward_grade)
                 begin
-                    led = 16'b0000_1111_0000_0000;
                     cnt <= cnt + 5;
                     if (cnt >= 30)
                         begin

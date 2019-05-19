@@ -2,7 +2,7 @@
  * @Discription:  顶层模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-19 01:00:08
+ * @LastEditTime: 2019-05-19 10:22:15
  */
 
 
@@ -15,7 +15,7 @@ module top_greedy_snake
 	input right,
 	input up,
 	input down,
-	input	[15:0]	sw,
+	input	[14:0]	sw,
 	output	[15:0]	led,
 
 	output hsync,
@@ -158,7 +158,6 @@ module top_greedy_snake
 		.head_x			(head_x),
 		.head_y			(head_y),
 		.sw				(sw),
-		.led			(led),
 		.VGA_xpos		({1'b0,x_pos}),
 		.VGA_ypos		({1'b0,y_pos}),
 		.speedRecover(speedRecover),

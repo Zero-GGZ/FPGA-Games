@@ -2,7 +2,7 @@
  * @Discription:  数码管计分模块
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 16:58:38
+ * @LastEditTime: 2019-05-19 10:22:00
  */
 
 module seg_display

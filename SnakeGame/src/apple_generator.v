@@ -2,7 +2,7 @@
  * @Discription:  苹果生成模块，在蛇吃到苹果后随机生成一个新的苹果坐标
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-18 18:53:18
+ * @LastEditTime: 2019-05-19 10:20:18
  */
 
 
@@ -13,7 +13,6 @@ module apple_generator
 	
 	input [5:0]head_x,	//输入蛇头的x坐标和y坐标
 	input [5:0]head_y,
-	
 	output reg [5:0]apple_x, //输出苹果的x坐标和y坐标(0~34, 0~24)
 	output reg [4:0]apple_y,
 

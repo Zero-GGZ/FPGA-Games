@@ -2,7 +2,7 @@
  * @Discription:  VGAÏÔÊ¾Ä£¿é
  * @Author: Qin Boyu
  * @Date: 2019-05-07 23:17:17
- * @LastEditTime: 2019-05-19 01:01:55
+ * @LastEditTime: 2019-05-19 10:22:25
  */
 
 module vga_display

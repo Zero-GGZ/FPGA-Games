@@ -2,7 +2,7 @@
  * @Discription:  奖励标志显示模块
  * @Author: Qin Boyu
  * @Date: 2019-05-14 00:45:44
- * @LastEditTime: 2019-05-19 01:45:10
+ * @LastEditTime: 2019-05-19 10:21:33
  */
 
 `define	RED			12'hF00

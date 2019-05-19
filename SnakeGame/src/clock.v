@@ -1,8 +1,8 @@
 /*
- * @Discription: 时钟控制模块
+ * @Discription: clock module for whole design
  * @Author: Qin Boyu
  * @Date: 2019-05-14 19:22:50
- * @LastEditTime: 2019-05-14 19:23:56
+ * @LastEditTime: 2019-05-19 10:21:16
  */
 
 module clock
