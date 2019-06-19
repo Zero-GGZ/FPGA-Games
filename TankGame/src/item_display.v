@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				reward_display.v
+Filename			:				item_display.v
 Date				:				2018-05-22
 Description			:				Display the reward countdown timer on the screen
 
@@ -21,14 +21,14 @@ Date		By			Version		Description
 `define	CYAN		12'hF0F
 `define	ROYAL		12'h0FF
 `timescale 1ns/1ns
-module	reward_display
+module	item_display
 (
 	input					clk,
 	input					set_require,
 	input					enable_reward,
 	input		[4:0]		random_xpos,
 	input		[4:0]		random_ypos,
-	input		[2:0]		reward_type,
+	input		[2:0]		item_type,
 	input		[10:0]		VGA_xpos,
 	input		[10:0]		VGA_ypos,
 	input					enable_game_classic,
@@ -64,7 +64,7 @@ begin
 			addr_laser	<= ( VGA_xpos - (random_xpos * 20 + 80 - 12)) + 24 *(VGA_ypos - (random_ypos * 20 + 80 - 12));
 			addr_protect <= ( VGA_xpos - (random_xpos * 20 + 80 - 12)) + 24 *(VGA_ypos - (random_ypos * 20 + 80 - 12));
 			
-			case(reward_type)
+			case(item_type)
 			3'b001 : 	
 					begin
 						if((dout_protect == 1 && enable_game_classic == 1) || (dout_addtime == 1 && enable_game_infinity == 1))

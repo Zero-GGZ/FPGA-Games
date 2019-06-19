@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				reward_information.v
+Filename			:				item_information.v
 Date				:				2018-05-23
 Description			:				To print information of reward timer
 
@@ -13,15 +13,15 @@ Date		By			Version		Description
 180525		ctlvie		2.0			Final Version
 ========================================================*/
 
-module reward_information
+module item_information
 (
 	input 				clk,
-	input	[9:0]		reward_cnt,
+	input	[9:0]		item_cnt,
 	input				enable_reward,
-	input				reward_invincible,
-	input				reward_frozen,
-	input				reward_faster,
-	input				reward_laser,
+	input				item_invincible,
+	input				item_frozen,
+	input				item_faster,
+	input				item_laser,
 	input	[10:0]		VGA_xpos,
 	input	[10:0]		VGA_ypos,
 	output	reg	[11:0]	VGA_data
@@ -53,11 +53,11 @@ always@(posedge clk)
 begin
 if(enable_reward)
 begin
-	if(reward_laser == 1 || reward_faster == 1 
-		|| reward_frozen == 1 || reward_invincible == 1)		
+	if(item_laser == 1 || item_faster == 1 
+		|| item_frozen == 1 || item_invincible == 1)		
 	begin
 		if(VGA_ypos >= 55 && VGA_ypos <= 65 
-			&& VGA_xpos >= 520 && VGA_xpos <= (520 + (30 - reward_cnt) * 2))
+			&& VGA_xpos >= 520 && VGA_xpos <= (520 + (30 - item_cnt) * 2))
 			VGA_data <= `BLUE;
 		else
 			VGA_data <= `BLACK;
@@ -72,13 +72,13 @@ begin
 		addr_laser <= (VGA_xpos - 490 ) + 24 * (VGA_ypos - 48);
 		addr_protect <= (VGA_xpos - 490 ) + 24 * (VGA_ypos - 48);
 		
-		if (reward_laser == 1'b1 && dout_laser == 1'b1)
+		if (item_laser == 1'b1 && dout_laser == 1'b1)
 			VGA_data <= 12'hFF0;
-		else if (reward_faster == 1'b1 && dout_faster == 1'b1)
+		else if (item_faster == 1'b1 && dout_faster == 1'b1)
 			VGA_data <= 12'hFF0;
-		else if (reward_frozen == 1'b1 && dout_frozen == 1'b1)
+		else if (item_frozen == 1'b1 && dout_frozen == 1'b1)
 			VGA_data <= 12'hFF0;
-		else if (reward_invincible == 1'b1 && dout_protect == 1'b1)
+		else if (item_invincible == 1'b1 && dout_protect == 1'b1)
 			VGA_data <= 12'hFF0;
 		else
 			VGA_data <= 0;

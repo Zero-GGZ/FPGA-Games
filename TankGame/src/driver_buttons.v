@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				button_logic.v
+Filename			:				driver_buttons.v
 Date				:				2018-05-24
 Description			:				The buttons controller between wired and wireless buttons
 
@@ -12,7 +12,7 @@ Date		By			Version		Description
 180525		ctlvie		2.0			Final Version
 ========================================================*/
 
-module	button_logic
+module	driver_buttons
 (
 	input			clk,
 	input		[15:0]	sw,

@@ -23,7 +23,7 @@ module game_logic_classic
 	input	[6:0]			scoreb,
 	input	[6:0]			scorec,
 	input	[6:0]			scored,
-	input					reward_invincible,
+	input					item_invincible,
 	output	reg	[4:0]		HP_value,
 	output	reg [15:0]		seg_classic,
 	output	reg	[15:0]		led_classic,
@@ -47,7 +47,7 @@ end
 
 always@(negedge enable_game_classic or negedge mytank_state)
 begin
-	if(reward_invincible == 0 )
+	if(item_invincible == 0 )
 		HP_value <= HP_value - 1;
 	else
 		HP_value <= HP_value;

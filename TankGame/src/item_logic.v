@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				reward_logic.v
+Filename			:				item_logic.v
 Date				:				2018-05-22
 Description			:				The logical module of the reward mechanism
 
@@ -14,7 +14,7 @@ Date		By			Version		Description
 ========================================================*/
 `timescale 1ns/1ns
 
-module reward_logic
+module item_logic
 (
 	input				clk,
 	input				clk_4Hz,
@@ -27,16 +27,16 @@ module reward_logic
 	input	[10:0]		VGA_ypos,
 	input	[15:0]		sw,
 	input				start_protect,
-	output	reg 		reward_invincible,
-	output	reg 		reward_addtime,
-	output	reg 		reward_faster,
-	output	reg 		reward_frozen,
-	output	reg 		reward_laser,
+	output	reg 		item_invincible,
+	output	reg 		item_addtime,
+	output	reg 		item_faster,
+	output	reg 		item_frozen,
+	output	reg 		item_laser,
 	output	 [11:0]		VGA_data_reward
 );
 
 
-wire	[2:0]		reward_type;
+wire	[2:0]		item_type;
 wire	[4:0] 		random_xpos;
 wire	[4:0]		random_ypos;
 reg		[9:0]		cnt;
@@ -59,42 +59,42 @@ begin
 		if(sw[5] == 1 || sw[4] == 1 || sw[3] == 1 || sw[2] == 1 || sw[1] == 1 || start_protect == 1)
 			begin
 			if (sw[5] == 1 || start_protect == 1)
-				reward_invincible <= 1'b1;
+				item_invincible <= 1'b1;
 			else if(sw[3])
-				reward_faster <= 1'b1;
+				item_faster <= 1'b1;
 			else if(sw[2])
-				reward_frozen <= 1'b1;
+				item_frozen <= 1'b1;
 			else if(sw[1])
-				reward_laser <= 1'b1;
+				item_laser <= 1'b1;
 			else
 				begin
-				reward_invincible	<= 1'b0;
-				reward_addtime		<= 1'b0;
-				reward_faster		<= 1'b0;
-				reward_frozen		<= 1'b0;
-				reward_laser		<= 1'b0;
+				item_invincible	<= 1'b0;
+				item_addtime		<= 1'b0;
+				item_faster		<= 1'b0;
+				item_frozen		<= 1'b0;
+				item_laser		<= 1'b0;
 				end
 			end
 		else
 			begin
-			case(reward_type)
+			case(item_type)
 			1 : 
 				begin
 				if(enable_game_classic)
-					reward_invincible <= 1'b1;
+					item_invincible <= 1'b1;
 				if(enable_game_infinity)
-					reward_addtime <= 1'b1;
+					item_addtime <= 1'b1;
 				end
-			2 :	reward_faster <= 1'b1;
-			3 :	reward_frozen <= 1'b1;		
-			4 :	reward_laser <= 1'b1;
+			2 :	item_faster <= 1'b1;
+			3 :	item_frozen <= 1'b1;		
+			4 :	item_laser <= 1'b1;
 			default :
 			begin
-				reward_invincible	<= 1'b0;
-				reward_addtime		<= 1'b0;
-				reward_faster		<= 1'b0;
-				reward_frozen		<= 1'b0;
-				reward_laser		<= 1'b0;
+				item_invincible	<= 1'b0;
+				item_addtime		<= 1'b0;
+				item_faster		<= 1'b0;
+				item_frozen		<= 1'b0;
+				item_laser		<= 1'b0;
 			end
 			endcase
 			set_finish <= 1'b1;
@@ -105,49 +105,49 @@ begin
 	
 		
 	
-	if(reward_invincible)
+	if(item_invincible)
 	begin
 		cnt <= cnt + 1;
 		if (cnt >= 30)
 			begin
-			reward_invincible <= 1'b0;
+			item_invincible <= 1'b0;
 			cnt <= 0;
 			end
 	end
 	
-	if(reward_faster)
+	if(item_faster)
 	begin
 		cnt <= cnt + 1;
 		if (cnt >= 30)
 			begin
-			reward_faster <= 1'b0;
+			item_faster <= 1'b0;
 			cnt <= 0;
 			end
 	end
 	
-	if(reward_frozen)
+	if(item_frozen)
 	begin
 		cnt <= cnt + 1;
 		if (cnt >= 30)
 			begin
-			reward_frozen <= 1'b0;
+			item_frozen <= 1'b0;
 			cnt <= 0;
 			end
 	end
 	
-	if(reward_laser)
+	if(item_laser)
 	begin
 		cnt <= cnt + 1;
 		if (cnt >= 30)
 			begin
-			reward_laser <= 1'b0;
+			item_laser <= 1'b0;
 			cnt <= 0;
 			end
 	end
 end
 end
 
-reward_random_generator		u_reward_random_generator
+item_random_generator		u_item_random_generator
 (
 	.clk				(clk), 
 	.clk_4Hz			(clk_4Hz),
@@ -155,12 +155,12 @@ reward_random_generator		u_reward_random_generator
 	.set_require		(set_require),
 	.enable				(enable_reward),
 	.dout				(random_out),
-	.reward_type		(reward_type),	
+	.item_type		(item_type),	
 	.random_xpos		(random_xpos),
 	.random_ypos		(random_ypos)
 );
 
-reward_display		u_reward_display
+item_display		u_item_display
 (
 	.clk				(clk),
 	.set_require		(set_require),
@@ -169,21 +169,21 @@ reward_display		u_reward_display
 	.enable_game_infinity(enable_game_infinity),
 	.random_xpos		(random_xpos),
 	.random_ypos		(random_ypos),
-	.reward_type		(reward_type),
+	.item_type		(item_type),
 	.VGA_xpos			(VGA_xpos),
 	.VGA_ypos			(VGA_ypos),
 	.VGA_data			(VGA_data_icon)
 );
 
-reward_information	u_reward_information
+item_information	u_item_information
 (
 	.clk				(clk),
-	.reward_cnt			(cnt),
+	.item_cnt			(cnt),
 	.enable_reward		(enable_reward),
-	.reward_invincible	(reward_invincible),
-	.reward_frozen		(reward_frozen),
-	.reward_faster		(reward_faster),
-	.reward_laser		(reward_laser),
+	.item_invincible	(item_invincible),
+	.item_frozen		(item_frozen),
+	.item_faster		(item_faster),
+	.item_laser		(item_laser),
 	.VGA_xpos			(VGA_xpos),
 	.VGA_ypos			(VGA_ypos),
 	.VGA_data			(VGA_data_information)

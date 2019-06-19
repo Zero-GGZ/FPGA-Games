@@ -58,13 +58,13 @@ reg			show_en;
 wire [4:0]	show1_x;
 wire [4:0]	show1_y;
 wire			show1_sht ;
-wire			show1_bul_fb;
-wire	[11:0]	VGA_data_show1_bul;
+wire			show1_shell_fb;
+wire	[11:0]	VGA_data_show1_shell;
 wire	[11:0]	VGA_data_show1_tank;
 wire	[1:0]	show1_dir_out;
 
 
-showtank_app show1_app
+showtank_control show1_control
 (	
 	.clk			(clk),
 	.clk_4Hz		(clk_4Hz),
@@ -72,39 +72,39 @@ showtank_app show1_app
 	.start_x		(0),
 	.start_y		(2),
 	.start_dir		(2'b11),
-	.bul_state_feedback	(show1_bul_fb),
+	.shell_state_feedback	(show1_shell_fb),
 	.x_rel_pos_out		(show1_x),
 	.y_rel_pos_out		(show1_y),	
 	.tank_dir_out		(show1_dir_out),
-	.bul_sht			(show1_sht)
+	.shell_sht			(show1_sht)
 );
 
-bullet show1_bul
+shell show1_shell
 (
 	.clk		(clk),
 	.clk_8Hz	(clk_8Hz),
 	.enable		(show_en),
 
 	
-	.bul_dir	(show1_dir_out),	//the direction of bullet
-	.bul_state	(show1_sht_auto),	//the state of my bullet
+	.shell_dir	(show1_dir_out),	//the direction of shell
+	.shell_state	(show1_sht_auto),	//the state of my shell
 	
-	.bul_ide	(1'b1),
+	.shell_ide	(1'b1),
 	.tank_xpos	(show1_x),
 	.tank_ypos	(show1_y),
-	//input and output the position of my bullet
-	.x_bul_pos_out	(),
-	.y_bul_pos_out	(),
+	//input and output the position of my shell
+	.x_shell_pos_out	(),
+	.y_shell_pos_out	(),
 	//input VGA scan coordinate
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	//input the VGA data
-	.VGA_data	(VGA_data_show1_bul),
+	.VGA_data	(VGA_data_show1_shell),
 	
-	.bul_state_feedback	(show1_bul_fb)
+	.shell_state_feedback	(show1_shell_fb)
 );
 
-tank_phy	show1_phy
+tank_display	show1_phy
 (
 	.clk		(clk),
 	.enable		(show_en),
@@ -127,12 +127,12 @@ tank_phy	show1_phy
 wire [4:0]	show2_x;
 wire [4:0]	show2_y;
 wire			show2_sht ;
-wire			show2_bul_fb;
-wire	[11:0]	VGA_data_show2_bul;
+wire			show2_shell_fb;
+wire	[11:0]	VGA_data_show2_shell;
 wire	[11:0]	VGA_data_show2_tank;
 wire	[1:0]	show2_dir_out;
 
-showtank_app show2_app
+showtank_control show2_control
 (	
 	.clk			(clk),
 	.clk_4Hz		(clk_4Hz),
@@ -140,38 +140,38 @@ showtank_app show2_app
 	.start_x		(20),
 	.start_y		(4),
 	.start_dir		(2'b01),
-	.bul_state_feedback	(show2_bul_fb),
+	.shell_state_feedback	(show2_shell_fb),
 	.x_rel_pos_out		(show2_x),
 	.y_rel_pos_out		(show2_y),	
 	.tank_dir_out		(show2_dir_out),
-	.bul_sht			(show2_sht)
+	.shell_sht			(show2_sht)
 );
 
-bullet show2_bul
+shell show2_shell
 (
 	.clk		(clk),
 	.clk_8Hz	(clk_8Hz),
 	.enable		(show_en),
 
-	.bul_ide	(1'b0),
-	.bul_dir	(show2_dir_out),	//the direction of bullet
-	.bul_state	(show2_sht_auto),	//the state of my bullet
+	.shell_ide	(1'b0),
+	.shell_dir	(show2_dir_out),	//the direction of shell
+	.shell_state	(show2_sht_auto),	//the state of my shell
 	
 	.tank_xpos	(show2_x),
 	.tank_ypos	(show2_y),
-	//input and output the position of my bullet
-	.x_bul_pos_out	(),
-	.y_bul_pos_out	(),
+	//input and output the position of my shell
+	.x_shell_pos_out	(),
+	.y_shell_pos_out	(),
 	//input VGA scan coordinate
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	//input the VGA data
-	.VGA_data	(VGA_data_show2_bul),
+	.VGA_data	(VGA_data_show2_shell),
 	
-	.bul_state_feedback	(show2_bul_fb)
+	.shell_state_feedback	(show2_shell_fb)
 );
 
-tank_phy	show2_phy
+tank_display	show2_phy
 (
 	.clk		(clk),
 	.enable		(show_en),
@@ -227,7 +227,7 @@ if(mode == 0)
 begin
 	show_en <= 1'b1;
 	if ((VGA_xpos > 60)&&(VGA_xpos < 580)&&(VGA_ypos > 60)&&(VGA_ypos < 340))
-		VGA_data  <= VGA_data_show1_bul | VGA_data_show1_tank | VGA_data_show2_bul | VGA_data_show2_tank | bigtank_reg ;
+		VGA_data  <= VGA_data_show1_shell | VGA_data_show1_tank | VGA_data_show2_shell | VGA_data_show2_tank | bigtank_reg ;
 	else
 		VGA_data <= 0;
 end

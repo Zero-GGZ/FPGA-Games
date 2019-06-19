@@ -5,7 +5,7 @@
 // 
 // Create Date:    16:52:53 06/12/2014 
 // Design Name: 
-// Module Name:    seg7decimal 
+// Module Name:    driver_seg 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,7 +18,8 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module seg7decimal(
+module driver_seg
+(
 
 	 input [15:0]	data,
     input clk,
@@ -41,7 +42,7 @@ assign aen = 4'b1111; // all turned off initially
 reg	[15:0] 	x;
 wire	[19:0]	bcdout;
 
-bin_to_decimal u_bin_to_decimal(
+seg_bin2dec u_seg_bin2dec(
 
 	.B(data),
 	.bcdout(bcdout)

@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				reward_random_generator.v
+Filename			:				item_random_generator.v
 Date				:				2018-05-22
 Description			:				the random numbers generator for reward mechanism
 
@@ -12,7 +12,7 @@ Date		By			Version		Description
 180525		ctlvie		2.0			Final Version
 ========================================================*/
 `timescale 1ns/1ns
-module reward_random_generator
+module item_random_generator
 (
     input               	clk, 
 	input					clk_4Hz,
@@ -20,7 +20,7 @@ module reward_random_generator
 	input					set_finish,
 	output		reg			dout,
 	output		reg			set_require,
-	output reg	[2:0]		reward_type,	
+	output reg	[2:0]		item_type,	
 	output reg	[4:0] 		random_xpos,
 	output reg	[4:0]		random_ypos
 );
@@ -49,7 +49,7 @@ initial
 	random_ypos <= 0;
 	random_key_xpos <= 0;
 	random_key_ypos <= 0; 
-	reward_type	<= 0;
+	item_type	<= 0;
 	lock 		<= 0;
 	end
 
@@ -127,15 +127,15 @@ begin
 		random_ypos <= random_key_ypos + 2;
 		lock 		<= 1;
 		if (rand_num_2 >= 0 && rand_num_2 <= 31)
-			reward_type <= 1;
+			item_type <= 1;
 		else if (rand_num_2 >= 32 && rand_num_2 <= 95)
-			reward_type <= 2;
+			item_type <= 2;
 		else if (rand_num_2 >= 96 && rand_num_2 <= 159)
-			reward_type <= 3;
+			item_type <= 3;
 		else if (rand_num_2 >= 160 && rand_num_2 <= 255)
-			reward_type <= 4;
+			item_type <= 4;
 		else
-			reward_type <= 0;
+			item_type <= 0;
 		end
 	end
 	else
@@ -143,7 +143,7 @@ begin
 		random_xpos <= 0;
 		random_ypos <= 0;
 		lock 		<= 0;
-		reward_type <= 0;
+		item_type <= 0;
 	end
 	
 end

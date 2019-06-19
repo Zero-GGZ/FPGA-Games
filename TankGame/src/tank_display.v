@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				tank_phy.v
+Filename			:				tank_display.v
 Date				:				2018-05-05
 Description			:				The tanks' display module
 									(Similar to physical layer)
@@ -32,7 +32,7 @@ Date		By			Version		Description
 `define	CYAN		12'hF0F
 `define	ROYAL		12'h0FF
 
-module tank_phy
+module tank_display
 (
 	input			clk,
 	input			enable,

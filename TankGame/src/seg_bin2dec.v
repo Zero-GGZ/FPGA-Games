@@ -5,7 +5,7 @@
 // 
 // Create Date:    18:33:23 06/15/2014 
 // Design Name: 
-// Module Name:    bin_to_decimal 
+// Module Name:    seg_bin2dec 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module bin_to_decimal(
+module seg_bin2dec(
 
 	input [15:0] B,
 	output reg [19:0] bcdout

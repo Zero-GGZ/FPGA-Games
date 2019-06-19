@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				game_mode_v2.v
+Filename			:				game_mode.v
 Date				:				2018-05-13
 Description			:				the game mode switches module
 
@@ -13,7 +13,7 @@ Date		By			Version		Description
 180525		ctlvie		2.0			Final Version
 ========================================================*/
 
-module  game_mode_v2
+module  game_mode
 (
 	input 				clk,
 	input				bt_st,
@@ -21,21 +21,21 @@ module  game_mode_v2
 	input				btn_return,
 	input				gameover_classic,
 	input				gameover_infinity,
-	output		reg		enable_bul1,
-	output		reg		enable_bul2,
-	output		reg		enable_bul3,
-	output		reg		enable_bul4,
-	output		reg		enable_mybul,
-	output		reg		enable_mytank_app,
-	output		reg		enable_mytank_phy,
-	output		reg		enable_enytank1_app,
-	output		reg		enable_enytank1_phy,
-	output		reg		enable_enytank2_app,
-	output		reg		enable_enytank2_phy,
-	output		reg		enable_enytank3_app,
-	output		reg		enable_enytank3_phy,
-	output		reg		enable_enytank4_app,
-	output		reg		enable_enytank4_phy,
+	output		reg		enable_shell1,
+	output		reg		enable_shell2,
+	output		reg		enable_shell3,
+	output		reg		enable_shell4,
+	output		reg		enable_myshell,
+	output		reg		enable_mytank_control,
+	output		reg		enable_mytank_display,
+	output		reg		enable_enemytank1_control,
+	output		reg		enable_enemytank1_display,
+	output		reg		enable_enemytank2_control,
+	output		reg		enable_enemytank2_display,
+	output		reg		enable_enemytank3_control,
+	output		reg		enable_enemytank3_display,
+	output		reg		enable_enemytank4_control,
+	output		reg		enable_enemytank4_display,
 	output		reg		enable_game_classic,
 	output		reg		enable_game_infinity,
 	output		reg		enable_reward,
@@ -57,21 +57,21 @@ begin
 case (mode)
 0:
 begin
-	enable_bul1			<= 1'b0;
-	enable_bul2 		<= 1'b0;
-	enable_bul3 		<= 1'b0;
-	enable_bul4 		<= 1'b0;
-	enable_mybul		<= 1'b0;
-	enable_mytank_app	<= 1'b0;
-	enable_mytank_phy	<= 1'b0;
-	enable_enytank1_app <= 1'b0;
-	enable_enytank1_phy <= 1'b0;
-	enable_enytank2_app <= 1'b0;
-	enable_enytank2_phy <= 1'b0;
-	enable_enytank3_app <= 1'b0;
-	enable_enytank3_phy <= 1'b0;
-	enable_enytank4_app <= 1'b0;
-	enable_enytank4_phy <= 1'b0;
+	enable_shell1			<= 1'b0;
+	enable_shell2 		<= 1'b0;
+	enable_shell3 		<= 1'b0;
+	enable_shell4 		<= 1'b0;
+	enable_myshell		<= 1'b0;
+	enable_mytank_control	<= 1'b0;
+	enable_mytank_display	<= 1'b0;
+	enable_enemytank1_control <= 1'b0;
+	enable_enemytank1_display <= 1'b0;
+	enable_enemytank2_control <= 1'b0;
+	enable_enemytank2_display <= 1'b0;
+	enable_enemytank3_control <= 1'b0;
+	enable_enemytank3_display <= 1'b0;
+	enable_enemytank4_control <= 1'b0;
+	enable_enemytank4_display <= 1'b0;
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b0;
 	enable_reward		<= 1'b0;
@@ -92,21 +92,21 @@ begin
 end
 1:
 begin
-	enable_bul1			<= 1'b1;
-	enable_bul2 		<= 1'b1;
-	enable_bul3 		<= 1'b1;
-	enable_bul4 		<= 1'b1;
-	enable_mybul		<= 1'b1;
-	enable_mytank_app	<= 1'b1;
-	enable_mytank_phy	<= 1'b1;
-	enable_enytank1_app <= 1'b1;
-	enable_enytank1_phy <= 1'b1;
-	enable_enytank2_app <= 1'b1;
-	enable_enytank2_phy <= 1'b1;
-	enable_enytank3_app <= 1'b1;
-	enable_enytank3_phy <= 1'b1;
-	enable_enytank4_app <= 1'b1;
-	enable_enytank4_phy <= 1'b1;
+	enable_shell1			<= 1'b1;
+	enable_shell2 		<= 1'b1;
+	enable_shell3 		<= 1'b1;
+	enable_shell4 		<= 1'b1;
+	enable_myshell		<= 1'b1;
+	enable_mytank_control	<= 1'b1;
+	enable_mytank_display	<= 1'b1;
+	enable_enemytank1_control <= 1'b1;
+	enable_enemytank1_display <= 1'b1;
+	enable_enemytank2_control <= 1'b1;
+	enable_enemytank2_display <= 1'b1;
+	enable_enemytank3_control <= 1'b1;
+	enable_enemytank3_display <= 1'b1;
+	enable_enemytank4_control <= 1'b1;
+	enable_enemytank4_display <= 1'b1;
 	enable_game_classic	<= 1'b1;
 	enable_game_infinity<= 1'b0;
 	enable_reward		<= 1'b1;
@@ -132,21 +132,21 @@ begin
 end
 2:
 begin
-	enable_bul1			<= 1'b1;
-	enable_bul2 		<= 1'b1;
-	enable_bul3 		<= 1'b1;
-	enable_bul4 		<= 1'b1;
-	enable_mybul		<= 1'b1;
-	enable_mytank_app	<= 1'b1;
-	enable_mytank_phy	<= 1'b1;
-	enable_enytank1_app <= 1'b1;
-	enable_enytank1_phy <= 1'b1;
-	enable_enytank2_app <= 1'b1;
-	enable_enytank2_phy <= 1'b1;
-	enable_enytank3_app <= 1'b1;
-	enable_enytank3_phy <= 1'b1;
-	enable_enytank4_app <= 1'b1;
-	enable_enytank4_phy <= 1'b1;
+	enable_shell1			<= 1'b1;
+	enable_shell2 		<= 1'b1;
+	enable_shell3 		<= 1'b1;
+	enable_shell4 		<= 1'b1;
+	enable_myshell		<= 1'b1;
+	enable_mytank_control	<= 1'b1;
+	enable_mytank_display	<= 1'b1;
+	enable_enemytank1_control <= 1'b1;
+	enable_enemytank1_display <= 1'b1;
+	enable_enemytank2_control <= 1'b1;
+	enable_enemytank2_display <= 1'b1;
+	enable_enemytank3_control <= 1'b1;
+	enable_enemytank3_display <= 1'b1;
+	enable_enemytank4_control <= 1'b1;
+	enable_enemytank4_display <= 1'b1;
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b1;
 	enable_reward		<= 1'b1;
@@ -162,21 +162,21 @@ begin
 end
 3:
 begin
-	enable_bul1			<= 1'b0;
-	enable_bul2 		<= 1'b0;
-	enable_bul3 		<= 1'b0;
-	enable_bul4 		<= 1'b0;
-	enable_mybul		<= 1'b0;
-	enable_mytank_app	<= 1'b0;
-	enable_mytank_phy	<= 1'b0;
-	enable_enytank1_app <= 1'b0;
-	enable_enytank1_phy <= 1'b0;
-	enable_enytank2_app <= 1'b0;
-	enable_enytank2_phy <= 1'b0;
-	enable_enytank3_app <= 1'b0;
-	enable_enytank3_phy <= 1'b0;
-	enable_enytank4_app <= 1'b0;
-	enable_enytank4_phy <= 1'b0;
+	enable_shell1			<= 1'b0;
+	enable_shell2 		<= 1'b0;
+	enable_shell3 		<= 1'b0;
+	enable_shell4 		<= 1'b0;
+	enable_myshell		<= 1'b0;
+	enable_mytank_control	<= 1'b0;
+	enable_mytank_display	<= 1'b0;
+	enable_enemytank1_control <= 1'b0;
+	enable_enemytank1_display <= 1'b0;
+	enable_enemytank2_control <= 1'b0;
+	enable_enemytank2_display <= 1'b0;
+	enable_enemytank3_control <= 1'b0;
+	enable_enemytank3_display <= 1'b0;
+	enable_enemytank4_control <= 1'b0;
+	enable_enemytank4_display <= 1'b0;
 	enable_game_classic	<= 1'b0;
 	enable_game_infinity<= 1'b0;
 	enable_reward		<= 1'b0;

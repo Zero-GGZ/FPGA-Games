@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				reward_laser.v
+Filename			:				item_laser.v
 Date				:				2018-05-23
 Description			:				Display the laser reward
 
@@ -13,11 +13,11 @@ Date		By			Version		Description
 180525		ctlvie		2.0			Final Version
 ========================================================*/
 
-module	reward_laser
+module	item_laser
 (
 	input				clk,
 	input				enable_reward,
-	input				reward_laser,
+	input				item_laser,
 	input	[4:0]		mytank_xpos,
 	input	[4:0]		mytank_ypos,
 	input	[1:0]		mytank_dir,
@@ -30,7 +30,7 @@ always@(posedge clk)
 begin
 if(enable_reward)
 begin
-	if(reward_laser == 1'b1 )
+	if(item_laser == 1'b1 )
 	begin
 	case(mytank_dir)
 	2'b00:

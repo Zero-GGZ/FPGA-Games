@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				enytank_app.v
+Filename			:				enemytank_control.v
 Date				:				2018-05-05
 Description			:				the controller module of enemy's tank 
 									(Similar to the application layer)
@@ -23,7 +23,7 @@ Date		By			Version		Description
 
 `timescale 1ns/1ns
 
-module enytank_app
+module enemytank_control
 (
 	input 			clk,
 	input			enable,			//global enable signal, determined by game mode
@@ -33,22 +33,22 @@ module enytank_app
 	
 	input	[1:0]	tank_num,	
 	
-	input	[4:0] 	mybul_x,
-	input 	[4:0]	mybul_y,
+	input	[4:0] 	myshell_x,
+	input 	[4:0]	myshell_y,
 	
 	input 	[4:0]	mytank_xpos,
 	input	[4:0]	mytank_ypos,
 	input	[1:0]	mytank_dir,
 	
-	input 			enybul_state_feedback,
+	input 			enemyshell_state_feedback,
 	
-	input			reward_frozen,
-	input			reward_laser,
+	input			item_frozen,
+	input			item_laser,
 	output	reg			kill,
-	output  reg			enybul_state,
+	output  reg			enemyshell_state,
 	output	reg			tank_state,		//坦克状态信号，送生成模块，经tank_en复活
-	output	reg	[4:0] 	enytank_xpos,
-	output	reg	[4:0]	enytank_ypos,
+	output	reg	[4:0] 	enemytank_xpos,
+	output	reg	[4:0]	enemytank_ypos,
 	output 	reg	[6:0]	score,
 	output	reg	[1:0]	tank_dir_out	
 );
@@ -57,7 +57,7 @@ module enytank_app
 initial tank_state <= 1'b0;
 reg 	btn_sht;
 
-reg		bul_flying;
+reg		shell_flying;
 
 //---------------------------------------------------
 //Calculate the distance between my tank 
@@ -92,7 +92,7 @@ always@(posedge clk)
 begin
 	if (enable)
 	begin
-	if (enytank_xpos == mytank_xpos && enytank_ypos == mytank_ypos)
+	if (enemytank_xpos == mytank_xpos && enemytank_ypos == mytank_ypos)
 	begin
 		eql <= 1'b1;
 		h_dis <= 1'b0;
@@ -102,20 +102,20 @@ begin
 	begin
 		eql <= 1'b0;
 		rel_dir[2] <= 1'b0;
-		if  (enytank_xpos < mytank_xpos)
+		if  (enemytank_xpos < mytank_xpos)
 			begin
 			rel_dir[0] <= 1'b0;
-			h_dis <= mytank_xpos - enytank_xpos;
+			h_dis <= mytank_xpos - enemytank_xpos;
 			end
-		else if	(enytank_xpos > mytank_xpos)
+		else if	(enemytank_xpos > mytank_xpos)
 			begin
-			h_dis <= enytank_xpos - mytank_xpos;
+			h_dis <= enemytank_xpos - mytank_xpos;
 			rel_dir[0] <= 1'b1;
 			end
 		else 
 			begin
 			h_dis <= 1'b0;
-			if (enytank_ypos > mytank_ypos)
+			if (enemytank_ypos > mytank_ypos)
 				begin
 				rel_dir <= 3'b110;
 				end
@@ -125,20 +125,20 @@ begin
 				end
 			end
 			
-		if	(enytank_ypos > mytank_ypos)
+		if	(enemytank_ypos > mytank_ypos)
 			begin
-			v_dis <= enytank_ypos - mytank_ypos;
+			v_dis <= enemytank_ypos - mytank_ypos;
 			rel_dir[1]	<= 1'b0;
 			end
-		else if (enytank_ypos < mytank_ypos)
+		else if (enemytank_ypos < mytank_ypos)
 			begin
-			v_dis <= mytank_ypos - enytank_ypos;
+			v_dis <= mytank_ypos - enemytank_ypos;
 			rel_dir[1]	<= 1'b1;
 			end
 		else
 			begin
 			v_dis <= 1'b0;
-			if (enytank_xpos > mytank_xpos)
+			if (enemytank_xpos > mytank_xpos)
 				rel_dir <= 3'b101;
 			else
 				rel_dir <= 3'b100;
@@ -176,15 +176,15 @@ begin
 		else
 			tank_state <= 1'b0;
 	end
-	if ((tank_state == 1'b1) && (((enytank_xpos == mytank_xpos) && (enytank_ypos == mytank_ypos))
-									||((enytank_xpos == mybul_x) && (enytank_ypos == mybul_y ))) 
+	if ((tank_state == 1'b1) && (((enemytank_xpos == mytank_xpos) && (enemytank_ypos == mytank_ypos))
+									||((enemytank_xpos == myshell_x) && (enemytank_ypos == myshell_y ))) 
 								 && flag == 0)
 	begin
 		tank_state <= 1'b0;	
-		if	((enytank_xpos == 0 && enytank_ypos == 0) 
-				||(enytank_xpos == 24 && enytank_ypos == 0) 
-				||(enytank_xpos == 0 && enytank_ypos == 12) 
-				||(enytank_xpos == 24 && enytank_ypos == 12) )
+		if	((enemytank_xpos == 0 && enemytank_ypos == 0) 
+				||(enemytank_xpos == 24 && enemytank_ypos == 0) 
+				||(enemytank_xpos == 0 && enemytank_ypos == 12) 
+				||(enemytank_xpos == 24 && enemytank_ypos == 12) )
 			score <= score;
 		else
 			begin
@@ -208,7 +208,7 @@ begin
 		end
 	
 	
-	if(tank_state == 1 && reward_laser == 1 )
+	if(tank_state == 1 && item_laser == 1 )
 	begin
 		if(eql)
 			tank_state <= 1'b0;
@@ -216,13 +216,13 @@ begin
 			begin
 			if(h_dis == 0 && v_dis != 0 && laser_flag ==0)
 				begin
-				if(mytank_ypos <= enytank_ypos && mytank_dir == 2'b01)
+				if(mytank_ypos <= enemytank_ypos && mytank_dir == 2'b01)
 					begin
 					tank_state <= 1'b0;
-					if	((enytank_xpos == 0 && enytank_ypos == 0) 
-						||(enytank_xpos == 24 && enytank_ypos == 0) 
-						||(enytank_xpos == 0 && enytank_ypos == 12) 
-						||(enytank_xpos == 24 && enytank_ypos == 12) )
+					if	((enemytank_xpos == 0 && enemytank_ypos == 0) 
+						||(enemytank_xpos == 24 && enemytank_ypos == 0) 
+						||(enemytank_xpos == 0 && enemytank_ypos == 12) 
+						||(enemytank_xpos == 24 && enemytank_ypos == 12) )
 						score <= score;
 					else
 						begin
@@ -231,13 +231,13 @@ begin
 						end
 					laser_flag <= 1;
 					end
-				else if(mytank_ypos >= enytank_ypos && mytank_dir == 2'b00)
+				else if(mytank_ypos >= enemytank_ypos && mytank_dir == 2'b00)
 					begin
 					tank_state <= 1'b0;
-					if	((enytank_xpos == 0 && enytank_ypos == 0) 
-						||(enytank_xpos == 24 && enytank_ypos == 0) 
-						||(enytank_xpos == 0 && enytank_ypos == 12) 
-						||(enytank_xpos == 24 && enytank_ypos == 12) )
+					if	((enemytank_xpos == 0 && enemytank_ypos == 0) 
+						||(enemytank_xpos == 24 && enemytank_ypos == 0) 
+						||(enemytank_xpos == 0 && enemytank_ypos == 12) 
+						||(enemytank_xpos == 24 && enemytank_ypos == 12) )
 						score <= score;
 					else
 						begin
@@ -254,13 +254,13 @@ begin
 				end
 			else if(h_dis != 0 && v_dis == 0)
 				begin
-				if(mytank_xpos <= enytank_xpos && mytank_dir == 2'b11)
+				if(mytank_xpos <= enemytank_xpos && mytank_dir == 2'b11)
 					begin
 					tank_state <= 1'b0;
-					if	((enytank_xpos == 0 && enytank_ypos == 0) 
-						||(enytank_xpos == 24 && enytank_ypos == 0) 
-						||(enytank_xpos == 0 && enytank_ypos == 12) 
-						||(enytank_xpos == 24 && enytank_ypos == 12) )
+					if	((enemytank_xpos == 0 && enemytank_ypos == 0) 
+						||(enemytank_xpos == 24 && enemytank_ypos == 0) 
+						||(enemytank_xpos == 0 && enemytank_ypos == 12) 
+						||(enemytank_xpos == 24 && enemytank_ypos == 12) )
 						score <= score;
 					else
 						begin
@@ -269,13 +269,13 @@ begin
 						end
 					laser_flag <= 1;
 					end
-				else if(mytank_xpos >= enytank_xpos && mytank_dir == 2'b10)
+				else if(mytank_xpos >= enemytank_xpos && mytank_dir == 2'b10)
 					begin
 					tank_state <= 1'b0;
-					if	((enytank_xpos == 0 && enytank_ypos == 0) 
-						||(enytank_xpos == 24 && enytank_ypos == 0) 
-						||(enytank_xpos == 0 && enytank_ypos == 12) 
-						||(enytank_xpos == 24 && enytank_ypos == 12) )
+					if	((enemytank_xpos == 0 && enemytank_ypos == 0) 
+						||(enemytank_xpos == 24 && enemytank_ypos == 0) 
+						||(enemytank_xpos == 0 && enemytank_ypos == 12) 
+						||(enemytank_xpos == 24 && enemytank_ypos == 12) )
 						score <= score;
 					else
 						begin
@@ -320,30 +320,30 @@ begin
 	begin
 		if(tank_num == 2'b00)
 		begin
-			enytank_xpos <= 0;
-			enytank_ypos <= 0;
+			enemytank_xpos <= 0;
+			enemytank_ypos <= 0;
 		end
 		else if (tank_num == 2'b01)
 		begin
-			enytank_xpos <= 24;
-			enytank_ypos <= 0;
+			enemytank_xpos <= 24;
+			enemytank_ypos <= 0;
 		end
 		else if (tank_num == 2'b10)
 		begin
-			enytank_xpos <= 0;
-			enytank_ypos <= 12;
+			enemytank_xpos <= 0;
+			enemytank_ypos <= 12;
 		end
 		else if (tank_num == 2'b11)
 		begin
-			enytank_xpos <= 24;
-			enytank_ypos <= 12;
+			enemytank_xpos <= 24;
+			enemytank_ypos <= 12;
 		end
 		restart_fb <= 1;
 	end
 	else
 		restart_fb <= 0;
 	//move
-	if (tank_state == 1 && reward_frozen == 0 )
+	if (tank_state == 1 && item_frozen == 0 )
 	begin
 		if (eql)
 			tank_dir_out <= tank_dir_out;
@@ -352,67 +352,67 @@ begin
 			if ( h_dis == 0 && v_dis != 0)
 				begin
 				btn_sht <= 1'b1;
-				if(rel_dir[0] == 0 && enytank_ypos > 0)	//up
+				if(rel_dir[0] == 0 && enemytank_ypos > 0)	//up
 					begin
 					tank_dir_out <= 2'b00;
-					enytank_ypos <= enytank_ypos - 1;
+					enemytank_ypos <= enemytank_ypos - 1;
 					end
-				else if (rel_dir[0] == 1 && enytank_ypos < 20) //down
+				else if (rel_dir[0] == 1 && enemytank_ypos < 20) //down
 					begin
 					tank_dir_out <= 2'b01;
-					enytank_ypos <= enytank_ypos + 1;
+					enemytank_ypos <= enemytank_ypos + 1;
 					end
 				else 
-					enytank_ypos <= enytank_ypos;
+					enemytank_ypos <= enemytank_ypos;
 				end
 			else if (h_dis != 0 && v_dis == 0)
 				begin
 				btn_sht <= 1'b1;
-				if(rel_dir[0] == 1 && enytank_xpos > 0) //left
+				if(rel_dir[0] == 1 && enemytank_xpos > 0) //left
 					begin
 					tank_dir_out <= 2'b10;
-					enytank_xpos <= enytank_xpos - 1;
+					enemytank_xpos <= enemytank_xpos - 1;
 					end
-				else if(rel_dir[0] == 0 && enytank_xpos < 16) //right
+				else if(rel_dir[0] == 0 && enemytank_xpos < 16) //right
 					begin
 					tank_dir_out <= 2'b11;
-					enytank_xpos <= enytank_xpos + 1;
+					enemytank_xpos <= enemytank_xpos + 1;
 					end
 				else
-					enytank_xpos <= enytank_xpos;
+					enemytank_xpos <= enemytank_xpos;
 				end
 			else
 				begin
 				btn_sht <= 1'b0;
 				if (h_dis < v_dis)
 					begin
-					if(rel_dir[0] ==  1 && enytank_xpos > 0) //left
+					if(rel_dir[0] ==  1 && enemytank_xpos > 0) //left
 						begin
 						tank_dir_out <= 2'b10;
-						enytank_xpos <= enytank_xpos - 1;
+						enemytank_xpos <= enemytank_xpos - 1;
 						end
-					else if (rel_dir[0] ==  0 && enytank_xpos < 16)	//right
+					else if (rel_dir[0] ==  0 && enemytank_xpos < 16)	//right
 						begin
 						tank_dir_out <= 2'b11;
-						enytank_xpos <= enytank_xpos + 1;
+						enemytank_xpos <= enemytank_xpos + 1;
 						end
 					else
-						enytank_xpos <= enytank_xpos;
+						enemytank_xpos <= enemytank_xpos;
 					end
 				else
 					begin
-					if(rel_dir[1] == 0 && enytank_ypos > 0) //up
+					if(rel_dir[1] == 0 && enemytank_ypos > 0) //up
 						begin
 						tank_dir_out <= 2'b00;
-						enytank_ypos <= enytank_ypos - 1;
+						enemytank_ypos <= enemytank_ypos - 1;
 						end
-					else if(rel_dir[1] == 1 && enytank_ypos < 20)	//down
+					else if(rel_dir[1] == 1 && enemytank_ypos < 20)	//down
 						begin
 						tank_dir_out <= 2'b01;
-						enytank_ypos <= enytank_ypos + 1;
+						enemytank_ypos <= enemytank_ypos + 1;
 						end
 					else
-						enytank_ypos <= enytank_ypos;
+						enemytank_ypos <= enemytank_ypos;
 					end
 					end
 				end
@@ -427,16 +427,16 @@ always@(posedge clk)
 begin
 if(enable)
 begin
-	if (enybul_state_feedback == 1'b0)
+	if (enemyshell_state_feedback == 1'b0)
 	begin
 		if ((tank_state == 1'b1) && (btn_sht == 1'b1))
-			enybul_state <= 1'b1;
+			enemyshell_state <= 1'b1;
 		else
-			enybul_state <= 1'b0;	
+			enemyshell_state <= 1'b0;	
 	end
 	else
 	begin
-		enybul_state <= 1'b1;
+		enemyshell_state <= 1'b1;
 	end
 end
 end

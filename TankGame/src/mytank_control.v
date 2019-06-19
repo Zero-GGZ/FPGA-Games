@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				mytank_app.v
+Filename			:				mytank_control.v
 Date				:				2018-05-05
 Description			:				the controller module of player's tank 
 									(Similar to application module)
@@ -22,7 +22,7 @@ Date		By			Version		Description
 
 `timescale 1ns/1ns
 
-module mytank_app
+module mytank_control
 (	
 	input clk,
 	input clk_4Hz,
@@ -36,17 +36,17 @@ module mytank_app
 	input bt_d,
 	input bt_st, // shoot button
 	
-	//input the position of each bullet
-	input	[4:0]	bul1_x,
-	input	[4:0]	bul1_y,
-	input	[4:0]	bul2_x,
-	input	[4:0]	bul2_y,
-	input	[4:0]	bul3_x,
-	input	[4:0]	bul3_y,
-	input	[4:0]	bul4_x,
-	input	[4:0]	bul4_y,
+	//input the position of each shelllet
+	input	[4:0]	shell1_x,
+	input	[4:0]	shell1_y,
+	input	[4:0]	shell2_x,
+	input	[4:0]	shell2_y,
+	input	[4:0]	shell3_x,
+	input	[4:0]	shell3_y,
+	input	[4:0]	shell4_x,
+	input	[4:0]	shell4_y,
 	
-	input 			mybul_state_feedback, 
+	input 			myshell_state_feedback, 
 	
 	//relative position input and output
 	input	[4:0] 	x_rel_pos_in,
@@ -57,7 +57,7 @@ module mytank_app
 	output	reg		  		 tank_state,
 	
 	output	reg	[1:0]		tank_dir_out,
-	output  reg				bul_sht
+	output  reg				shell_sht
 		
 );
 
@@ -77,10 +77,10 @@ always@(posedge clk)
 begin
 if(enable)
 begin
-	if	( ( bul1_x == x_rel_pos_in && bul1_y == y_rel_pos_in) ||
-			(bul2_x == x_rel_pos_in && bul2_y == y_rel_pos_in) ||
-			(bul3_x == x_rel_pos_in && bul3_y == y_rel_pos_in) ||
-			(bul4_x == x_rel_pos_in && bul4_y == y_rel_pos_in) )
+	if	( ( shell1_x == x_rel_pos_in && shell1_y == y_rel_pos_in) ||
+			(shell2_x == x_rel_pos_in && shell2_y == y_rel_pos_in) ||
+			(shell3_x == x_rel_pos_in && shell3_y == y_rel_pos_in) ||
+			(shell4_x == x_rel_pos_in && shell4_y == y_rel_pos_in) )
 			tank_state <= 1'b0;
 	else	tank_state <= 1'b1;
 end
@@ -141,16 +141,16 @@ always@(posedge clk)
 begin
 if(enable)
 begin
-	if (mybul_state_feedback == 1'b0)
+	if (myshell_state_feedback == 1'b0)
 	begin
 		if ((tank_en == 1'b1)&&(bt_st == 1'b1))
-			bul_sht <= 1'b1;
+			shell_sht <= 1'b1;
 		else
-			bul_sht <= 1'b0;	
+			shell_sht <= 1'b0;	
 	end
 	else
 	begin
-		bul_sht <= 1'b1;
+		shell_sht <= 1'b1;
 	end
 end
 end

@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				game_interface.v
+Filename			:				game_background.v
 Date				:				2018-05-11
 Description			:				the game major playing interface
 
@@ -14,7 +14,7 @@ Date		By			Version		Description
 180525		ctlvie		2.0			Final Version
 ========================================================*/
 
-module game_interface 
+module game_background 
 (
 	input					clk,
 	input					clk_4Hz,
@@ -142,18 +142,18 @@ always@(posedge clk)
 case	(mode)
 	0 :
 		begin
-			VGA_data[0] 	= 	background_pic[0]	|	VGA_data_show[0]	|	start_reg[0]	|	VGA_data_cursor[0];
-			VGA_data[1] 	=	background_pic[0]	|	VGA_data_show[1]	|	start_reg[0]	|	VGA_data_cursor[1];
-			VGA_data[2] 	=	background_pic[1]	|	VGA_data_show[2]	|	start_reg[0]	|	VGA_data_cursor[2];
-			VGA_data[3] 	=	background_pic[1]	|	VGA_data_show[3]	|	start_reg[0]	|	VGA_data_cursor[3];
-			VGA_data[4] 	= 	background_pic[2]	|	VGA_data_show[4]	|	start_reg[1]	|	VGA_data_cursor[4];
-			VGA_data[5] 	= 	background_pic[2]	|	VGA_data_show[5]	|	start_reg[1]	|	VGA_data_cursor[5];
+			VGA_data[0] 	= 	background_pic[7]	|	VGA_data_show[0]	|	start_reg[0]	|	VGA_data_cursor[0];
+			VGA_data[1] 	=	background_pic[6]	|	VGA_data_show[1]	|	start_reg[0]	|	VGA_data_cursor[1];
+			VGA_data[2] 	=	background_pic[5]	|	VGA_data_show[2]	|	start_reg[0]	|	VGA_data_cursor[2];
+			VGA_data[3] 	=	background_pic[5]	|	VGA_data_show[3]	|	start_reg[0]	|	VGA_data_cursor[3];
+			VGA_data[4] 	= 	background_pic[4]	|	VGA_data_show[4]	|	start_reg[1]	|	VGA_data_cursor[4];
+			VGA_data[5] 	= 	background_pic[4]	|	VGA_data_show[5]	|	start_reg[1]	|	VGA_data_cursor[5];
 			VGA_data[6] 	= 	background_pic[3]	|	VGA_data_show[6]	|	start_reg[1]	|	VGA_data_cursor[6];
-			VGA_data[7] 	= 	background_pic[4]	|	VGA_data_show[7]	|	start_reg[1]	|	VGA_data_cursor[7];
-			VGA_data[8] 	= 	background_pic[5]	|	VGA_data_show[8]	|	start_reg[2]	|	VGA_data_cursor[8];
-			VGA_data[9] 	= 	background_pic[5]	|	VGA_data_show[9]	|	start_reg[2]	|	VGA_data_cursor[9];
-			VGA_data[10] 	= 	background_pic[6]	|	VGA_data_show[10]	|	start_reg[2]	|	VGA_data_cursor[10];
-			VGA_data[11] 	= 	background_pic[7]	|	VGA_data_show[11]	|	start_reg[2]	|	VGA_data_cursor[11];
+			VGA_data[7] 	= 	background_pic[3]	|	VGA_data_show[7]	|	start_reg[1]	|	VGA_data_cursor[7];
+			VGA_data[8] 	= 	background_pic[2]	|	VGA_data_show[8]	|	start_reg[2]	|	VGA_data_cursor[8];
+			VGA_data[9] 	= 	background_pic[1]	|	VGA_data_show[9]	|	start_reg[2]	|	VGA_data_cursor[9];
+			VGA_data[10] 	= 	background_pic[0]	|	VGA_data_show[10]	|	start_reg[2]	|	VGA_data_cursor[10];
+			VGA_data[11] 	= 	background_pic[0]	|	VGA_data_show[11]	|	start_reg[2]	|	VGA_data_cursor[11];
 		end
 	1:
 		begin

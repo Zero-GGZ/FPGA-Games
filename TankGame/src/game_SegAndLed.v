@@ -101,7 +101,7 @@ begin
 		end
 end
 
-seg7decimal u_seg7decimal
+driver_seg u_driver_seg
 (
 	.data		(seg_display),
 	.clk		(clk),

@@ -54,14 +54,14 @@ wire			clk_100M;
 wire			clk_VGA;
 
 
-wire	[4:0]	bul1_x;
-wire	[4:0]	bul1_y;
-wire	[4:0]	bul2_x;
-wire	[4:0]	bul2_y;
-wire	[4:0]	bul3_x;
-wire	[4:0]	bul3_y;
-wire	[4:0]	bul4_x;
-wire	[4:0]	bul4_y;
+wire	[4:0]	shell1_x;
+wire	[4:0]	shell1_y;
+wire	[4:0]	shell2_x;
+wire	[4:0]	shell2_y;
+wire	[4:0]	shell3_x;
+wire	[4:0]	shell3_y;
+wire	[4:0]	shell4_x;
+wire	[4:0]	shell4_y;
 
 //wires about my tank
 wire			mytank_en;
@@ -72,89 +72,89 @@ wire 	[4:0]	mytank_ypos_feedback;// = mytank_ypos;
 wire	[1:0]	mytank_dir;
 wire			mytank_sht;
 wire			mytank_state;
-wire			mybul_state_fb;
+wire			myshell_state_fb;
 
 //wires about enemy tank 1
-wire			enytank1_en;
-wire			enytank1_state;
-wire	[4:0]	enytank1_xpos;
-wire	[4:0]	enytank1_ypos;
-wire	[1:0]	enytank1_dir;
-wire			enybul1_state_fb;
+wire			enemytank1_en;
+wire			enemytank1_state;
+wire	[4:0]	enemytank1_xpos;
+wire	[4:0]	enemytank1_ypos;
+wire	[1:0]	enemytank1_dir;
+wire			enemyshell1_state_fb;
 
 //wires about enemy tank 2
-wire			enytank2_en;
-wire			enytank2_state;
-wire	[4:0]	enytank2_xpos;
-wire	[4:0]	enytank2_ypos;
-wire	[1:0]	enytank2_dir;
-wire			enybul2_state_fb;
+wire			enemytank2_en;
+wire			enemytank2_state;
+wire	[4:0]	enemytank2_xpos;
+wire	[4:0]	enemytank2_ypos;
+wire	[1:0]	enemytank2_dir;
+wire			enemyshell2_state_fb;
 
 //wires about enemy tank 3
-wire			enytank3_en;
-wire			enytank3_state;
-wire	[4:0]	enytank3_xpos;
-wire	[4:0]	enytank3_ypos;
-wire	[1:0]	enytank3_dir;
-wire			enybul3_state_fb;
+wire			enemytank3_en;
+wire			enemytank3_state;
+wire	[4:0]	enemytank3_xpos;
+wire	[4:0]	enemytank3_ypos;
+wire	[1:0]	enemytank3_dir;
+wire			enemyshell3_state_fb;
 
 //wires about enemy tank 4
-wire			enytank4_en;
-wire			enytank4_state;
-wire	[4:0]	enytank4_xpos;
-wire	[4:0]	enytank4_ypos;
-wire	[1:0]	enytank4_dir;
-wire			enybul4_state_fb;
+wire			enemytank4_en;
+wire			enemytank4_state;
+wire	[4:0]	enemytank4_xpos;
+wire	[4:0]	enemytank4_ypos;
+wire	[1:0]	enemytank4_dir;
+wire			enemyshell4_state_fb;
 
-//wires about bullets
-wire	[4:0]	mybul_xpos;
-wire	[4:0]	mybul_ypos;
-wire	[4:0]	mybul_xpos_feedback;
-wire	[4:0]	mybul_ypos_feedback;
-wire	[11:0]	VGA_data_mybul;	
-wire	[4:0]	bul1_x_feedback;
-wire	[4:0]	bul1_y_feedback;
-wire			bul1_state;
-wire	[11:0]	VGA_data_bul1;
-wire	[4:0]	bul2_x_feedback;
-wire	[4:0]	bul2_y_feedback;
-wire			bul2_state;
-wire	[11:0]	VGA_data_bul2;
-wire	[4:0]	bul3_x_feedback;
-wire	[4:0]	bul3_y_feedback;
-wire			bul3_state;
-wire	[11:0]	VGA_data_bul3;
-wire	[4:0]	bul4_x_feedback;
-wire	[4:0]	bul4_y_feedback;
-wire			bul4_state;
-wire	[11:0]	VGA_data_bul4;
+//wires about shells
+wire	[4:0]	myshell_xpos;
+wire	[4:0]	myshell_ypos;
+wire	[4:0]	myshell_xpos_feedback;
+wire	[4:0]	myshell_ypos_feedback;
+wire	[11:0]	VGA_data_myshell;	
+wire	[4:0]	shell1_x_feedback;
+wire	[4:0]	shell1_y_feedback;
+wire			shell1_state;
+wire	[11:0]	VGA_data_shell1;
+wire	[4:0]	shell2_x_feedback;
+wire	[4:0]	shell2_y_feedback;
+wire			shell2_state;
+wire	[11:0]	VGA_data_shell2;
+wire	[4:0]	shell3_x_feedback;
+wire	[4:0]	shell3_y_feedback;
+wire			shell3_state;
+wire	[11:0]	VGA_data_shell3;
+wire	[4:0]	shell4_x_feedback;
+wire	[4:0]	shell4_y_feedback;
+wire			shell4_state;
+wire	[11:0]	VGA_data_shell4;
 wire	[11:0]	VGA_data_mytank;
-wire	[11:0]	VGA_data_enytank1;
-wire	[11:0]	VGA_data_enytank2;
-wire	[11:0]	VGA_data_enytank3;
-wire	[11:0]	VGA_data_enytank4;
+wire	[11:0]	VGA_data_enemytank1;
+wire	[11:0]	VGA_data_enemytank2;
+wire	[11:0]	VGA_data_enemytank3;
+wire	[11:0]	VGA_data_enemytank4;
 wire	[11:0]	VGA_data_info;
 wire	[11:0]	VGA_data_reward;
-wire	[11:0]	VGA_data_reward_laser;
+wire	[11:0]	VGA_data_item_laser;
 wire 	[10:0]	VGA_xpos;
 wire 	[10:0]	VGA_ypos;
 wire 	[11:0]	VGA_data;
 
-wire		enable_bul1;
-wire		enable_bul2;
-wire		enable_bul3;
-wire		enable_bul4;
-wire		enable_mybul;
-wire		enable_mytank_app;
-wire		enable_mytank_phy;
-wire		enable_enytank1_app;
-wire		enable_enytank1_phy;
-wire		enable_enytank2_app;
-wire		enable_enytank2_phy;
-wire		enable_enytank3_app;
-wire		enable_enytank3_phy;
-wire		enable_enytank4_app;
-wire		enable_enytank4_phy;
+wire		enable_shell1;
+wire		enable_shell2;
+wire		enable_shell3;
+wire		enable_shell4;
+wire		enable_myshell;
+wire		enable_mytank_control;
+wire		enable_mytank_display;
+wire		enable_enemytank1_control;
+wire		enable_enemytank1_display;
+wire		enable_enemytank2_control;
+wire		enable_enemytank2_display;
+wire		enable_enemytank3_control;
+wire		enable_enemytank3_display;
+wire		enable_enemytank4_control;
+wire		enable_enemytank4_display;
 wire		enable_gamelogic;
 wire		enable_reward;
 wire		enable_startmusic;	
@@ -211,24 +211,24 @@ wire				btn_mode_sel;
 wire				btn_return;
 wire				btn_stop;
 
-wire				reward_addtime;
-wire				reward_faster;
-wire				reward_frozen;
-wire				reward_invincible;
-wire				reward_laser;
+wire				item_addtime;
+wire				item_faster;
+wire				item_frozen;
+wire				item_invincible;
+wire				item_laser;
 wire				start_protect;
 
 
-assign 			bul1_x 			= 		bul1_x_feedback;
-assign 			bul2_x 			= 		bul2_x_feedback;
-assign 			bul3_x 			= 		bul3_x_feedback;
-assign 			bul4_x 			= 		bul4_x_feedback;
-assign 			bul1_y 			= 		bul1_y_feedback;
-assign 			bul2_y 			= 		bul2_y_feedback;
-assign 			bul3_y 			= 		bul3_y_feedback;
-assign 			bul4_y 			= 		bul4_y_feedback;
-assign			mybul_xpos 		= 		mybul_xpos_feedback;
-assign			mybul_ypos 		= 		mybul_ypos_feedback;
+assign 			shell1_x 			= 		shell1_x_feedback;
+assign 			shell2_x 			= 		shell2_x_feedback;
+assign 			shell3_x 			= 		shell3_x_feedback;
+assign 			shell4_x 			= 		shell4_x_feedback;
+assign 			shell1_y 			= 		shell1_y_feedback;
+assign 			shell2_y 			= 		shell2_y_feedback;
+assign 			shell3_y 			= 		shell3_y_feedback;
+assign 			shell4_y 			= 		shell4_y_feedback;
+assign			myshell_xpos 		= 		myshell_xpos_feedback;
+assign			myshell_ypos 		= 		myshell_ypos_feedback;
 assign			mytank_xpos 	= 		mytank_xpos_feedback;
 assign			mytank_ypos 	= 		mytank_ypos_feedback;
 
@@ -249,14 +249,14 @@ clk_wiz_0 u_VGA_clock
 clock u_clock
 (
 	.clk			(clk_100M),
-	.reward_faster	(reward_faster),
+	.item_faster	(item_faster),
 	.clk_4Hz		(clk_4Hz),
 	.clk_8Hz		(clk_8Hz),
 	.clk_2Hz		(clk_2Hz)
 );
 
 
-game_mode_v2  u_game_mode_v2
+game_mode  u_game_mode
 (
 	.clk				(clk_100M),	
 	.bt_st				(btn_st),
@@ -264,21 +264,21 @@ game_mode_v2  u_game_mode_v2
 	.btn_return			(btn_return),
 	.gameover_classic	(gameover_classic),
 	.gameover_infinity	(gameover_infinity),
-	.enable_bul1		(enable_bul1),
-	.enable_bul2		(enable_bul2),
-	.enable_bul3		(enable_bul3),
-	.enable_bul4		(enable_bul4),
-	.enable_mybul		(enable_mybul),
-	.enable_mytank_app	(enable_mytank_app),
-	.enable_mytank_phy	(enable_mytank_phy),
-	.enable_enytank1_app(enable_enytank1_app),
-	.enable_enytank1_phy(enable_enytank1_phy),
-	.enable_enytank2_app(enable_enytank2_app),
-	.enable_enytank2_phy(enable_enytank2_phy),
-	.enable_enytank3_app(enable_enytank3_app),
-	.enable_enytank3_phy(enable_enytank3_phy),
-	.enable_enytank4_app(enable_enytank4_app),
-	.enable_enytank4_phy(enable_enytank4_phy),
+	.enable_shell1		(enable_shell1),
+	.enable_shell2		(enable_shell2),
+	.enable_shell3		(enable_shell3),
+	.enable_shell4		(enable_shell4),
+	.enable_myshell		(enable_myshell),
+	.enable_mytank_control	(enable_mytank_control),
+	.enable_mytank_display	(enable_mytank_display),
+	.enable_enemytank1_control(enable_enemytank1_control),
+	.enable_enemytank1_display(enable_enemytank1_display),
+	.enable_enemytank2_control(enable_enemytank2_control),
+	.enable_enemytank2_display(enable_enemytank2_display),
+	.enable_enemytank3_control(enable_enemytank3_control),
+	.enable_enemytank3_display(enable_enemytank3_display),
+	.enable_enemytank4_control(enable_enemytank4_control),
+	.enable_enemytank4_display(enable_enemytank4_display),
 	.enable_game_classic(enable_game_classic),
 	.enable_game_infinity(enable_game_infinity),
 	.enable_reward		(enable_reward),
@@ -300,7 +300,7 @@ game_logic_classic u_game_logic_classic
 	.scoreb				(score2),
 	.scorec				(score3),
 	.scored				(score4),
-	.reward_invincible	(reward_invincible),
+	.item_invincible	(item_invincible),
 	.HP_value			(HP_value),
 	.seg_classic		(seg_classic),
 	.led_classic		(led_classic),
@@ -318,8 +318,8 @@ game_logic_infinity u_game_logic_infinity
 	.scoreb				(score2),
 	.scorec				(score3),
 	.scored				(score4),
-	.reward_addtime		(reward_addtime),
-	.reward_test		(sw[4]),
+	.item_addtime		(item_addtime),
+	.item_test		(sw[4]),
 	.timer				(timer),
 	.seg_infinity		(seg_infinity),
 	.led_infinity		(led_infinity),
@@ -359,7 +359,7 @@ game_SegAndLed 	u_game_SegAndLed
 );
 
 
-game_interface  u_game_interface
+game_background  u_game_background
 (
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_4Hz),
@@ -371,34 +371,7 @@ game_interface  u_game_interface
 	.VGA_data		(VGA_data_interface)
 );
 
-
-uart_controller  u_uart_controller
-( 
-	.clk			(clk_100M),		
-	.fpga_rxd		(fpga_rxd),		//pc 2 fpga uart receiver
-	.fpga_txd		(fpga_txd),		//fpga 2 pc uart transfer
-	.bt_w			(btn_wireless_w),
-	.bt_s			(btn_wireless_s),
-	.bt_a			(btn_wireless_a),
-	.bt_d			(btn_wireless_d),
-	.bt_st			(btn_wireless_st),
-	.bt_tri			(btn_wireless_tri),
-	.bt_sqr			(btn_wireless_sqr),
-	.bt_cir			(btn_wireless_cir),
-	.bt_cro			(btn_wireless_cro)
-);
-
-music_controller	u_music_controller
-(
-	.clk				(clk_100M),
-	.sw1				(enable_startmusic),
-	.sw2				(enable_gamemusic),
-	.btnC				(btn_st),
-	.kill				(kill),
-	.audio				(audio)
-);
-
-reward_logic	u_reward_logic
+item_logic	u_item_logic
 (
 	.clk					(clk_100M),
 	.clk_4Hz				(clk_4Hz),
@@ -411,30 +384,30 @@ reward_logic	u_reward_logic
 	.VGA_ypos				(VGA_ypos),
 	.sw						(sw),
 	.start_protect			(start_protect),
-	.reward_invincible		(reward_invincible),
-	.reward_addtime			(reward_addtime),
-	.reward_faster			(reward_faster),
-	.reward_frozen			(reward_frozen),
-	.reward_laser			(reward_laser),
+	.item_invincible		(item_invincible),
+	.item_addtime			(item_addtime),
+	.item_faster			(item_faster),
+	.item_frozen			(item_frozen),
+	.item_laser			(item_laser),
 	.VGA_data_reward		(VGA_data_reward)
 );
 
 
-reward_laser	u_reward_laser
+item_laser	u_item_laser
 (
 	.clk			(clk_100M),
 	.enable_reward	(enable_reward),
-	.reward_laser	(reward_laser),
+	.item_laser	(item_laser),
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
 	.mytank_dir		(mytank_dir),
 	.VGA_xpos		(VGA_xpos),
 	.VGA_ypos		(VGA_ypos),
-	.VGA_data		(VGA_data_reward_laser)
+	.VGA_data		(VGA_data_item_laser)
 );
 
 
-button_logic	u_button_logic
+driver_buttons	u_driver_buttons
 (
 	.clk				(clk_100M),
 	.sw					(sw),
@@ -466,11 +439,11 @@ button_logic	u_button_logic
 
 
 
-mytank_app u_mytank_app
+mytank_control u_mytank_control
 (
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_4Hz),
-	.enable			(enable_mytank_app),
+	.enable			(enable_mytank_control),
 	.tank_en		(1'b1),	//enable  
 	
 	// input button direction (w,a,s,d)
@@ -480,17 +453,17 @@ mytank_app u_mytank_app
 	.bt_d			(btn_d),
 	.bt_st			(btn_st), // shoot button
 	
-	//input the position of each bullet
-	.bul1_x			(bul1_x),
-	.bul1_y			(bul1_y),
-	.bul2_x			(bul2_x),
-	.bul2_y			(bul2_y),
-	.bul3_x			(bul3_x),
-	.bul3_y			(bul3_y),
-	.bul4_x			(bul4_x),
-	.bul4_y			(bul4_y),
+	//input the position of each shell
+	.shell1_x			(shell1_x),
+	.shell1_y			(shell1_y),
+	.shell2_x			(shell2_x),
+	.shell2_y			(shell2_y),
+	.shell3_x			(shell3_x),
+	.shell3_y			(shell3_y),
+	.shell4_x			(shell4_x),
+	.shell4_y			(shell4_y),
 	
-	.mybul_state_feedback	(mybul_state_fb),
+	.myshell_state_feedback	(myshell_state_fb),
 	//relative position input and output
 	.x_rel_pos_in		(mytank_xpos),
 	.y_rel_pos_in		(mytank_ypos),
@@ -500,83 +473,83 @@ mytank_app u_mytank_app
 	.tank_state		(mytank_state),
 	
 	.tank_dir_out	(mytank_dir),
-	.bul_sht		(mytank_sht)
+	.shell_sht		(mytank_sht)
 );
 
 
-enytank_app u_enytank1_app
+enemytank_control u_enemytank1_control
 (	
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
 	.clk_8Hz		(clk_8Hz),
-	.enable			(enable_enytank1_app),
-	.tank_en		(enytank1_en),
+	.enable			(enable_enemytank1_control),
+	.tank_en		(enemytank1_en),
 	
 	.tank_num		(2'b00),
-	.mybul_x		(mybul_xpos),
-	.mybul_y		(mybul_ypos),
+	.myshell_x		(myshell_xpos),
+	.myshell_y		(myshell_ypos),
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
-	.reward_frozen	(reward_frozen),
-	.reward_laser	(reward_laser),
+	.item_frozen	(item_frozen),
+	.item_laser	(item_laser),
 	.mytank_dir			(mytank_dir),
 	
 	.kill				(kill1),
 	.score				(score1),
 	
-	.enybul_state_feedback	(enybul1_state_fb),
-	.enybul_state	(bul1_state),
-	.tank_state		(enytank1_state),
-	.enytank_xpos	(enytank1_xpos),
-	.enytank_ypos	(enytank1_ypos),
-	.tank_dir_out	(enytank1_dir)
+	.enemyshell_state_feedback	(enemyshell1_state_fb),
+	.enemyshell_state	(shell1_state),
+	.tank_state		(enemytank1_state),
+	.enemytank_xpos	(enemytank1_xpos),
+	.enemytank_ypos	(enemytank1_ypos),
+	.tank_dir_out	(enemytank1_dir)
 );
 
 
-enytank_app u_enytank2_app
+enemytank_control u_enemytank2_control
 (	
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
 	.clk_8Hz		(clk_8Hz),
-	.enable			(enable_enytank2_app),
-	.tank_en		(enytank2_en),
+	.enable			(enable_enemytank2_control),
+	.tank_en		(enemytank2_en),
 	
 	.tank_num		(2'b01),
-	.mybul_x		(mybul_xpos),
-	.mybul_y		(mybul_ypos),
+	.myshell_x		(myshell_xpos),
+	.myshell_y		(myshell_ypos),
 	
 	.mytank_xpos	(mytank_xpos),
 	.mytank_ypos	(mytank_ypos),
-	.reward_frozen	(reward_frozen),
-	.reward_laser	(reward_laser),
+	.item_frozen	(item_frozen),
+	.item_laser	(item_laser),
 	.mytank_dir			(mytank_dir),
 	.kill				(kill2),
 	.score				(score2),
 	
-	.enybul_state_feedback	(enybul2_state_fb),
-	.enybul_state	(bul2_state),
-	.tank_state		(enytank2_state),
-	.enytank_xpos	(enytank2_xpos),
-	.enytank_ypos	(enytank2_ypos),
-	.tank_dir_out	(enytank2_dir)
+	.enemyshell_state_feedback	(enemyshell2_state_fb),
+	.enemyshell_state	(shell2_state),
+	.tank_state		(enemytank2_state),
+	.enemytank_xpos	(enemytank2_xpos),
+	.enemytank_ypos	(enemytank2_ypos),
+	.tank_dir_out	(enemytank2_dir)
 );
 
 
 
-enytank_app u_enytank3_app
+enemytank_control u_enemytank3_control
 (	
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
 	.clk_8Hz		(clk_8Hz),
-	.enable			(enable_enytank3_app),
-	.tank_en		(enytank3_en),
+	.enable			(enable_enemytank3_control),
+	.tank_en		(enemytank3_en),
 	
 	.tank_num		(2'b10),
-	.mybul_x		(mybul_xpos),
-	.mybul_y		(mybul_ypos),
-	.reward_frozen	(reward_frozen),
-	.reward_laser	(reward_laser),
+	.myshell_x		(myshell_xpos),
+	.myshell_y		(myshell_ypos),
+	.item_frozen	(item_frozen),
+	.item_laser	(item_laser),
 	.mytank_dir			(mytank_dir),
 	
 	.mytank_xpos	(mytank_xpos),
@@ -584,29 +557,29 @@ enytank_app u_enytank3_app
 	.kill				(kill3),
 	.score				(score3),
 	
-	.enybul_state_feedback	(enybul3_state_fb),
-	.enybul_state	(bul3_state),
-	.tank_state		(enytank3_state),
-	.enytank_xpos	(enytank3_xpos),
-	.enytank_ypos	(enytank3_ypos),
-	.tank_dir_out	(enytank3_dir)
+	.enemyshell_state_feedback	(enemyshell3_state_fb),
+	.enemyshell_state	(shell3_state),
+	.tank_state		(enemytank3_state),
+	.enemytank_xpos	(enemytank3_xpos),
+	.enemytank_ypos	(enemytank3_ypos),
+	.tank_dir_out	(enemytank3_dir)
 );
 
 
 
-enytank_app u_enytank4_app
+enemytank_control u_enemytank4_control
 (	
 	.clk			(clk_100M),
 	.clk_4Hz		(clk_2Hz),
 	.clk_8Hz		(clk_8Hz),
-	.enable			(enable_enytank4_app),
-	.tank_en		(enytank4_en),
+	.enable			(enable_enemytank4_control),
+	.tank_en		(enemytank4_en),
 	
 	.tank_num		(2'b11),
-	.mybul_x		(mybul_xpos),
-	.mybul_y		(mybul_ypos),
-	.reward_frozen	(reward_frozen),
-	.reward_laser	(reward_laser),
+	.myshell_x		(myshell_xpos),
+	.myshell_y		(myshell_ypos),
+	.item_frozen	(item_frozen),
+	.item_laser	(item_laser),
 	.mytank_dir			(mytank_dir),
 	
 	.mytank_xpos	(mytank_xpos),
@@ -614,163 +587,163 @@ enytank_app u_enytank4_app
 	.kill				(kill4),
 	.score			(score4),
 	
-	.enybul_state_feedback	(enybul4_state_fb),
-	.enybul_state	(bul4_state),
-	.tank_state		(enytank4_state),
-	.enytank_xpos	(enytank4_xpos),
-	.enytank_ypos	(enytank4_ypos),
-	.tank_dir_out	(enytank4_dir)
+	.enemyshell_state_feedback	(enemyshell4_state_fb),
+	.enemyshell_state	(shell4_state),
+	.tank_state		(enemytank4_state),
+	.enemytank_xpos	(enemytank4_xpos),
+	.enemytank_ypos	(enemytank4_ypos),
+	.tank_dir_out	(enemytank4_dir)
 );
 
 
-bullet u_mybullet
+shell u_myshell
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
-	.enable		(enable_mybul),
-	.bul_ide	(1'b0),
+	.enable		(enable_myshell),
+	.shell_ide	(1'b0),
 
 	
-	.bul_dir	(mytank_dir),	//the direction of bullet
-	.bul_state	(mytank_sht),	//the state of my bullet
+	.shell_dir	(mytank_dir),	//the direction of shell
+	.shell_state	(mytank_sht),	//the state of my shell
 	
 	.tank_xpos	(mytank_xpos),
 	.tank_ypos	(mytank_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_out	(mybul_xpos_feedback),
-	.y_bul_pos_out	(mybul_ypos_feedback),
+	//input and output the position of my shell
+	.x_shell_pos_out	(myshell_xpos_feedback),
+	.y_shell_pos_out	(myshell_ypos_feedback),
 	
 	//input VGA scan coordinate
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
 	//input the VGA data
-	.VGA_data	(VGA_data_mybul),
+	.VGA_data	(VGA_data_myshell),
 	
-	.bul_state_feedback	(mybul_state_fb)
+	.shell_state_feedback	(myshell_state_fb)
 );
 	
 
-bullet u_bul1
+shell u_shell1
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
-	.enable		(enable_bul1),
-	.bul_ide	(1'b1),
+	.enable		(enable_shell1),
+	.shell_ide	(1'b1),
 
 	
-	.bul_dir	(enytank1_dir),	//the direction of bullet
-	.bul_state	(bul1_state),	//the state of my bullet
+	.shell_dir	(enemytank1_dir),	//the direction of shell
+	.shell_state	(shell1_state),	//the state of my shell
 	
-	.tank_xpos	(enytank1_xpos),
-	.tank_ypos	(enytank1_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_out	(bul1_x_feedback),
-	.y_bul_pos_out	(bul1_y_feedback),
+	.tank_xpos	(enemytank1_xpos),
+	.tank_ypos	(enemytank1_ypos),
+	//input and output the position of my shell
+	.x_shell_pos_out	(shell1_x_feedback),
+	.y_shell_pos_out	(shell1_y_feedback),
 	
 	//input VGA scan coordinate
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
 	//input the VGA data
-	.VGA_data	(VGA_data_bul1),
+	.VGA_data	(VGA_data_shell1),
 	
-	.bul_state_feedback	(enybul1_state_fb)
+	.shell_state_feedback	(enemyshell1_state_fb)
 );
 
 
 
-bullet u_bul2
+shell u_shell2
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
-	.enable		(enable_bul2),
-	.bul_ide	(1'b1),
+	.enable		(enable_shell2),
+	.shell_ide	(1'b1),
 
 	
-	.bul_dir	(enytank2_dir),	//the direction of bullet
-	.bul_state	(bul2_state),	//the state of my bullet
+	.shell_dir	(enemytank2_dir),	//the direction of shell
+	.shell_state	(shell2_state),	//the state of my shell
 	
-	.tank_xpos	(enytank2_xpos),
-	.tank_ypos	(enytank2_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_out	(bul2_x_feedback),
-	.y_bul_pos_out	(bul2_y_feedback),
+	.tank_xpos	(enemytank2_xpos),
+	.tank_ypos	(enemytank2_ypos),
+	//input and output the position of my shell
+	.x_shell_pos_out	(shell2_x_feedback),
+	.y_shell_pos_out	(shell2_y_feedback),
 	
 	//input VGA scan coordinate
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
 	//input the VGA data
-	.VGA_data	(VGA_data_bul2),
+	.VGA_data	(VGA_data_shell2),
 	
-	.bul_state_feedback	(enybul2_state_fb)
+	.shell_state_feedback	(enemyshell2_state_fb)
 );
 
 
 
-bullet u_bul3
+shell u_shell3
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
-	.enable		(enable_bul3),
-	.bul_ide	(1'b1),
+	.enable		(enable_shell3),
+	.shell_ide	(1'b1),
 
 	
-	.bul_dir	(enytank3_dir),	//the direction of bullet
-	.bul_state	(bul3_state),	//the state of my bullet
+	.shell_dir	(enemytank3_dir),	//the direction of shell
+	.shell_state	(shell3_state),	//the state of my shell
 	
-	.tank_xpos	(enytank3_xpos),
-	.tank_ypos	(enytank3_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_out	(bul3_x_feedback),
-	.y_bul_pos_out	(bul3_y_feedback),
+	.tank_xpos	(enemytank3_xpos),
+	.tank_ypos	(enemytank3_ypos),
+	//input and output the position of my shell
+	.x_shell_pos_out	(shell3_x_feedback),
+	.y_shell_pos_out	(shell3_y_feedback),
 	
 	//input VGA scan coordinate
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
 	//input the VGA data
-	.VGA_data	(VGA_data_bul3),
+	.VGA_data	(VGA_data_shell3),
 	
-	.bul_state_feedback	(enybul3_state_fb)
+	.shell_state_feedback	(enemyshell3_state_fb)
 );
 
 
 
-bullet u_bul4
+shell u_shell4
 (
 	.clk		(clk_100M),
 	.clk_8Hz	(clk_8Hz),
-	.enable		(enable_bul4),
-	.bul_ide	(1'b1),
+	.enable		(enable_shell4),
+	.shell_ide	(1'b1),
 
 	
-	.bul_dir	(enytank4_dir),	//the direction of bullet
-	.bul_state	(bul4_state),	//the state of my bullet
+	.shell_dir	(enemytank4_dir),	//the direction of shell
+	.shell_state	(shell4_state),	//the state of my shell
 	
-	.tank_xpos	(enytank4_xpos),
-	.tank_ypos	(enytank4_ypos),
-	//input and output the position of my bullet
-	.x_bul_pos_out	(bul4_x_feedback),
-	.y_bul_pos_out	(bul4_y_feedback),
+	.tank_xpos	(enemytank4_xpos),
+	.tank_ypos	(enemytank4_ypos),
+	//input and output the position of my shell
+	.x_shell_pos_out	(shell4_x_feedback),
+	.y_shell_pos_out	(shell4_y_feedback),
 	
 	//input VGA scan coordinate
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
 	//input the VGA data
-	.VGA_data	(VGA_data_bul4),
+	.VGA_data	(VGA_data_shell4),
 	
-	.bul_state_feedback	(enybul4_state_fb)
+	.shell_state_feedback	(enemyshell4_state_fb)
 );
 
 
 
-tank_phy	mytank_phy
+tank_display	mytank_display
 (
 	.clk		(clk_100M),
-	.enable		(enable_mytank_phy),
+	.enable		(enable_mytank_display),
 
 	//input the relative position of tank
 	.x_rel_pos	(mytank_xpos),
@@ -788,82 +761,82 @@ tank_phy	mytank_phy
 
 
 
-tank_phy	enytank1_phy
+tank_display	enemytank1_display
 (
 	.clk		(clk_100M),
-	.enable		(enable_enytank1_phy),
+	.enable		(enable_enemytank1_display),
 	//input the relative position of tank
-	.x_rel_pos	(enytank1_xpos),
-	.y_rel_pos	(enytank1_ypos),
+	.x_rel_pos	(enemytank1_xpos),
+	.y_rel_pos	(enemytank1_ypos),
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
-	.tank_state	(enytank1_state),	//the state of tank
+	.tank_state	(enemytank1_state),	//the state of tank
 	.tank_ide	(1'b0),	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
-	.tank_dir	(enytank1_dir),	//the direction of tank
+	.tank_dir	(enemytank1_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank1)
+	.VGA_data	(VGA_data_enemytank1)
 );
 
 
 
-tank_phy	enytank2_phy
+tank_display	enemytank2_display
 (
 	.clk		(clk_100M),
-	.enable		(enable_enytank2_phy),
+	.enable		(enable_enemytank2_display),
 	//input the relative position of tank
-	.x_rel_pos	(enytank2_xpos),
-	.y_rel_pos	(enytank2_ypos),
+	.x_rel_pos	(enemytank2_xpos),
+	.y_rel_pos	(enemytank2_ypos),
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
-	.tank_state	(enytank2_state),	//the state of tank
+	.tank_state	(enemytank2_state),	//the state of tank
 	.tank_ide	(1'b0),	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
-	.tank_dir	(enytank2_dir),	//the direction of tank
+	.tank_dir	(enemytank2_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank2)
+	.VGA_data	(VGA_data_enemytank2)
 );
 
 
 
-tank_phy	enytank3_phy
+tank_display	enemytank3_display
 (
 	.clk		(clk_100M),
-	.enable		(enable_enytank3_phy),
+	.enable		(enable_enemytank3_display),
 	//input the relative position of tank
-	.x_rel_pos	(enytank3_xpos),
-	.y_rel_pos	(enytank3_ypos),
+	.x_rel_pos	(enemytank3_xpos),
+	.y_rel_pos	(enemytank3_ypos),
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
-	.tank_state	(enytank3_state),	//the state of tank
+	.tank_state	(enemytank3_state),	//the state of tank
 	.tank_ide	(1'b0),	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
-	.tank_dir	(enytank3_dir),	//the direction of tank
+	.tank_dir	(enemytank3_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank3)
+	.VGA_data	(VGA_data_enemytank3)
 );
 
 
 
-tank_phy	enytank4_phy
+tank_display	enemytank4_display
 (
 	.clk		(clk_100M),
-	.enable		(enable_enytank4_phy),
+	.enable		(enable_enemytank4_display),
 	//input the relative position of tank
-	.x_rel_pos	(enytank4_xpos),
-	.y_rel_pos	(enytank4_ypos),
+	.x_rel_pos	(enemytank4_xpos),
+	.y_rel_pos	(enemytank4_ypos),
 	.VGA_xpos	(VGA_xpos),
 	.VGA_ypos	(VGA_ypos),
 	
-	.tank_state	(enytank4_state),	//the state of tank
+	.tank_state	(enemytank4_state),	//the state of tank
 	.tank_ide	(1'b0),	//the identify of tank (my tank(1'b1) or enemy tank(1'b0))
-	.tank_dir	(enytank4_dir),	//the direction of tank
+	.tank_dir	(enemytank4_dir),	//the direction of tank
 	
 	//output the VGA data
-	.VGA_data	(VGA_data_enytank4)
+	.VGA_data	(VGA_data_enemytank4)
 );
 
 
@@ -871,20 +844,20 @@ VGA_data_selector u_VGA_data_selector
 (
 	.clk	(clk_100M),
 //input interfaces
-	.in1	(VGA_data_bul1),
-	.in2	(VGA_data_bul2),
-	.in3	(VGA_data_bul3),
-	.in4	(VGA_data_bul4),
-	.in5	(VGA_data_enytank1),
-	.in6	(VGA_data_enytank2),
-	.in7	(VGA_data_enytank3),
-	.in8	(VGA_data_enytank4),
-	.in9	(VGA_data_mybul),
+	.in1	(VGA_data_shell1),
+	.in2	(VGA_data_shell2),
+	.in3	(VGA_data_shell3),
+	.in4	(VGA_data_shell4),
+	.in5	(VGA_data_enemytank1),
+	.in6	(VGA_data_enemytank2),
+	.in7	(VGA_data_enemytank3),
+	.in8	(VGA_data_enemytank4),
+	.in9	(VGA_data_myshell),
 	.in10	(VGA_data_mytank),
 	.in11	(VGA_data_interface),
 	.in12	(VGA_data_info),
 	.in13	(VGA_data_reward),
-	.in14	(VGA_data_reward_laser),
+	.in14	(VGA_data_item_laser),
 	.in15	(0),
 	.in16	(0),
 	.in17	(0),
@@ -897,7 +870,7 @@ VGA_data_selector u_VGA_data_selector
 
 		
 				
-VGA_driver		u_VGA_driver
+driver_VGA		u_driver_VGA
 (
 //global clock
 	.clk		(clk_VGA),
@@ -922,15 +895,15 @@ tank_generate	u_tank_generate
 (	
 	.clk_4Hz	(clk_4Hz),
 	
-	.tank1_state(enytank1_state),
-	.tank2_state(enytank2_state),
-	.tank3_state(enytank3_state),
-	.tank4_state(enytank4_state),
+	.tank1_state(enemytank1_state),
+	.tank2_state(enemytank2_state),
+	.tank3_state(enemytank3_state),
+	.tank4_state(enemytank4_state),
 	
-	.tank1_en	(enytank1_en),
-	.tank2_en	(enytank2_en),
-	.tank3_en	(enytank3_en),
-	.tank4_en	(enytank4_en)
+	.tank1_en	(enemytank1_en),
+	.tank2_en	(enemytank2_en),
+	.tank3_en	(enemytank3_en),
+	.tank4_en	(enemytank4_en)
 );
 
 endmodule

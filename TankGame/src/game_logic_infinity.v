@@ -23,8 +23,8 @@ module game_logic_infinity
 	input		[6:0]		scoreb,
 	input		[6:0]		scorec,
 	input		[6:0]		scored,
-	input					reward_addtime,
-	input					reward_test,
+	input					item_addtime,
+	input					item_test,
 	output	reg [15:0]		seg_infinity,
 	output	reg	[15:0]		led_infinity,
 	output	reg	[5:0]		timer,
@@ -48,8 +48,8 @@ end
 	
 reg 	add_flag;
 initial add_flag <= 0;
-reg		reward_flag;
-initial	reward_flag <= 0;
+reg		item_flag;
+initial	item_flag <= 0;
 	
 always@(posedge clk)
 begin
@@ -79,9 +79,9 @@ if(enable_game_infinity)
 		else
 			add_flag <= 0;		
 		
-		if(reward_addtime == 1 || reward_test == 1)
+		if(item_addtime == 1 || item_test == 1)
 		begin
-			if(reward_flag == 0 && timer > 0 && timer < 16)
+			if(item_flag == 0 && timer > 0 && timer < 16)
 				begin
 					if (timer == 15)
 						timer <= timer + 1;
@@ -89,16 +89,16 @@ if(enable_game_infinity)
 						timer <= timer + 2;
 					else 
 						timer <= timer + 3;
-					reward_flag <= 1;
+					item_flag <= 1;
 				end
 			else
 				begin
 				timer <= timer;
-				reward_flag <= 1;
+				item_flag <= 1;
 				end
 		end
 		else
-			reward_flag <= 0;
+			item_flag <= 0;
 			
 		seg_infinity <= score;
 		cnt <= cnt + 1;

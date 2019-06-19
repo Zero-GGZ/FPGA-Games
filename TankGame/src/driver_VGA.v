@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				VGA_driver.v
+Filename			:				driver_VGA.v
 Date				:				2018-04-16
 Description			:				The driver module of VGA display
 
@@ -45,7 +45,7 @@ Date		By			Version		Description
 */
 
 
-module VGA_driver
+module driver_VGA
 (
 //global clock
 input 					clk,

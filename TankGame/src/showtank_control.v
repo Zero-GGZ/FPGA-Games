@@ -1,7 +1,7 @@
 /*=======================================================
 Author				:				ctlvie
 Email Address		:				ctlvie@gmail.com
-Filename			:				showtank_app.v
+Filename			:				showtank_control.v
 Date				:				2018-05-13
 Description			:				the function of show tank
 
@@ -14,7 +14,7 @@ Date		By			Version		Description
 
 `timescale 1ns/1ns
 
-module showtank_app
+module showtank_control
 (	
 	input 			clk,
 	input 			clk_4Hz,
@@ -22,11 +22,11 @@ module showtank_app
 	input	[4:0]	start_x,
 	input	[4:0]	start_y,
 	input	[1:0]	start_dir,
-	input			bul_state_feedback,
+	input			shell_state_feedback,
 	output	reg 	[4:0]	x_rel_pos_out,
 	output	reg 	[4:0]	y_rel_pos_out,		
 	output	reg	[1:0]		tank_dir_out,
-	output  reg				bul_sht
+	output  reg				shell_sht
 );
 
 reg 	tank_state_reg;

@@ -16,7 +16,7 @@ Date		By			Version		Description
 module clock
 (
 	input				clk,
-	input				reward_faster,
+	input				item_faster,
 	output 	reg			clk_4Hz,
 	output 	reg			clk_8Hz,
 	output	reg			clk_2Hz
@@ -49,7 +49,7 @@ end
 
 always@(posedge clk)
 begin
-	if(reward_faster == 1'b1 )
+	if(item_faster == 1'b1 )
 		ending_4Hz <= 6250000;
 	else
 		ending_4Hz <= 12500000;
