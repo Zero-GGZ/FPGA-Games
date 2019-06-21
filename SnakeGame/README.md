@@ -10,7 +10,7 @@
 
 本设计使用了Basys3开发板的四个按键控制“蛇”运动方向，使用数码管显示当前的得分，游戏的主体界面则由VGA显示器来显示。
 
-![](https://picture-1256315926.cos.ap-shanghai.myqcloud.com/img/20190621104152.png)
+![](https://i.loli.net/2019/06/21/5d0c458bbadfc23980.png)
 
 ### 2. 软件模块设计
 
